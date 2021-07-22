@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +26,12 @@ Route::get('/', function () {
 });
 
 Route::resource('categorias', 'CategoriaController');
+
+Route::namespace('Productos')->group(function () {
+    Route::resource('productos', ProductoController::class);
+});
+
+// Route::get('productos/{producto}/add', 'ProductoController@add')->name('producto.add');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
