@@ -25,6 +25,9 @@ Route::get('/', function () {
 });
 
 Route::resource('categorias', 'CategoriaController');
+Route::namespace('Usuarios')->group(function(){
+    Route::resource('usuarios', UsuarioController::class);
+});
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
