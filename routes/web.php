@@ -26,6 +26,9 @@ Route::get('/', function () {
 });
 
 Route::resource('categorias', 'CategoriaController');
+Route::namespace('Usuarios')->group(function(){
+    Route::resource('usuarios', UsuarioController::class);
+});
 
 Route::namespace('Productos')->group(function () {
     Route::resource('productos', ProductoController::class);
