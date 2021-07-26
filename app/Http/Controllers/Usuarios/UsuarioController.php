@@ -8,6 +8,7 @@ use App\Models\Usuarios\Persona;
 use App\Models\Usuarios\Rol;
 use App\Models\Usuarios\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Session;
 
@@ -20,15 +21,22 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $mUsuarios = Usuario::all(['id', 'email', 'idPersona', 'idRol'])->toArray();
-        $mPersonas = array();
-        foreach ($mUsuarios as $mUsuario) {
-            // $mPersona = Persona::select('nombre')->where('idPersona', $mUsuario->idUsuario)->get();
-            $mPersona = Persona::where('idPersona', $mUsuario->idPersona)->get(['nombre']);
+        $arUsuarios = DB::table('users')
+        ->join('personas', 'users.idPersona', '=', 'personas.idPersona')
+        ->select('users.id', 'users.email', 'users.idPersona', 'users.idRol', 'personas.nombre')
+        ->get()->toArray();
 
-            array_push($mPersonas, $mPersona);
-        }
-        return view('usuarios.index', compact('mUsuarios', 'mPersonas'));
+        // $mUsuarios = Usuario::all(['id', 'email', 'idPersona', 'idRol'])->toArray();
+        // $mPersonas = [];
+        // foreach ($mUsuarios as $mUsuario) {
+        //     $mPersona = Persona::select('nombre')->where('idPersona', $mUsuario['idPersona'])->get()->toArray();
+
+        //     $mPersonas[] = $mPersona;
+        // }
+        // for($i = 0; i < count($mUsuarios); $i++) {
+        //     $mUsuarios[]
+        // }
+        return view('usuarios.index', compact('arUsuarios'));
     }
 
     /**
@@ -60,18 +68,34 @@ class UsuarioController extends Controller
             "correo" => "required",
             "contrasenia" => "required",
         ]);
-        $personaController = new  PersonaController();
-        $idPersona = $personaController->store($request);
+        DB::beginTransaction();
+        try{
 
-        $mUsuario = new Usuario();
-        $mUsuario->idPersona = $idPersona;
-        $mUsuario->email = $request->correo;
-        $mUsuario->password = bcrypt($request->contrasenia);
-        $mUsuario->idRol = $request->rol;
-        $mUsuario->save();
+            $personaController = new  PersonaController();
+            $idPersona = $personaController->store($request);
 
-        Session::flash('success', 'Categoria agregada con exito');
-        return redirect('usuarios');
+            $mUsuario = new Usuario();
+            $mUsuario->name = $request->nombre;
+            $mUsuario->idPersona = $idPersona;
+            $mUsuario->email = $request->correo;
+            $mUsuario->password = bcrypt($request->contrasenia);
+            $mUsuario->idRol = $request->rol;
+            $mUsuario->save();
+
+            DB::commit();
+
+            Session::flash('message', 'Usuario agregado con exito');
+            Session::flash('alert-class', 'success');
+            return redirect('usuarios');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::flash('message', $e->getMessage());
+            Session::flash('alert-class', 'danger');
+            return redirect('usuarios.create');
+        }
+
+        
     }
 
     /**

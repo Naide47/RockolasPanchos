@@ -1,29 +1,26 @@
 @extends('layout.layout')
 @section('titulo')
-    Editar categoria
+    Editar usuario
 @endsection
 
 @section('contenido')
     <div class="container">
+        <div class="row mb-3 text-center">
+            <div class="col">
+                <h1>Usuarios</h1>
+                <h2>Editar usuario</h2>
+            </div>
+        </div>
+        @if (Session::has('flash-error'))
+            <div class="row bg-danger">
+                <div class="col">
+                    <p class="text-light">{{ Session::get('flash-error') }}</p>
+                </div>
+            </div>
+        @endif
         <div class="row">
-            <div class="col-12">
-                <div class="col mb-3 text-center">
-                    <h1>Categorias</h1>
-                    <h2>- Editar categoria -</h2>
-                </div>
-                {{ Form::model($categoria, ['route' => ['categorias.update', $categoria->idCategoria], 'method' => 'PUT']) }}
-
-                <div class="form-group">
-                    {{ Form::label('categoria', 'Categoria') }}
-                    {{ Form::text('categoria', $categoria->categoria, ['class' => 'form-control', 'required' => true]) }}
-                </div>
-                <div class="row">
-                    <div class="col text-right">
-                        {{ Form::submit('Confirmar', ['class' => 'btn btn-primary']) }}
-                        <a class="btn btn-secondary" href="{{ route('categorias.index') }}" role="button">Cancelar</a>
-                    </div>
-                </div>
-                {{ Form::close() }}
+            <div class="col">
+                {!! Form::model($mUsuario, [$options]) !!}
             </div>
         </div>
     </div>

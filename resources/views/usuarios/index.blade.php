@@ -26,6 +26,13 @@
 
                     </div>
                 </div>
+                @if (Session::has('message'))
+                    <div class="row bg-{{ Session::get('alert-class') }}">
+                        <div class="col">
+                            {{ Session::get('message') }}
+                        </div>
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-12">
                         <table class="table">
@@ -33,16 +40,19 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nombre</th>
-                                    
                                     <th>Puesto</th>
                                     <th colspan="3">Acciones</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse (array_merge($mUsuarios, $mPersonas) as $usuario)
+                                {{-- @forelse (array_merge($mUsuarios, $mPersonas) as $usuario) --}}
+                                @forelse ($arUsuarios as $usuario)
                                     <tr>
                                         <td scope="row">{{ $loop->iteration }}</td>
+                                        {{-- <td>
+                                            {{print_r($usuario)}}
+                                        </td> --}}
                                         <td>{{ $usuario->nombre }}</td>
                                         @switch($usuario->idRol)
                                             @case(1)
@@ -58,15 +68,14 @@
                                             @break
                                         @endswitch
                                         <td><a name="btnDetalle" id="btnDetalle" class="btn btn-secondary"
-                                                href="{{ route('usuarios.show', $usuario->idUsuario) }}"
+                                                href="{{ route('usuarios.show', $usuario->id) }}"
                                                 role="button">Detalle</a>
                                         </td>
                                         <td><a name="btnEditar" id="btnEditar" class="btn btn-info"
-                                                href="{{ route('usuarios.edit', $usuario->idUsuario) }}"
-                                                role="button">Editar</a>
+                                                href="{{ route('usuarios.edit', $usuario->id) }}" role="button">Editar</a>
                                         </td>
                                         <td>
-                                            {{ Form::open(['url' => route('usuarios.destroy', $usuario->idUsuario)]) }}
+                                            {{ Form::open(['url' => route('usuarios.destroy', $usuario->id)]) }}
                                             {{ Form::hidden('_method', 'DELETE') }}
                                             {{ Form::submit('Eliminar', ['class' => 'btn btn-danger']) }}
                                         </td>

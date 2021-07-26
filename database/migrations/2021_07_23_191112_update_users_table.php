@@ -18,7 +18,6 @@ class UpdateUsersTable extends Migration
             $table->unsignedBigInteger("idPersona");
             $table->unsignedBigInteger("idRol");
             $table->tinyInteger("estatus")->default("1");
-            $table->dropColumn("name");
 
             $table->foreign("idPersona")->references("idPersona")->on("personas");
             $table->foreign("idRol")->references("idRol")->on("roles");

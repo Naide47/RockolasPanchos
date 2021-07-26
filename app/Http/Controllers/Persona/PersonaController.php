@@ -26,7 +26,7 @@ class PersonaController extends Controller
         $mPersona->celular = $request->celular;
 
         $mPersona->save();
-        return $mPersona->id;
+        return $mPersona->idPersona;
     }
 
     /**
