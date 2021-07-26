@@ -1,0 +1,17 @@
+/**********************************/
+/******* Imagen ventas ************/
+/**********************************/
+.imagen-venta {
+    width: 400px;
+    height: 400px; 
+}
+
+.brand-image-cuadrado {
+    width: 150px;
+    height: 150px;
+}
+
+.brand-image-rectangular {
+    width: 270px;
+    height: 150px;
+}
