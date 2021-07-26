@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -178,6 +178,8 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class
 
+        Collective\Html\HtmlServiceProvider::class
+
     ],
 
     /*
@@ -232,6 +234,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'HTML' => Collective\Html\HtmlFacade::class
+
+        'Form' => Collective\Html\FormFacade::class,
+        "HTML" => Collective\Html\HtmlFacade::class,
 
     ],
 
