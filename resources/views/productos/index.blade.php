@@ -3,7 +3,7 @@
     Productos
 @endsection
 
-@section('contenido')
+@section('contents')
     <div class="container">
         @if (Session::has('mensage'))
             <div class="row">
@@ -67,12 +67,12 @@
                                         <td class="align-middle">${{ $producto->precioUnitario }}</td>
                                         <td class="align-middle">{{ $producto->disponibles }}</td>
                                         {{-- <td><a class="btn btn-primary"
-                                                href="{{ route('productos.add', $producto->idProducto) }}">Agregar
+                                                href="{{ route('productos.add', $producto->id) }}">Agregar
                                                 existencias</a></td> --}}
                                         <td class="align-middle"><a class="btn btn-secondary"
-                                                href="{{ route('productos.show', $producto->idProducto) }}">Detalle</td>
+                                                href="{{ route('productos.show', $producto->id) }}">Detalle</td>
                                         <td class="align-middle"><a class="btn btn-info"
-                                                href="{{ route('productos.edit', $producto->idProducto) }}"
+                                                href="{{ route('productos.edit', $producto->id) }}"
                                                 role="button">Editar</a>
                                         </td>
                                         {{-- <td>

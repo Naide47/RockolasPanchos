@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Productos;
 
 use App\Http\Controllers\Controller;
+use App\Models\Productos\Categoria;
 use Illuminate\Http\Request;
-use App\Models\Categoria;
-use App\Models\Producto;
+use App\Models\Productos\Producto;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -30,6 +30,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
+        
         $categorias = Categoria::all();
         return view('productos.create', compact('categorias'));
     }
@@ -50,7 +51,7 @@ class ProductoController extends Controller
         ]);
 
         $nuevoProducto = new Producto();
-        $nuevoProducto->idCategoria = $request->categoria;
+        $nuevoProducto->categoria_id = $request->categoria;
         $nuevoProducto->nombre = $request->nombre;
         $nuevoProducto->existencias = $request->existencias;
         $nuevoProducto->disponibles = $request->existencias;
@@ -83,7 +84,7 @@ class ProductoController extends Controller
     public function show($id)
     {
         $producto = Producto::find($id);
-        $categoria = Categoria::find($producto->idCategoria);
+        $categoria = Categoria::find($producto->categoria_id);
         return view('productos.show', compact('producto', 'categoria'));
     }
 
@@ -118,7 +119,7 @@ class ProductoController extends Controller
 
         $producto = Producto::find($id);
         $producto->nombre = $request->nombre;
-        $producto->idCategoria = $request->categoria;
+        $producto->categoria_id = $request->categoria;
         $producto->existencias = $request->existencias;
         $producto->disponibles = $request->disponibles;
         $producto->precioCompra = $request->precioCompra;

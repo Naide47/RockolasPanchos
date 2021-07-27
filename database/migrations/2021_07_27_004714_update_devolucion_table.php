@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoria extends Migration
+class UpdateDevolucionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateCategoria extends Migration
      */
     public function up()
     {
-        Schema::create('categoria', function (Blueprint $table) {
-            $table->id();
-            $table->string('categoria', 100);
-            $table->timestamps();
+        Schema::table('devolucion', function (Blueprint $table) {
+            $table->foreign('venta_id')->references('id')->on('venta');
         });
     }
 
@@ -27,6 +25,8 @@ class CreateCategoria extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categoria');
+        Schema::table('devolucion', function (Blueprint $table) {
+            $table->dropForeign('venta_id');
+        });
     }
 }

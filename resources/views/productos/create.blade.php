@@ -3,7 +3,7 @@
     Agregar producto
 @endsection
 
-@section('contenido')
+@section('contents')
     <div class="container">
         <div class="col">
             {{ HTML::ul($errors->all()) }}
@@ -29,7 +29,7 @@
                             <select class="form-control" id="categoria" name="categoria" required>
                                 <option value="" selected disabled>SELECCIONAR</option>
                                 @foreach ($categorias as $categoria)
-                                    <option value="{{ $categoria->idCategoria }}">{{ $categoria->categoria }}</option>
+                                    <option value="{{ $categoria->id }}">{{ $categoria->categoria }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -41,11 +41,7 @@
                             {!! Form::label('precioCompra', 'Precio de compra') !!}
                             {!! Form::number('precioCompra', Request::old('precioCompra'), ['class' => 'form-control', 'placeholder' => 'Precio de compra', 'required']) !!}
                         </div>
-                        {{-- <div class="form-group">
-                          <label for=""></label>
-                          <input type="file" class="form-control-file" name="" id="" placeholder="" aria-describedby="fileHelpId">
-                          <small id="fileHelpId" class="form-text text-muted">Help text</small>
-                        </div> --}}
+                        
                         <div class="form-group">
                             {!! Form::label('foto', 'Foto del producto') !!}
                             {!! Form::file('foto', ['accept' => 'image/x-png, image/gif, image/jpeg', 'placeholder' => 'Elegir foto', 'class' => 'form-control-file']) !!}

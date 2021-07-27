@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCliente extends Migration
+class CreateRolTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateCliente extends Migration
      */
     public function up()
     {
-        Schema::create('cliente', function (Blueprint $table) {
+        Schema::create('rol', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('rol', 9);
         });
     }
 
@@ -26,6 +26,6 @@ class CreateCliente extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cliente');
+        Schema::dropIfExists('rol');
     }
 }

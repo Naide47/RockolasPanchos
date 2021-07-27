@@ -3,7 +3,7 @@
     Editar producto
 @endsection
 
-@section('contenido')
+@section('contents')
     <div class="container">
         <div class="row  mb-3">
             <div class="col-12 text-center">
@@ -20,7 +20,7 @@
         @else
 
         @endif
-        {{ Form::model($producto, ['route' => ['productos.update', $producto->idProducto], 'method' => 'PUT', 'enctype' => 'multipart/form-data']) }}
+        {{ Form::model($producto, ['route' => ['productos.update', $producto->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data']) }}
         <div class="row  mb-3">
             <div class="col">
                 <div class="form-group">
@@ -31,11 +31,11 @@
                     {!! Form::label('categoria', 'Categoria') !!}
                     <select name="categoria" id="categoria" class="form-control">
                         @foreach ($categorias as $categoria)
-                            @if ($categoria->idCategoria == $producto->idCategoria)
-                                <option value="{{ $categoria->idCategoria }}" selected>{{ $categoria->categoria }}
+                            @if ($categoria->id == $producto->id)
+                                <option value="{{ $categoria->id }}" selected>{{ $categoria->categoria }}
                                 </option>
                             @else
-                                <option value="{{ $categoria->idCategoria }}">{{ $categoria->categoria }}</option>
+                                <option value="{{ $categoria->id }}">{{ $categoria->categoria }}</option>
                             @endif
                         @endforeach
                     </select>

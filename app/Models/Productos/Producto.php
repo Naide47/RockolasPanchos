@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Productos;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Producto extends Model
 {
     public $timestamps = false;
-    protected $primaryKey = "idProducto";
+    // protected $primaryKey = "idProducto";
     
-    protected $table = "productos";
+    protected $table = "producto";
 
     protected $fillable = [
         "idCategoria",
