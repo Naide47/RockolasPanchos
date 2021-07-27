@@ -16,9 +16,7 @@ class CreateVenta extends Migration
         Schema::create('venta', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cliente_id')->default(0);
-            $table->foreign('cliente_id')->references('id')->on('cliente');
-            $table->unsignedBigInteger('usuario_id')->default(0);
-            $table->foreign('usuario_id')->references('id')->on('usuario');
+            $table->unsignedBigInteger('users_id')->default(0);
             $table->decimal('total', 13, 2)->default(0);
             $table->decimal('anticipoPagado', 13, 2)->default(0);
             $table->date('fechaRegistro');
@@ -26,6 +24,9 @@ class CreateVenta extends Migration
             $table->integer('tipoTarjeta')->default(0);
             $table->integer('status')->default(0);
             $table->timestamps();
+
+            // $table->foreign('cliente_id')->references('id')->on('cliente');
+            // $table->foreign('users_id')->references('id')->on('users');
         });
     }
 

@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class
+        Collective\Html\HtmlServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class
 
@@ -233,7 +233,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
-        'HTML' => Collective\Html\HtmlFacade::class
+        'HTML' => Collective\Html\HtmlFacade::class,
 
         'Form' => Collective\Html\FormFacade::class,
         "HTML" => Collective\Html\HtmlFacade::class,
