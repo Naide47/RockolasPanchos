@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                             <div class="product-price">
-                                <h3><span>$</span>{{$row->precioCompra}}</h3>
+                                <h3><span>$</span>{{$row->precioUnitario}}</h3>
                                 <a class="btn" href="{{route('ventas.create',['id'=>$row->id])}}"><i class="fa fa-shopping-cart"></i>Comprar</a>
                             </div>
                         </div>
