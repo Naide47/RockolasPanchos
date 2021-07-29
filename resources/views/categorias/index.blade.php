@@ -3,81 +3,62 @@
     Categorias de productos
 @endsection
 
-@section('contenido')
-    <div class="container">
-        @if (Session::has('mensage'))
-            <div class="row">
-                <div class="col-xs-12">
-
-                    {{ Session::get('mensage') }}
-
-                </div>
-            </div>
-        @endif
-        <div class="row justify-content-center">
-            <div class="col-12 text-center">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col mb-3">
-                                <h1>Categorias</h1>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-10">
-                                @include('layout.searchbar')
-                            </div>
-                            <div class="col-2">
-                                <a name="btnAgregarCategoria" id="btnAgregarCategoria" class="btn btn-success"
-                                    href="{{ route('categorias.create') }}" role="button">Agregar categoria</a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <table class="table">
-                            <caption>Lista de categorias</caption>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Categoria</th>
-                                    <th colspan="2">Acciones</th>
-                                    {{-- <th colspan="3">Acciones</th> --}}
-                                </tr>
-                            </thead>
-                            @forelse($categorias as $row)
-                                <tbody>
-                                    <tr>
-                                        <td scope="row">{{ $loop->iteration }}</td>
-                                        <td>{{ $row->categoria }}</td>
-                                        {{-- <td><a class="btn btn-primary"
-                                                href="{{ route('categorias.show', $row->idCategoria) }}">Ver
-                                                detalles</td> --}}
-                                        <td><a class="btn btn-info"
-                                                href="{{ route('categorias.edit', $row->idCategoria) }}"
-                                                role="button">Editar</a>
-                                        </td>
-                                        <td>
-                                            {{Form::open(['url'=>route('categorias.destroy', $row->idCategoria)])}}
-                                            {{Form::hidden('_method', 'DELETE')}}
-                                            {{Form::submit('Borrar', ["class"=>"btn btn-danger"])}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            @empty
-                                <tbody>
-                                    <tr>
-                                        <td colspan="3">No hay registros</td>
-                                    </tr>
-                                </tbody>
-                            @endforelse
-                        </table>
-                    </div>
-                </div>
+@section('contents')
+    <div class="container text-center">
+        {{-- Titulo --}}
+        <div class="row mb-5">
+            <div class="col">
+                <h1>Categorias de productos</h1>
             </div>
         </div>
-    </div>
+        {{-- Barra de busqueda y botón de agregar --}}
+        <div class="row mb-3">
+            <div class="col-10">
+                @include('layout.searchbar')
+            </div>
+            <div class="col">
+                <a name="btnCreate" id="btnCreate" class="btn btn-success" href="{{ route('categorias.create') }}"
+                    role="button">Agregar categoria</a>
+            </div>
+        </div>
+        @if (Session::has('message'))
+            <div class="alert alert-{{Session::get('alert-class')}}" role="alert">
+                {{Session::get('message')}}
+            </div>
+        @endif
 
+        {{-- Tabla --}}
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <caption>Categorias de los productos</caption>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Categoria</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($mCategorias as $categoria)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $categoria->categoria }}</td>
+                                <td>
+                                    <a name="btnEdit" id="btnEdit" class="btn btn-info"
+                                        href="{{ route('categorias.edit', $categoria->id) }}" role="button">Editar</a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3">Sin registros</td>
+                            </tr>
+                        @endforelse
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
 @endsection

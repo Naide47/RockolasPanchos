@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProductoEloquent;
+use App\Models\Productos\Producto;
 use Session;
 use Redirect;
 
@@ -18,7 +19,7 @@ class VentaController extends Controller
      */
     public function index()
     {
-        $table = ProductoEloquent::all();
+        $table = Producto::all();
         return view('ventas.index', compact('table'));
     }
 
@@ -30,7 +31,7 @@ class VentaController extends Controller
     public function create(Request $request)
     {
         if($request->id){
-            $modelo = ProductoEloquent::find($request->id);
+            $modelo = Producto::find($request->id);
         }
         return view('ventas.create', compact('modelo'));
         
