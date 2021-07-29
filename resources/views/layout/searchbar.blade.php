@@ -1,5 +1,8 @@
-<div class="input-group justify-content-center ">
-    <input type="text" class="form-control" placeholder="Termino a buscar" aria-label="Recipient's username"
-        aria-describedby="button-addon2">
-    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
-</div>
+<form>
+    <div class="input-group mb-3">
+        <input name="searchBar" id="searchBar" type="text" class="form-control align-self-center" placeholder="Buscar...">
+        <div class="input-group-append">
+            <button name="btnReset" id="btnReset" class="btn" type="reset">Reiniciar</button>
+        </div>
+    </div>
+</form>

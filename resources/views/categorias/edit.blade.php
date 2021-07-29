@@ -3,7 +3,7 @@
     Editar categoria
 @endsection
 
-@section('contenido')
+@section('contents')
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -11,7 +11,7 @@
                     <h1>Categorias</h1>
                     <h2>- Editar categoria -</h2>
                 </div>
-                {{ Form::model($categoria, ['route' => ['categorias.update', $categoria->idCategoria], 'method' => 'PUT']) }}
+                {{ Form::model($categoria, ['route' => ['categorias.update', $categoria->id], 'method' => 'PUT']) }}
 
                 <div class="form-group">
                     {{ Form::label('categoria', 'Categoria') }}

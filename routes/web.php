@@ -22,7 +22,7 @@ Route::resource('ventas','VentaController');
 #Route::get('/venta/compra','VentaController@create');
 
 Route::get('/', function () {
-    return Inertia::render('welcome', [
+    return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -30,15 +30,14 @@ Route::get('/', function () {
     ]);
 });
 
-//  Route::resource('categorias', 'CategoriaController');
 
 Route::namespace('Usuarios')->group(function(){
-    Route::resource('usuarios', UsuarioController::class);
+    Route::resource('usuarios', 'UsuarioController');
 });
 
 Route::namespace('Productos')->group(function () {
     Route::resource('productos', 'ProductoController');
-    Route::resource('categorias', CategoriaController::class);
+    Route::resource('categorias', 'CategoriaController');
 });
 
 

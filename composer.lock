@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5a1d27e254d54d21a10fbe38e755afc",
+    "content-hash": "dc51a241c1474f6701f7d1bd465a3e1a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -958,16 +958,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "v0.4.2",
+            "version": "v0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "7ea4e730d82b90b658ca3e863968d2ffd6cc4d06"
+                "reference": "bfb6ddf0d3c1cc470f6d5b044631fffa48089c49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/7ea4e730d82b90b658ca3e863968d2ffd6cc4d06",
-                "reference": "7ea4e730d82b90b658ca3e863968d2ffd6cc4d06",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/bfb6ddf0d3c1cc470f6d5b044631fffa48089c49",
+                "reference": "bfb6ddf0d3c1cc470f6d5b044631fffa48089c49",
                 "shasum": ""
             },
             "require": {
@@ -1014,7 +1014,7 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/v0.4.2"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v0.4.3"
             },
             "funding": [
                 {
@@ -1022,7 +1022,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-05-10T09:56:05+00:00"
+            "time": "2021-07-12T14:09:58+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",
@@ -5381,16 +5381,16 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "v1.3.4",
+            "version": "v1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/ziggy.git",
-                "reference": "01bf2a967a4a00d493dd578426a91c6e623b37f4"
+                "reference": "05411b50ffb9d1fa8a0f86cf71c72702c2baf5ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/ziggy/zipball/01bf2a967a4a00d493dd578426a91c6e623b37f4",
-                "reference": "01bf2a967a4a00d493dd578426a91c6e623b37f4",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/05411b50ffb9d1fa8a0f86cf71c72702c2baf5ab",
+                "reference": "05411b50ffb9d1fa8a0f86cf71c72702c2baf5ab",
                 "shasum": ""
             },
             "require": {
@@ -5441,9 +5441,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tighten/ziggy/issues",
-                "source": "https://github.com/tighten/ziggy/tree/v1.3.4"
+                "source": "https://github.com/tighten/ziggy/tree/v1.3.5"
             },
-            "time": "2021-07-06T21:58:30+00:00"
+            "time": "2021-07-20T15:07:27+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
