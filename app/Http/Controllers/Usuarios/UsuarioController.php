@@ -21,9 +21,10 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $arUsuarios = DB::table('users')
-        ->join('personas', 'users.idPersona', '=', 'personas.idPersona')
-        ->select('users.id', 'users.email', 'users.idPersona', 'users.idRol', 'personas.nombre')
+        $mUsuarios = DB::table('users')
+        ->join('persona', 'users.persona_id', '=', 'persona.id')
+        ->join('rol', 'users.rol_id', '=', 'rol.id')
+        ->select('users.id', 'users.email', 'persona.nombre', 'rol.rol')
         ->get()->toArray();
 
         // $mUsuarios = Usuario::all(['id', 'email', 'idPersona', 'idRol'])->toArray();
@@ -36,7 +37,7 @@ class UsuarioController extends Controller
         // for($i = 0; i < count($mUsuarios); $i++) {
         //     $mUsuarios[]
         // }
-        return view('usuarios.index', compact('arUsuarios'));
+        return view('usuarios.index', compact('mUsuarios'));
     }
 
     /**

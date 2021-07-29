@@ -26,6 +26,7 @@
         <!-- Template Stylesheet -->
         <link href="{{asset('css/style.css')}}" rel="stylesheet">
         <link href="{{asset('css/img.css')}}" rel="stylesheet">
+        @yield('head')
     </head>
 
     <body>
