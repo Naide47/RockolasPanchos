@@ -16,10 +16,11 @@ class CreateDevolucion extends Migration
         Schema::create('devolucion', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('venta_id')->default(0);
-            $table->foreign('venta_id')->references('id')->on('venta');
             $table->string('descripcion', 100);
             $table->decimal('devuelto', 13, 2)->default(0);
-            $table->timestamps();
+            // $table->timestamps();
+
+            // $table->foreign('venta_id')->references('id')->on('venta');
         });
     }
 

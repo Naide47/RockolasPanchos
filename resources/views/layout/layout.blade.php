@@ -19,6 +19,10 @@
         <link href="{{asset('lib/slick/slick.css')}}" rel="stylesheet">
         <link href="{{asset('lib/slick/slick-theme.css')}}" rel="stylesheet">
 
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+
         <!-- Template Stylesheet -->
         <link href="{{asset('css/style.css')}}" rel="stylesheet">
         <link href="{{asset('css/img.css')}}" rel="stylesheet">
@@ -226,5 +230,7 @@
         
         <!-- Template Javascript -->
         <script src="{{asset('js/main.js')}}"></script>
+
+        <script src="{{asset('js/ventas.js')}}"></script>
     </body>
 </html>

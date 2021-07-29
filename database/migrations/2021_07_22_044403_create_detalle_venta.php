@@ -16,12 +16,13 @@ class CreateDetalleVenta extends Migration
         Schema::create('detalle_venta', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('venta_id')->default(0);
-            $table->foreign('venta_id')->references('id')->on('venta');
             $table->unsignedBigInteger('producto_id')->default(0);
-            $table->foreign('producto_id')->references('id')->on('producto');
             $table->integer('cantidad')->default(0);
             $table->decimal('precioUnitario', 13, 2)->default(0);
             $table->timestamps();
+
+            // $table->foreign('venta_id')->references('id')->on('venta');
+            // $table->foreign('producto_id')->references('id')->on('producto');
         });
     }
 
