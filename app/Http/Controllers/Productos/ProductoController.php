@@ -61,7 +61,7 @@ class ProductoController extends Controller
         $nuevoProducto->precioUnitario = $precioUnitario;
         $nuevoProducto->save();
 
-        $file = $request->file('foto');
+        $file = $request->file('imagen');
         if ($file) {
             $imgNombreVirtual = $file->getClientOriginalName();
             $imgNombreFisico = "$nuevoProducto->idProducto_$imgNombreVirtual";
@@ -126,7 +126,7 @@ class ProductoController extends Controller
         $producto->precioUnitario = $request->precioUnitario;
         $producto->save();
 
-        $file = $request->file('foto');
+        $file = $request->file('imagen');
         if ($file) {
             $imgFisicoOriginal = $producto->imgNombreFisico;
             Storage::delete($imgFisicoOriginal);

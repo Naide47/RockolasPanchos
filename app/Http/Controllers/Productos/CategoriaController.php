@@ -17,8 +17,8 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        $categorias = Categoria::all();
-        return view('categorias.index', compact('categorias'));
+        $mCategorias = Categoria::all();
+        return view('categorias.index', compact('mCategorias'));
     }
 
     /**
@@ -43,11 +43,12 @@ class CategoriaController extends Controller
             'categoria'=> 'required|min:4'
         ]);
 
-        $nuevaCategoria = new Categoria();
-        $nuevaCategoria->categoria = $request->categoria;
-        $nuevaCategoria->save();
+        $mCategoria = new Categoria();
+        $mCategoria->categoria = $request->categoria;
+        $mCategoria->save();
 
-        Session::flash('success', 'Categoria agregada con exito');
+        Session::flash('message', 'Categoria agregada con exito');
+        Session::flash('alert-class', 'success');
         return Redirect::to('categorias');
     }
 
@@ -56,12 +57,13 @@ class CategoriaController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+     *
     public function show($id)
     {
-        $categoria = Categoria::find($id);
-        return view('categorias.show', compact('categoria'));
+        $mCategoria = Categoria::find($id);
+        return view('categorias.show', compact('mCategoria'));
     }
+    */
 
     /**
      * Show the form for editing the specified resource.
@@ -71,8 +73,8 @@ class CategoriaController extends Controller
      */
     public function edit($id)
     {
-        $categoria = Categoria::find($id);
-        return view('categorias.edit', compact('categoria'));
+        $mCategoria = Categoria::find($id);
+        return view('categorias.edit', compact('mCategoria'));
     }
 
     /**
@@ -88,11 +90,12 @@ class CategoriaController extends Controller
             'categoria'=> 'required|min:4'
         ]);
 
-        $categoria = Categoria::find($id);
-        $categoria->categoria = $request->categoria;
-        $categoria->save();
+        $mCategoria = Categoria::find($id);
+        $mCategoria->categoria = $request->categoria;
+        $mCategoria->save();
 
-        Session::flash('mensaje', 'Categoria actualizada con exito');
+        Session::flash('message', 'Categoria actualizada con exito');
+        Session::flash('alert-class', 'success');
         return redirect('categorias');
 
 
@@ -103,13 +106,15 @@ class CategoriaController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+     
     public function destroy($id)
     {
         $categoria = Categoria::find($id);
         $categoria->delete();
 
-        Session::flash('mensaje', 'Categoria eliminada con exito');
+        Session::flash('message', 'Categoria eliminada con exito');
+        Session::flash('alert-class', 'success');
         return redirect('categorias');
     }
+    */
 }

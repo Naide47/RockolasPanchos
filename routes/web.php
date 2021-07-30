@@ -28,7 +28,6 @@ Route::get('/', function () {
     ]);
 });
 
-//  Route::resource('categorias', 'CategoriaController');
 
 Route::namespace('Usuarios')->group(function(){
     Route::resource('usuarios', 'UsuarioController');

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /*! tailwindcss v2.2.7 | MIT License | https://tailwindcss.com *//*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
-=======
-/*! tailwindcss v2.2.4 | MIT License | https://tailwindcss.com *//*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
->>>>>>> 241bdd412ce3baac89325ef8fad08baafbfa910e
 
 /*
 Document
@@ -811,6 +807,9 @@ select {
 	outline: 1px auto -webkit-focus-ring-color;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 69ff63e9ad995c1481e5bc2d3f0e3de3c259b562
 .container {
 	width: 100%;
 }
@@ -844,8 +843,11 @@ select {
 		max-width: 1536px;
 	}
 }
+<<<<<<< HEAD
 =======
 >>>>>>> 241bdd412ce3baac89325ef8fad08baafbfa910e
+=======
+>>>>>>> 69ff63e9ad995c1481e5bc2d3f0e3de3c259b562
 .prose {
 	color: #374151;
 	max-width: 65ch;
@@ -1237,6 +1239,18 @@ select {
 .-mt-px {
 	margin-top: -1px;
 }
+.mb-3 {
+	margin-bottom: 0.75rem;
+}
+.mr-auto {
+	margin-right: auto;
+}
+.ml-auto {
+	margin-left: auto;
+}
+.mb-5 {
+	margin-bottom: 1.25rem;
+}
 .block {
 	display: block;
 }
@@ -1247,13 +1261,22 @@ select {
 	display: inline-flex;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 .table {
 	display: table;
 }
 =======
 >>>>>>> 241bdd412ce3baac89325ef8fad08baafbfa910e
+=======
+.table {
+	display: table;
+}
+>>>>>>> 69ff63e9ad995c1481e5bc2d3f0e3de3c259b562
 .grid {
 	display: grid;
+}
+.contents {
+	display: contents;
 }
 .hidden {
 	display: none;
@@ -1502,11 +1525,17 @@ select {
 	border-bottom-width: 1px;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 .border-r {
 	border-right-width: 1px;
 }
 =======
 >>>>>>> 241bdd412ce3baac89325ef8fad08baafbfa910e
+=======
+.border-r {
+	border-right-width: 1px;
+}
+>>>>>>> 69ff63e9ad995c1481e5bc2d3f0e3de3c259b562
 .border-gray-300 {
 	--tw-border-opacity: 1;
 	border-color: rgba(209, 213, 219, var(--tw-border-opacity));
@@ -1527,12 +1556,18 @@ select {
 	border-color: rgba(243, 244, 246, var(--tw-border-opacity));
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 69ff63e9ad995c1481e5bc2d3f0e3de3c259b562
 .border-gray-400 {
 	--tw-border-opacity: 1;
 	border-color: rgba(156, 163, 175, var(--tw-border-opacity));
 }
+<<<<<<< HEAD
 =======
 >>>>>>> 241bdd412ce3baac89325ef8fad08baafbfa910e
+=======
+>>>>>>> 69ff63e9ad995c1481e5bc2d3f0e3de3c259b562
 .bg-white {
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
@@ -1692,6 +1727,9 @@ select {
 .text-right {
 	text-align: right;
 }
+.align-middle {
+	vertical-align: middle;
+}
 .font-sans {
 	font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
@@ -1747,11 +1785,17 @@ select {
 	letter-spacing: 0.1em;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 .tracking-wider {
 	letter-spacing: 0.05em;
 }
 =======
 >>>>>>> 241bdd412ce3baac89325ef8fad08baafbfa910e
+=======
+.tracking-wider {
+	letter-spacing: 0.05em;
+}
+>>>>>>> 69ff63e9ad995c1481e5bc2d3f0e3de3c259b562
 .text-gray-500 {
 	--tw-text-opacity: 1;
 	color: rgba(107, 114, 128, var(--tw-text-opacity));
@@ -1813,6 +1857,9 @@ select {
 	color: rgba(16, 185, 129, var(--tw-text-opacity));
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 69ff63e9ad995c1481e5bc2d3f0e3de3c259b562
 .text-gray-200 {
 	--tw-text-opacity: 1;
 	color: rgba(229, 231, 235, var(--tw-text-opacity));
@@ -1821,8 +1868,11 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(209, 213, 219, var(--tw-text-opacity));
 }
+<<<<<<< HEAD
 =======
 >>>>>>> 241bdd412ce3baac89325ef8fad08baafbfa910e
+=======
+>>>>>>> 69ff63e9ad995c1481e5bc2d3f0e3de3c259b562
 .underline {
 	text-decoration: underline;
 }
