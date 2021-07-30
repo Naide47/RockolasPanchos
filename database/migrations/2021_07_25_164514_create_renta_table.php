@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRenta extends Migration
+class CreateRentaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,8 +16,9 @@ class CreateRenta extends Migration
         Schema::create('renta', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('idUsuario')->references('id')->on('usuario');
-            $table->foreignId('idCliente')->references('id')->on('cliente');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('cliente_id');
+            
             $table->integer('total');
             $table->integer('anticipoPagado');
             $table->date('fechaRegistro');
@@ -26,8 +27,6 @@ class CreateRenta extends Migration
             $table->string('noTarjeta');
             $table->string('tipoTarjeta');
             $table->integer('estatus');
-
-            $table->timestamps();
         });
     }
 

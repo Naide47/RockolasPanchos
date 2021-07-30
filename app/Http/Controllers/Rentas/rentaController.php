@@ -1,16 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Rentas;
 
 use Illuminate\Http\Request;
 
-use App\Models\Rentas;
-use App\Models\Clientes;
-use App\Models\Personas;
-use App\Models\Usuarios;
-use App\Models\DetalleRentas;
-use App\Models\Categorias;
-use App\Models\Productos;
+use App\Http\Controllers\Controller;
+
+use App\Models\Rentas\Rentas;
+use App\Models\Usuarios\Persona;
+use App\Models\Usuarios\Rol;
+use App\Models\Usuarios\Usuario;
+
+use App\Models\Rentas\DetalleRentas;
+use App\Models\Productos\Categoria;
+use App\Models\Productos\Producto;
+
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
@@ -36,11 +40,11 @@ class rentaController extends Controller
      */
     public function create()
     {
-        $clientes = Clientes::all();
-        $personas = Personas::all();
-        $usuarios = Usuarios::all();
-        $categorias = Categorias::all();
-        $productos = Productos::all();
+        $clientes = Rol::all();
+        $personas = Persona::all();
+        $usuarios = Usuario::all();
+        $categorias = Categoria::all();
+        $productos = Producto::all();
 
         return view('renta.create', compact('clientes', 'personas', 'usuarios'), compact('categorias', 'productos'));
     
@@ -69,8 +73,6 @@ class rentaController extends Controller
         $mRenta->idUsuario = $request->usuario;
         $mRenta->idCliente = $request->cliente;
         $mRenta->estatus = 1;
-
-
 
         $mRenta->save();
         

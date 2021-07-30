@@ -1,10 +1,6 @@
-@extends('layouts.layout1')
+@extends('layout.layout')
 
-@section('titulo')
-    Lista de Rentas
-@endsection
-
-@section('content')
+@section('contents')
 
     <a href="{{route('renta.create')}}">Registro Nuevo</a>
 

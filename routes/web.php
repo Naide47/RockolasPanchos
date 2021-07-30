@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Productos\CategoriaController;
-use App\Http\Controllers\Productos\ProductoController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,15 +31,19 @@ Route::get('/', function () {
 //  Route::resource('categorias', 'CategoriaController');
 
 Route::namespace('Usuarios')->group(function(){
-    Route::resource('usuarios', UsuarioController::class);
+    Route::resource('usuarios', 'UsuarioController');
 });
 
 Route::namespace('Productos')->group(function () {
     Route::resource('productos', 'ProductoController');
-    Route::resource('categorias', CategoriaController::class);
+    Route::resource('categorias', 'CategoriaController');
 });
 
+Route::namespace('Rentas')->group(function () {
+    Route::resource('renta', 'rentaController');
+});
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
+
