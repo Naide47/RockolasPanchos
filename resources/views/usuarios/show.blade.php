@@ -1,50 +1,48 @@
 @extends('layout.layout')
-@section('titulo')
+
+{{-- @section('titulo')
     Detalles del usuario
+@endsection --}}
+
+@section('head')
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 @endsection
 
-@section('contenido')
-    <div class="container text-center">
-        <div class="row mb-5">
-            <div class="col text-center">
-                <h1>Usuarios</h1>
-                <h2>Detalles del usuario</h2>
+@section('contents')
+    <div class="container-fluid bg-white mb-5 text-center">
+        <div class="row">
+            <div class="col text-left">
+                <h1>Detalles del usuario</h1>
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="col">
+        <div class="row">
+            <div class="col bg-light mb-2 rounded pt-5">
                 <table class="table text-center">
+                    <caption>Datos generales</caption>
                     <thead>
                         <tr>
                             <th>Nombre</th>
                             <th>Puesto</th>
                             <th>Correo electronico</th>
+                            <th>Fecha de registro</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td scope="row">{{ $mPersona->nombre }}</td>
-                            @switch($mUsuario->idRol)
-                                @case(1)
-                                    <td>Vendedor</td>
-                                @break
-                                @case(2)
-                                    <td>Encargado</td>
-                                @break
-                                @case(3)
-                                    <td>Gerente</td>
-                                @break
-                            @endswitch
+                            <td>{{ $mUsuario->nombre }}</td>
+                            <td>{{ $mUsuario->rol }}</td>
                             <td>{{ $mUsuario->email }}</td>
+                            <td>{{ $mUsuario->created_at }}</td>
                         </tr>
                     </tbody>
-                    <caption>Nombre y puesto</caption>
                 </table>
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="col">
+
+        <div class="row">
+            <div class="col bg-light mb-2 rounded pt-5">
                 <table class="table text-center">
+                    <caption>Domicilio</caption>
                     <thead>
                         <tr>
                             <th>Colonia</th>
@@ -54,18 +52,19 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td scope="row">{{ $mPersona->colonia }}</td>
-                            <td>{{ $mPersona->calle }}</td>
-                            <td>{{ $mPersona->codigoPostal }}</td>
+                            <td>{{ $mUsuario->colonia }}</td>
+                            <td>{{ $mUsuario->calle }}</td>
+                            <td>{{ $mUsuario->codigoPostal }}</td>
                         </tr>
-                        <caption>Domicilio</caption>
                     </tbody>
                 </table>
             </div>
         </div>
+
         <div class="row">
-            <div class="col">
-                <table class="table ">
+            <div class="col bg-light mb-2 rounded pt-5">
+                <table class="table text-center">
+                    <caption>Números de contacto</caption>
                     <thead>
                         <tr>
                             <th>Número de telefono</th>
@@ -74,19 +73,17 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td scope="row">{{$mPersona->telefono}}</td>
-                            <td>{{$mPersona->celular}}</td>
+                            <td>{{ $mUsuario->telefono }}</td>
+                            <td>{{ $mUsuario->celular }}</td>
                         </tr>
                     </tbody>
-                    <caption>Números de contacto</caption>
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col text-right">
+        <div class="row ">
+            <div class="col text-left mb-3">
                 <a class="btn btn-secondary" href="{{ route('usuarios.index') }}" role="button">Volver</a>
             </div>
         </div>
     </div>
-
 @endsection

@@ -15,11 +15,17 @@
                 <h1>Agregar usuario</h1>
             </div>
         </div>
+        @error('error')
+            <div class="alert alert-danger" role="alert">
+                {{ $message }}
+            </div>
+        @enderror
+
         {{-- Formulario --}}
         <div class="row">
             <div class="col">
                 {!! Form::open(['url' => 'usuarios']) !!}
-                {{-- Nombre del usuarios --}}
+                {{-- Nombre del usuario --}}
                 <div class="row bg-light mb-2 pt-2 rounded">
                     <div class="col">
                         <div class="form-group">
@@ -109,14 +115,24 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            {!! Form::label('contrasenia', 'Contraseña') !!}
+                            {!! Form::label('contrasenia', 'Contraseña (minimo 8 catacteres, y 12 max)') !!}
                             {!! Form::password('contrasenia', ['class' => 'form-control', 'required']) !!}
+                            @error('contrasenia')
+                                <div class="alert alert-danger" role="alert">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col">
                         <div class="form group">
                             {!! Form::label('confContrasenia', 'Confirmar contraseña') !!}
                             {!! Form::password('confContrasenia', ['class' => 'form-control', 'required']) !!}
+                            @error('confContrasenia')
+                                <div class="alert alert-danger" role="alert">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -128,97 +144,19 @@
                             <select name="rol" id="rol" class="form-control" required>
                                 <option value="" selected disabled>Selecciona un rol</option>
                                 @foreach ($mRoles as $rol)
-                                    <option value="{{ $rol->idRol }}">{{ $rol->rol }}</option>
+                                    <option value="{{ $rol->id }}">{{ $rol->rol }}</option>
                                 @endforeach
                             </select>
                             @error('rol')
-
+                                <div class="alert alert-danger" role="alert">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                     </div>
                 </div>
-                {!! Form::close() !!}
-            </div>
-        </div>
-    </div>
-@endsection
-
-@section('contenidos')
-    <div class="container">
-        <div class="row mb-3 text-center">
-            <div class="col">
-                <h1>Usuarios</h1>
-                <h2>Agregar usuario</h2>
-            </div>
-        </div>
-        @if (!$errors->isEmpty())
-            <div class="row">
-                <div class="col">
-                    {{ HTML::ul($errors->all()) }}
-                </div>
-            </div>
-        @endif
-        <div class="row">
-            <div class="col">
-                {{ Form::open(['url' => 'usuarios']) }}
-                <div class="form-group">
-                    {!! Form::label('nombre', 'Nombre completo') !!}
-                    {!! Form::text('nombre', old('nombre'), ['class' => 'form-control', 'required']) !!}
-                </div>
                 <div class="row">
                     <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('colonia', 'Dirección: colonia') !!}
-                            {!! Form::text('colonia', old('colonia'), ['class' => 'form-control', 'required']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('calle', 'Dirección: calle') !!}
-                            {!! Form::text('calle', old('calle'), ['class' => 'form-control', 'required']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('codigoPostal', 'Codigo Postal') !!}
-                            {!! Form::text('codigoPostal', old('codigoPostal'), ['class' => 'form-control', 'required']) !!}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('telefono', 'Telefono') !!}
-                            {!! Form::text('telefono', old('telefono'), ['class' => 'form-control', 'required']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('celular', 'Celular') !!}
-                            {!! Form::text('celular', old('celular'), ['class' => 'form-control', 'required']) !!}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    {!! Form::label('correo', 'Correo Electronico') !!}
-                    {!! Form::email('correo', old('correo'), ['class' => 'form-control', 'required']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label('contrasenia', 'Contraseña') !!}
-                    {!! Form::password('contrasenia', ['class' => 'form-control', 'required']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label('rol', 'Rol') !!}
-                    <select name="rol" id="rol" class="form-control" required>
-                        <option value="" selected disabled>Selecciona un rol</option>
-                        @foreach ($mRoles as $rol)
-                            <option value="{{ $rol->idRol }}">{{ $rol->rol }}</option>
-                        @endforeach
-
-                    </select>
-                </div>
-                <div class="row">
-                    <div class="col text-right">
                         {{ Form::submit('Agregar usuario', ['class' => 'btn btn-success']) }}
                         <a class="btn btn-secondary" href="{{ route('usuarios.index') }}" role="button">Cancelar</a>
                     </div>

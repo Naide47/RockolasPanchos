@@ -5,6 +5,7 @@
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+    <script src="{{ asset('js/index_functions.js')}}"></script>
 @endsection
 
 
@@ -28,10 +29,8 @@
         </div>
         {{-- Notificaciones --}}
         @if (Session::has('message'))
-            <div class="row bg-{{ Session::get('alert-class') }}">
-                <div class="col">
-                    {{ Session::get('message') }}
-                </div>
+            <div class="alert alert-{{ Session::get('alert-class') }}" role="alert">
+                {{ Session::get('message') }}
             </div>
         @endif
         {{-- Tabla --}}
