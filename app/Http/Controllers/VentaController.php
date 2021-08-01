@@ -86,7 +86,7 @@ class VentaController extends Controller
             
             $mVenta = new Venta();
             $mVenta->cliente_id = $mCliente->id;
-            $mVenta->users_id = 0;
+            $mVenta->users_id = 1;
             $mVenta->total = $request->total;
             $mVenta->anticipoPagado = $request->anticipo;
             // $mVenta->fechaRegistro = date('d/m/Y');
@@ -100,12 +100,12 @@ class VentaController extends Controller
             // //var_dump($venta_id->last())
 
             $mDetalle = new Detalle();
-            $mDetalle->venta_id = $venta_id->last();
+            $mDetalle->venta_id = $mVenta->id;
             $mDetalle->producto_id = $request->id;
             $mDetalle->cantidad = $request->cantidad;
             $mDetalle->precioUnitario = $request->precioUnitario;
-            
-            $mVenta->detalle_ventas()->save($mDetalle);
+            $mDetalle->save();
+            // $mVenta->detalle_ventas()->save($mDetalle);
 
             DB::commit();
             Session::flash('message','Venta realizada');

@@ -1,13 +1,16 @@
 function calcularTotalSinAnticipo() {
     var cantidad = document.getElementById("cantidad").value;
-    // console.log(cantidad);
+    //console.log(cantidad);
     var precio = document.getElementById("precio").value;
-    // console.log(precio);
+    //console.log(precio);
     var totalF = cantidad * precio;
-    // console.log(totalF);
+    //console.log(totalF);
     var anticipo = totalF * 0.10;
     document.getElementById("anticipo").value = anticipo;
     document.getElementById("total").value = totalF - anticipo;
+    
+    document.getElementById("anticipoView").value = anticipo;
+    document.getElementById("totalView").value = totalF - anticipo;
 }
 
 const pago1 = document.getElementById("pago1");

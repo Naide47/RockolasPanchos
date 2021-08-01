@@ -1,5 +1,9 @@
 @extends('layout.layout')
 
+@section('head')
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+@endsection
+
 @section('Breadcrumb')
 <div class="breadcrumb-wrap">
     <div class="container-fluid">
@@ -98,17 +102,17 @@
                 <div class="form-group col-md-4">
                     {{Form::label('precio','Precio')}}
                     {{Form::hidden('precio', ($modelo->precioUnitario), ["class"=>"form-control", "id"=>"precio"] )}}
-                    <input type="text" id="precio" value="{{$modelo->precioUnitario}}" class="form-control" disabled>     
+                    <input type="text" value="{{$modelo->precioUnitario}}" class="form-control" disabled>     
                 </div>
                 <div class="form-group col-md-4">
                     {{Form::label('anticipo','Anticipo')}}
                     {{Form::hidden('anticipo', ($anticipo=$modelo->precioUnitario*0.10), ["class"=>"form-control", "placeholder" => "Anticipo", "id"=>"anticipo"] )}}
-                    <input type="number" id="anticipo" value="{{$anticipo=$modelo->precioUnitario*0.10}}" class="form-control" placeholder="Anticipo" disabled>     
+                    <input type="number" id="anticipoView" value="{{$anticipo=$modelo->precioUnitario*0.10}}" class="form-control" placeholder="Anticipo" disabled>     
                 </div>
                 <div class="form-group col-md-4">
                     {{Form::label('total','Total')}}
                     {{Form::hidden('total', ($modelo->precioUnitario - $anticipo), ["class"=>"form-control", "id"=>"total"] )}}
-                    <input type="text" id="total" value="{{$modelo->precioUnitario - $anticipo}}" class="form-control" disabled>     
+                    <input type="text" id="totalView" value="{{$modelo->precioUnitario - $anticipo}}" class="form-control" disabled>     
                 </div>
             </div>
         </div>
@@ -148,7 +152,7 @@
             </div>
         </div>
     
-        {{Form::submit('Comprar', ["class"=>"btn btn-primary"])}}
+        {{Form::submit('Comprar', ["class"=>"btn btn-success"])}}
         {{Form::close()}}
     </div>
 @endsection
