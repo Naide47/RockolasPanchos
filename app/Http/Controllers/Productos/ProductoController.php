@@ -30,7 +30,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        
+
         $categorias = Categoria::all();
         return view('productos.create', compact('categorias'));
     }
@@ -71,7 +71,8 @@ class ProductoController extends Controller
             $nuevoProducto->save();
         }
 
-        Session::flash('success', 'Producto agregado con exito');
+        Session::flash('message', 'Producto agregado con exito');
+        Session::flash('alert-class', 'success');
         return redirect('productos');
     }
 
@@ -124,7 +125,6 @@ class ProductoController extends Controller
         $producto->disponibles = $request->disponibles;
         $producto->precioCompra = $request->precioCompra;
         $producto->precioUnitario = $request->precioUnitario;
-        $producto->save();
 
         $file = $request->file('imagen');
         if ($file) {
@@ -136,10 +136,13 @@ class ProductoController extends Controller
             Storage::disk('local')->put($imgNombreFisico, File::get($file));
             $producto->imgNombreVirtual = $imgNombreVirtual;
             $producto->imgNombreFisico = $imgNombreFisico;
-            $producto->save();
         }
 
-        Session::flash('success', 'Producto actualizado correctamente.');
+        $producto->save();
+
+        Session::flash('message', 'Producto actualizado con exito');
+        Session::flash('alert-class', 'success');
+
         return redirect('productos');
     }
 

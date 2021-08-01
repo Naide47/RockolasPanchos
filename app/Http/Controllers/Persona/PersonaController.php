@@ -35,7 +35,8 @@ class PersonaController extends Controller
      * @param \Illuminate\Http\Request  $request
      * @param int $id
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $mPersona = Persona::find($id);
         $mPersona->nombre = $request->nombre;
         $mPersona->colonia = $request->colonia;
@@ -44,6 +45,16 @@ class PersonaController extends Controller
         $mPersona->telefono = $request->telefono;
         $mPersona->celular = $request->celular;
 
-        $mPersona->save();
+        return $mPersona->save();
+    }
+
+    public function setData($mPersona, $request)
+    {
+        $mPersona->nombre = $request->nombre;
+        $mPersona->colonia = $request->colonia;
+        $mPersona->calle = $request->calle;
+        $mPersona->codigoPostal = $request->codigoPostal;
+        $mPersona->telefono = $request->telefono;
+        $mPersona->celular = $request->celular;
     }
 }

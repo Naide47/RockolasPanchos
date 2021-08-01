@@ -5,6 +5,7 @@
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+    <script src="{{ asset('js/modals.js') }}"></script>
 @endsection
 
 @section('contents')
@@ -27,9 +28,11 @@
         </div>
         {{-- Notificaciones --}}
         @if (Session::has('message'))
-            <div class="row bg-{{ Session::get('alert-class') }}">
+            <div class="row my-0">
                 <div class="col">
-                    {{ Session::get('message') }}
+                    <div class="alert alert-{{ Session::get('alert-class') }}" role="alert">
+                        {{ Session::get('message') }}
+                    </div>
                 </div>
             </div>
         @endif
@@ -55,23 +58,12 @@
                                 </td> --}}
                                 <td>{{ $usuario->nombre }}</td>
                                 <td>{{ $usuario->rol }}</td>
-                                {{-- @switch($usuario->idRol)
-                                    @case(1)
-                                        <td>Vendedor</td>
-                                    @break
-
-                                    @case(2)
-                                        <td>Encargado</td>
-                                    @break
-
-                                    @case(3)
-                                        <td>Gerente</td>
-                                    @break
-                                @endswitch --}}
-                                <td><a name="btnDetalle" id="btnDetalle" class="btn btn-secondary"
+                                <td>
+                                    <a name="btnDetalle" id="btnDetalle" class="btn btn-secondary"
                                         href="{{ route('usuarios.show', $usuario->id) }}" role="button">Detalle</a>
                                 </td>
-                                <td><a name="btnEditar" id="btnEditar" class="btn btn-info"
+                                <td>
+                                    <a name="btnEditar" id="btnEditar" class="btn btn-info"
                                         href="{{ route('usuarios.edit', $usuario->id) }}" role="button">Editar</a>
                                 </td>
                                 <td>
@@ -86,29 +78,10 @@
                                 <td colspan="4">No hay registros</td>
                             </tr>
                         @endforelse
-                        {{-- @forelse($usuarios as $usuario)
-                            <tr>
-
-
-                                <td>{{  }}</td>
-                                <td><a class="btn btn-info"
-                                        href="{{ route('categorias.edit', $row->idCategoria) }}"
-                                        role="button">Editar</a>
-                                </td>
-                                <td>
-                                    {{ Form::open(['url' => route('categorias.destroy', $row->idCategoria)]) }}
-                                    {{ Form::hidden('_method', 'DELETE') }}
-                                    {{ Form::submit('Borrar', ['class' => 'btn btn-danger']) }}
-                                </td>
-                            </tr>
-                        @empty
-
-                        @endforelse --}}
                     </tbody>
                     <caption>Lista de usuarios</caption>
                 </table>
             </div>
         </div>
-
     </div>
 @endsection
