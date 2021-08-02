@@ -191,4 +191,21 @@ class UsuarioController extends Controller
         $mUsuario->estatus = 0;
         $mUsuario->save();
     }
+
+    /**
+     * Retorna una lista de los usuarios inactivos
+     * 
+     * * @return \Illuminate\Http\Response
+     */
+    public function inactiveIndex()
+    {
+        $mUsuarios = DB::table('users')
+            ->join('persona', 'users.persona_id', '=', 'persona.id')
+            ->join('rol', 'users.rol_id', '=', 'rol.id')
+            ->select('users.id', 'users.email', 'persona.nombre', 'rol.rol')
+            ->where('estatus', '=', 0)
+            ->get();
+
+        return view('usuarios.inactivos', compact('mUsuarios'));
+    }
 }

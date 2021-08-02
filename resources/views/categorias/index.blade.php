@@ -1,7 +1,7 @@
-@extends('layout.layout')
-{{-- @section('titulo')
+@extends('layout.users')
+@section('title')
     Categorias de productos
-@endsection --}}
+@endsection
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
@@ -9,7 +9,7 @@
 @endsection
 
 @section('contents')
-    <div class="container-fluid bg-white mb-5 text-center">
+    <div class="container-fluid bg-white my-5 text-center">
         {{-- Titulo --}}
         <div class="row">
             <div class="col text-left">
@@ -24,6 +24,17 @@
             <div class="col-2">
                 <a name="btnAgregarCategoria" id="btnAgregarCategoria" class="btn btn-success"
                     href="{{ route('categorias.create') }}" role="button">Agregar categoria</a>
+            </div>
+        </div>
+        {{-- Pestañas --}}
+        <div class="row justify-content-around my-3">
+            <div class="col-4">
+                <a class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
+                    href="{{ route('productos.index') }}" role="button">Productos</a>
+            </div>
+            <div class="col-4">
+                <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block"
+                    disabled>Categorias</button>
             </div>
         </div>
         {{-- Notificaciones --}}

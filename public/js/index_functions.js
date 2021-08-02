@@ -24,3 +24,9 @@ function filterTable() {
         });
     });
 }
+
+function setActiveLink(active) {
+    console.log(active)
+    // var element = document.getElementById('nav' + active);
+    // element.classList.add('active');
+}

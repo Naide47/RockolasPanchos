@@ -1,21 +1,21 @@
-@extends('layout.layout')
-{{-- @section('titulo')
+@extends('layout.users')
+@section('title')
     Editar usuario
-@endsection --}}
+@endsection
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 @endsection
 
 @section('contents')
-    <div class="container-fluid bg-white mb-5">
+    <div class="container-fluid bg-white my-5">
         <div class="row">
             <div class="col">
                 <h1>Editar usuario</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col mb-2">
+            <div class="col mb-3">
                 @error('no_changes')
                     <div class="alert alert-warning" role="alert">
                         {{ $message }}

@@ -1,15 +1,15 @@
-@extends('layout.layout')
+@extends('layout.users')
 
-{{-- @section('titulo')
+@section('title')
     Detalles del usuario
-@endsection --}}
+@endsection
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 @endsection
 
 @section('contents')
-    <div class="container-fluid bg-white mb-5 text-center">
+    <div class="container-fluid bg-white my-5 text-center">
         <div class="row">
             <div class="col text-left">
                 <h1>Detalles del usuario</h1>
