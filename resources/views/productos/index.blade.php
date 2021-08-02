@@ -1,16 +1,17 @@
-@extends('layout.layout')
-{{-- @section('titulo')
+@extends('layout.users')
+
+@section('title')
     Productos
-@endsection --}}
+@endsection
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
-    <script src="{{ asset('js/index_functions.js')}}"></script>
+    <script src="{{ asset('js/index_functions.js') }}"></script>
 @endsection
 
 
 @section('contents')
-    <div class="container-fluid bg-white mb-5 text-center">
+    <div class="container-fluid bg-white my-5 text-center">
         {{-- Titulo --}}
         <div class="row">
             <div class="col text-left">
@@ -25,6 +26,17 @@
             <div class="col-2">
                 <a name="btnAgregarCategoria" id="btnAgregarCategoria" class="btn btn-success"
                     href="{{ route('productos.create') }}" role="button">Agregar producto</a>
+            </div>
+        </div>
+        {{-- Pestañas --}}
+        <div class="row justify-content-around my-3">
+            <div class="col-4">
+                <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block"
+                    disabled>Productos</button>
+            </div>
+            <div class="col-4">
+                <a class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
+                    href="{{ route('categorias.index') }}" role="button">Categorias</a>
             </div>
         </div>
         {{-- Notificaciones --}}

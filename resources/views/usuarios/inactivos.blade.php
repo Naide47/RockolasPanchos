@@ -1,7 +1,7 @@
 @extends('layout.users')
 
 @section('title')
-    Usuarios
+    Usuarios inactivos
 @endsection
 
 @section('head')
@@ -14,7 +14,7 @@
         {{-- Titulo --}}
         <div class="row">
             <div class="col text-left">
-                <h1>Usuarios</h1>
+                <h1>Usuarios inactivos</h1>
             </div>
         </div>
         {{-- Barra de busqueda y boton de agregar --}}
@@ -30,12 +30,11 @@
         {{-- Pestañas --}}
         <div class="row justify-content-around my-3">
             <div class="col-4">
-                <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block"
-                    disabled>Activos</button>
+                <a class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
+                    href="{{ route('usuarios.index') }}" role="button">Activos</a>
             </div>
             <div class="col-4">
-                <a class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
-                    href="{{ route('usuarios.inactivos') }}" role="button">Inactivos</a>
+                <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block" disabled>Inactivos</button>
             </div>
         </div>
         {{-- Notificaciones --}}
@@ -85,7 +84,6 @@
                                     {{ Form::submit('Eliminar', ['class' => 'btn btn-danger']) }}
                                 </td>
                             </tr>
-
                         @empty
                             <tr>
                                 <td colspan="4">No hay registros</td>

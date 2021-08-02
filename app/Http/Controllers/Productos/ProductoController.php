@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Productos\Categoria;
 use Illuminate\Http\Request;
 use App\Models\Productos\Producto;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -84,9 +85,23 @@ class ProductoController extends Controller
      */
     public function show($id)
     {
-        $producto = Producto::find($id);
-        $categoria = Categoria::find($producto->categoria_id);
-        return view('productos.show', compact('producto', 'categoria'));
+        $mProducto = DB::table('producto')
+            ->join('categoria', 'producto.categoria_id', '=', 'categoria.id')
+            ->select(
+                // 'producto.id as producto_id',
+                'producto.nombre',
+                'producto.existencias',
+                'producto.disponibles',
+                'producto.precioCompra',
+                'producto.precioUnitario',
+                'producto.imgNombreFisico',
+                // 'categoria.id as categoria_id',
+                'categoria.categoria'
+            )
+            ->where('producto.id', '=', $id)
+            ->first();
+
+        return view('productos.show', compact('mProducto'));
     }
 
     /**
