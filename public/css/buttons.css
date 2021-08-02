@@ -1,3 +1,17 @@
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069D9;
+}
+
+.btn-primary:focus {
+    background-color: #007bff;
+}
+
 .btn-success {
     background-color: #28A745;
     border-color: #28A745;
