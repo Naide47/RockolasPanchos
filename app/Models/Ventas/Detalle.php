@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Ventas\Venta;
 
-class DetalleVentaEloquent extends Model
+class Detalle extends Model
 {
     use HasFactory;
 

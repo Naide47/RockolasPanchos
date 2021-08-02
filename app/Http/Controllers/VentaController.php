@@ -10,6 +10,7 @@ use App\Models\Ventas\Cliente;
 use App\Models\Usuarios\Persona;
 
 use App\Http\Controllers\Persona\PersonaController;
+use App\Http\Controllers\Productos\ProductoController;
 use Session;
 use Redirect;
 
@@ -62,6 +63,8 @@ class VentaController extends Controller
             'telefono' => 'required|min:3|max:15',
             'celular' => 'required|min:3|max:15',
             'id' => 'required',
+            'existencias' => 'required',
+            'disponibles' => 'required',
             'cantidad' => 'required',
             'nombre_producto' => 'required|min:3|max:150',
             'precio' => 'required|min:1|max:30',
@@ -74,7 +77,7 @@ class VentaController extends Controller
         DB::beginTransaction();
         try{
 
-            $nombreCompleto = $request->nombre . $request->apellido;
+            $nombreCompleto = $request->nombre . " " . $request->apellido;
 
             $personaController = new  PersonaController();
             $request->nombre = $nombreCompleto;
@@ -89,23 +92,28 @@ class VentaController extends Controller
             $mVenta->users_id = 1;
             $mVenta->total = $request->total;
             $mVenta->anticipoPagado = $request->anticipo;
-            // $mVenta->fechaRegistro = date('d/m/Y');
             $mVenta->noTarjeta = $request->numTarjeta;
             $mVenta->tipoTarjeta = $request->tipoTarjeta;
             $mVenta->status = 1;
             $mVenta->save();
-            // $mCliente->ventas()->save($mVenta);
             
             $venta_id = Venta::all();
-            // //var_dump($venta_id->last())
 
             $mDetalle = new Detalle();
             $mDetalle->venta_id = $mVenta->id;
             $mDetalle->producto_id = $request->id;
             $mDetalle->cantidad = $request->cantidad;
-            $mDetalle->precioUnitario = $request->precioUnitario;
+            $mDetalle->precioUnitario = $request->precio;
             $mDetalle->save();
             // $mVenta->detalle_ventas()->save($mDetalle);
+
+            $producto = Producto::find($request->id);
+            $existenciasF = $request->existencias - $request->cantidad;
+            $disponiblesF = $request->disponibles - $request->cantidad;
+
+            $producto->existencias = $existenciasF;
+            $producto->disponibles = $disponiblesF;
+            $producto->save();
 
             DB::commit();
             Session::flash('message','Venta realizada');

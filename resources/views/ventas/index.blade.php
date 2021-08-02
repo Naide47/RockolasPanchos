@@ -68,44 +68,47 @@
                             </div>
                         </div>
 
-                        @forelse($table as $row)
-                            <div class="col-md-4">
-                                <div class="product-item">
-                                    <div class="product-title">
-                                        <a href="#">{{ $row->nombre }}</a>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                            @forelse($table as $row)
+                                @if ($row->existencias > 3)
+                                    <div class="col-md-4">
+                                        <div class="product-item">
+                                            <div class="product-title">
+                                                <a href="#">{{ $row->nombre }}</a>
+                                                <div class="ratting">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                </div>
+                                            </div>
+                                            <div class="product-image">
+                                                <a class="imagen-venta" href="product-detail.html">
+                                                    @if ($row->imgNombreFisico)
+                                                        <img src="{{ asset('storage/' . $row->imgNombreFisico) }}"
+                                                            alt="Imagen del producto {{ $row->nombre }}" class="img-thumbnail">
+                                                    @else
+                                                        <img src="{{ asset('storage/no_imagen.jpg') }}"
+                                                            alt="Imagen del producto {{ $row->nombre }}" class="img-thumbnail">
+                                                    @endif
+                                                </a>
+                                                <div class="product-action">
+                                                    <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                    <a href="#"><i class="fa fa-search"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product-price">
+                                                <h3><span>$</span>{{$row->precioUnitario}}</h3>
+                                                <a class="btn" href="{{route('ventas.create',['id'=>$row->id])}}"><i class="fa fa-shopping-cart"></i>Comprar</a>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="product-image">
-                                        <a class="imagen-venta" href="product-detail.html">
-                                            @if ($row->imgNombreFisico)
-                                                <img src="{{ asset('storage/' . $row->imgNombreFisico) }}"
-                                                    alt="Imagen del producto {{ $row->nombre }}" class="img-thumbnail">
-                                            @else
-                                                <img src="{{ asset('storage/no_imagen.jpg') }}"
-                                                    alt="Imagen del producto {{ $row->nombre }}" class="img-thumbnail">
-                                            @endif
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="#"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-price">
-                                        <h3><span>$</span>{{$row->precioUnitario}}</h3>
-                                        <a class="btn" href="{{route('ventas.create',['id'=>$row->id])}}"><i class="fa fa-shopping-cart"></i>Comprar</a>
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <h3>No hay productos</h3>
-                        @endforelse
+                                @endif
+                            @empty
+                                <h3>No hay productos</h3>
+                            @endforelse
+                        
 
                         <!-- Pagination Start -->
                         <div class="col-md-12">

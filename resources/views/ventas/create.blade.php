@@ -84,6 +84,8 @@
             <div class="row">
                 <!-- {{Form::hidden('id', $value = ($modelo->id), ["class"=>"form-control", "disabled"] )}} -->
                 <input type="hidden" name="id" value="{{$modelo->id}}" class="form-control">
+                <input type="hidden" name="existencias" value="{{$modelo->existencias}}">
+                <input type="hidden" name="disponibles" value="{{$modelo->disponibles}}">
                 <div class="form-group col-md-4">
                     {{Form::label('cantidad','Cantidad')}}
                     <div class="input-group mb-3">
@@ -144,7 +146,8 @@
                 {{Form::label('tipoTarjeta','Tipo de tarjeta', ["style"=>"visibility:hidden", "id"=>"labeltipoTarjeta"])}}
                     <div class="input-group mb-3">
                         <select class="custom-select" id="tipoTarjeta" name="tipoTarjeta" required="true" style="visibility:hidden">
-                            <option selected value="1">Debito</option>
+                            <option selected value="0">Eliga un tipo</option>
+                            <option value="1">Debito</option>
                             <option value="2">Credito</option>
                         </select>
                     </div>    
