@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Rentas\Rentas;
 use App\Models\Usuarios\Persona;
 use App\Models\Usuarios\Rol;
+use App\Models\Usuarios\Clientes;
 use App\Models\Usuarios\Usuario;
 
 use App\Models\Rentas\DetalleRentas;
@@ -28,9 +29,9 @@ class rentaController extends Controller
     public function index()
     {
         // Traemos los datos del ModelPolicy
-        $table = Rentas::all();
-
-        return view('renta.index', compact('table'));
+        //$table = Rentas::all();
+        $table = Producto::all();
+        return view('renta.view', compact('table'));
     }
 
     /**
@@ -38,15 +39,20 @@ class rentaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        if($request->id){
+            $modelo = Producto::find($request->id);
+        }
+
         $clientes = Rol::all();
         $personas = Persona::all();
         $usuarios = Usuario::all();
         $categorias = Categoria::all();
-        $productos = Producto::all();
+        #$productos = Producto::all();
+        $clientes = Clientes::all();
 
-        return view('renta.create', compact('clientes', 'personas', 'usuarios'), compact('categorias', 'productos'));
+        return view('renta.create', compact('clientes',  'personas', 'usuarios'), compact('categorias', 'modelo'));
     
     }
 
@@ -70,9 +76,14 @@ class rentaController extends Controller
         $mRenta->noTarjeta = $request->noTarjeta;
         $mRenta->tipoTarjeta = $request->tipoTarjeta;
 
-        $mRenta->idUsuario = $request->usuario;
-        $mRenta->idCliente = $request->cliente;
+        $mRenta->user_id = $request->usuario;
+        $mRenta->cliente_id = $request->cliente;
         $mRenta->estatus = 1;
+
+        $mDetalleRenta->producto_id = $request->producto_id;
+        $mDetalleRenta->renta_id = $request->renta_id;
+        $mDetalleRenta->precioUnitario = $request->precioUnitario;
+        $mDetalleRenta->cantidad = $request->cantidad;
 
         $mRenta->save();
         

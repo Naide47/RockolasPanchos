@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRentaTable extends Migration
+class CreateRenta extends Migration
 {
     /**
      * Run the migrations.
@@ -23,15 +23,23 @@ class CreateRentaTable extends Migration
             $table->integer('anticipoPagado');
             $table->date('fechaRegistro');
             $table->date('fechaInicio')->format('d-m-Y');
+            #$table->time('horaRecogida');
             $table->date('fechaTermino')->format('d-m-Y');
             $table->string('noTarjeta');
             $table->string('tipoTarjeta');
             $table->integer('estatus');
+
+            $table->string('calle');
+            $table->string('colonia');
+            $table->string('noexterior');
+
+	        $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('cliente_id')->references('id')->on('cliente');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migration
      *
      * @return void
      */

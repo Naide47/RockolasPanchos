@@ -11,5 +11,5 @@ class DetalleRentas extends Model
 
     use HasFactory;
 
-    protected $fillable = ["idRenta", "idProducto", "cantidad", "precioUnitario"];
+    protected $fillable = ["renta_id", "producto_id", "cantidad", "precioUnitario"];
 }

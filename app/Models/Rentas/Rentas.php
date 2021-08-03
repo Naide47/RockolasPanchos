@@ -11,5 +11,5 @@ class Rentas extends Model
 
     use HasFactory;
 
-    protected $fillable = ["idCliente", "idUsuario", "total", "fechaRegistro", "fechaInicio", "fechaTermino"];
+    protected $fillable = ["cliente_id", "usuario_id", "total", "fechaRegistro", "fechaInicio", "fechaTermino", "calle", "colonia", "noexterior"];
 }
