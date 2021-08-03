@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Productos\Categoria;
 use Illuminate\Http\Request;
 use App\Models\Productos\Producto;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        
+
         $categorias = Categoria::all();
         return view('productos.create', compact('categorias'));
     }
@@ -71,7 +72,8 @@ class ProductoController extends Controller
             $nuevoProducto->save();
         }
 
-        Session::flash('success', 'Producto agregado con exito');
+        Session::flash('message', 'Producto agregado con exito');
+        Session::flash('alert-class', 'success');
         return redirect('productos');
     }
 
@@ -83,9 +85,23 @@ class ProductoController extends Controller
      */
     public function show($id)
     {
-        $producto = Producto::find($id);
-        $categoria = Categoria::find($producto->categoria_id);
-        return view('productos.show', compact('producto', 'categoria'));
+        $mProducto = DB::table('producto')
+            ->join('categoria', 'producto.categoria_id', '=', 'categoria.id')
+            ->select(
+                // 'producto.id as producto_id',
+                'producto.nombre',
+                'producto.existencias',
+                'producto.disponibles',
+                'producto.precioCompra',
+                'producto.precioUnitario',
+                'producto.imgNombreFisico',
+                // 'categoria.id as categoria_id',
+                'categoria.categoria'
+            )
+            ->where('producto.id', '=', $id)
+            ->first();
+
+        return view('productos.show', compact('mProducto'));
     }
 
     /**
@@ -124,7 +140,6 @@ class ProductoController extends Controller
         $producto->disponibles = $request->disponibles;
         $producto->precioCompra = $request->precioCompra;
         $producto->precioUnitario = $request->precioUnitario;
-        $producto->save();
 
         $file = $request->file('imagen');
         if ($file) {
@@ -136,10 +151,13 @@ class ProductoController extends Controller
             Storage::disk('local')->put($imgNombreFisico, File::get($file));
             $producto->imgNombreVirtual = $imgNombreVirtual;
             $producto->imgNombreFisico = $imgNombreFisico;
-            $producto->save();
         }
 
-        Session::flash('success', 'Producto actualizado correctamente.');
+        $producto->save();
+
+        Session::flash('message', 'Producto actualizado con exito');
+        Session::flash('alert-class', 'success');
+
         return redirect('productos');
     }
 
