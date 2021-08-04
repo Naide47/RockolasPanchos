@@ -56,10 +56,20 @@
                     <div class="col">
                         {!! Form::label('existencias', 'Existencias') !!}
                         {!! Form::number('existencias', $producto->existencias, ['class' => 'form-control', 'required']) !!}
+                        @error('existencias')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                     <div class="col">
                         {!! Form::label('disponibles', 'Existencias disponibles') !!}
                         {!! Form::number('disponibles', $producto->disponibles, ['class' => 'form-control', 'required']) !!}
+                        @error('disponibles')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 
@@ -67,10 +77,21 @@
                     <div class="col">
                         {!! Form::label('precioCompra', 'Precio de compra') !!}
                         {!! Form::number('precioCompra', $producto->precioCompra, ['class' => 'form-control', 'step' => 'any', 'required']) !!}
+                        @error('precioCompra')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                     <div class="col">
                         {!! Form::label('precioUnitario', 'Precio por unidad') !!}
                         {!! Form::number('precioUnitario', $producto->precioUnitario, ['class' => 'form-control', 'step' => 'any', 'required']) !!}
+                        @error('precioUnitario')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+
+                        @enderror
                     </div>
                 </div>
 

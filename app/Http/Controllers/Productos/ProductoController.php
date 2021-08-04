@@ -128,7 +128,8 @@ class ProductoController extends Controller
     {
         $validacion = $request->validate([
             'nombre' => 'required',
-            'existencias' => 'required',
+            'existencias' => 'required|gte:disponibles',
+            'disponibles'=>'required|lte:existencias',
             'precioCompra' => 'required',
             'precioUnitario' => 'required'
         ]);

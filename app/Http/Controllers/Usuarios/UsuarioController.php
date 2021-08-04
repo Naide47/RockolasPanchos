@@ -190,6 +190,11 @@ class UsuarioController extends Controller
         $mUsuario = Usuario::find($id);
         $mUsuario->estatus = 0;
         $mUsuario->save();
+
+        Session::flash('message', 'Usuario ' . $mUsuario->name . ' eliminado con exito');
+        Session::flash('alert-class', 'success');
+
+        return redirect('usuarios');
     }
 
     /**
@@ -207,5 +212,17 @@ class UsuarioController extends Controller
             ->get();
 
         return view('usuarios.inactivos', compact('mUsuarios'));
+    }
+
+    public function reactivate($id)
+    {
+        $mUsuario = Usuario::find($id);
+        $mUsuario->estatus = 1;
+        $mUsuario->save();
+
+        Session::flash('message', 'Usuario ' . $mUsuario->name . ' reactivado con exito');
+        Session::flash('alert-class', 'success');
+
+        return redirect('usuarios');
     }
 }
