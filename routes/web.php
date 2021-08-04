@@ -18,8 +18,10 @@ use Inertia\Inertia;
 */
 
 Route::group(['middleware' => ['auth']], function () {
+
     Route::namespace('Usuarios')->group(function () {
         Route::get('/usuarios/inactivos', 'UsuarioController@inactiveIndex')->name('usuarios.inactivos');
+        Route::put('/usuarios/reactivar/{id}', 'UsuarioController@reactivate')->name('usuarios.reactivate');
 
         Route::resource('usuarios', 'UsuarioController');
     });
