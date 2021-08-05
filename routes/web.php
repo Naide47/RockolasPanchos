@@ -29,6 +29,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::namespace('Productos')->group(function () {
         Route::resource('productos', 'ProductoController');
         Route::resource('categorias', 'CategoriaController');
+        Route::resource('paquetes', 'PaqueteController');
+
+        // Route::namespace('Paquetes')->group(function () {
+        //     Route::resource('paquetes', 'PaqueteController');
+        // });
     });
 });
 
@@ -36,6 +41,8 @@ Route::get('/', 'VentaController@index')->name('home');
 Route::get('/login', 'Auth\AuthController@loginPage')->name('login');
 Route::post('/login', 'Auth\AuthController@login');
 Route::post('/logout', 'Auth\AuthController@logout')->name('logout');
+
+
 
 // Route::namespace('Usuarios')->group(function () {
 //     Route::resource('usuarios', 'UsuarioController');

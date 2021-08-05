@@ -30,7 +30,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 150,
                 'precioUnitario' => 10,
                 'imgNombreVirtual' => 'silla_plastico.jpg',
-                'imgNombreFisico' => '1_silla_plastico.jpg'
+                'imgNombreFisico' => '1_silla_plastico_producto.jpg'
             ],
             [
                 'id' => 2,
@@ -41,7 +41,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 200,
                 'precioUnitario' => 15,
                 'imgNombreVirtual' => 'silla_metal.jpg',
-                'imgNombreFisico' => '2_silla_metal.jpg'
+                'imgNombreFisico' => '2_silla_metal_producto.jpg'
             ],
             [
                 'id' => 3,
@@ -52,7 +52,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 250,
                 'precioUnitario' => 20,
                 'imgNombreVirtual' => 'silla_acolchada.jpg',
-                'imgNombreFisico' => '3_silla_acolchada.jpg'
+                'imgNombreFisico' => '3_silla_acolchada_producto.jpg'
             ],
             [
                 'id' => 4,
@@ -63,7 +63,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 300,
                 'precioUnitario' => 20,
                 'imgNombreVirtual' => 'mesa_plastico.jpg',
-                'imgNombreFisico' => '4_mesa_plastico.jpg'
+                'imgNombreFisico' => '4_mesa_plastico_producto.jpg'
             ],
             [
                 'id' => 5,
@@ -74,7 +74,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 150,
                 'precioUnitario' => 15,
                 'imgNombreVirtual' => 'mesa_plastico_larga.jpg',
-                'imgNombreFisico' => '5_mesa_plastico_larga.jpg'
+                'imgNombreFisico' => '5_mesa_plastico_larga_producto.jpg'
             ],
             [
                 'id' => 6,
@@ -85,7 +85,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 450,
                 'precioUnitario' => 35,
                 'imgNombreVirtual' => 'mesa_madera.jpg',
-                'imgNombreFisico' => '6_mesa_madera.jpg'
+                'imgNombreFisico' => '6_mesa_madera_producto.jpg'
             ],
             [
                 'id' => 7,
@@ -96,7 +96,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 3000,
                 'precioUnitario' => 200,
                 'imgNombreVirtual' => 'rockola_iphone.jpg',
-                'imgNombreFisico' => '7_rockola_iphone.jpg'
+                'imgNombreFisico' => '7_rockola_iphone_producto.jpg'
             ],
             [
                 'id' => 8,
@@ -107,7 +107,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 5000,
                 'precioUnitario' => 500,
                 'imgNombreVirtual' => 'rockola_clasica.jpg',
-                'imgNombreFisico' => '8_rockola_clasica.jpg'
+                'imgNombreFisico' => '8_rockola_clasica_producto.jpg'
             ],
             [
                 'id' => 9,
@@ -118,7 +118,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 2700,
                 'precioUnitario' => 140,
                 'imgNombreVirtual' => 'rockola_azul.jpg',
-                'imgNombreFisico' => '9_rockola_azul.jpg'
+                'imgNombreFisico' => '9_rockola_azul_producto.jpg'
             ],
             [
                 'id' => 10,
@@ -129,7 +129,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 600,
                 'precioUnitario' => 60,
                 'imgNombreVirtual' => 'carpa_blanca_3x3.jpg',
-                'imgNombreFisico' => '10_carpa_blanca_3x3.jpg'
+                'imgNombreFisico' => '10_carpa_blanca_3x3_producto.jpg'
             ],
             [
                 'id' => 11,
@@ -140,7 +140,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 700,
                 'precioUnitario' => 70,
                 'imgNombreVirtual' => 'carpa_blanca_paredes.jpg',
-                'imgNombreFisico' => '11_carpa_blanca_paredes.jpg'
+                'imgNombreFisico' => '11_carpa_blanca_paredes_producto.jpg'
             ],
             [
                 'id' => 12,
@@ -151,7 +151,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 600,
                 'precioUnitario' => 60,
                 'imgNombreVirtual' => 'carpa_negra_3x3.jpg',
-                'imgNombreFisico' => '12_carpa_negra_3x3.jpg'
+                'imgNombreFisico' => '12_carpa_negra_3x3_producto.jpg'
             ],
             [
                 'id' => 13,
@@ -162,7 +162,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 3000,
                 'precioUnitario' => 300,
                 'imgNombreVirtual' => 'inflable_sirena.jpg',
-                'imgNombreFisico' => '13_inflable_sirena.jpg'
+                'imgNombreFisico' => '13_inflable_sirena_producto.jpg'
             ],
             [
                 'id' => 14,
@@ -173,7 +173,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 2000,
                 'precioUnitario' => 200,
                 'imgNombreVirtual' => 'inflable_castillo.jpg',
-                'imgNombreFisico' => '14_inflable_castillo.jpg'
+                'imgNombreFisico' => '14_inflable_castillo_producto.jpg'
             ],
             [
                 'id' => 15,
@@ -184,7 +184,7 @@ class ProductoSeeder extends Seeder
                 'precioCompra' => 2000,
                 'precioUnitario' => 200,
                 'imgNombreVirtual' => 'inflable_escaladora.jpg',
-                'imgNombreFisico' => '15_inflable_escaladora.jpg'
+                'imgNombreFisico' => '15_inflable_escaladora_producto.jpg'
             ]
         ]);
     }

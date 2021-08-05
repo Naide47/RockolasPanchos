@@ -1,14 +1,14 @@
-@extends('layout.layout')
-{{-- @section('titulo')
+@extends('layout.users')
+@section('title')
     Agregar producto
-@endsection --}}
+@endsection
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 @endsection
 
 @section('contents')
-    <div class="container-fluid bg-white mb-5">
+    <div class="container-fluid bg-white my-5">
         <div class="row">
             <div class="col">
                 <h1>Agregar producto</h1>
@@ -73,6 +73,11 @@
                     <div class="col">
                         {!! Form::label('precioUnitario', 'Precio por unidad') !!}
                         {!! Form::number('precioUnitario', Request::old('´precioUnitario'), ['class' => 'form-control', 'required', 'min' => '0', 'step' => '1', 'oninput' => 'validity.valid||(value="");']) !!}
+                        @error('precioUnitario')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 
@@ -84,9 +89,7 @@
                     <div class="col-4 h-100 align-self-center">
                         <div class="form-group">
                             {!! Form::label('imagen', 'Imagen del producto') !!}
-                            {!! Form::file('imagen', ['accept' => 'image/x-png, image/gif, image/jpeg',
-                            'class' => 'form-control-file',
-                            'onchange'=>"document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])"]) !!}
+                            {!! Form::file('imagen', ['accept' => 'image/x-png, image/gif, image/jpeg', 'class' => 'form-control-file', 'onchange' => "document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])"]) !!}
                         </div>
                     </div>
                 </div>
