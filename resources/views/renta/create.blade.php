@@ -16,12 +16,47 @@
 
 @section('contents')
 
-<div style="padding: 30px; margin-bottom: 30px; background: #ffffff;">
-    {{HTML::ul($errors->all())}}
-    <h3>Dirección</h3>
+{{HTML::ul($errors->all())}}
+{{Form::open(["url"=>"renta"])}}
 
-    <form class="form-row">
-        {{Form::open(["url"=>"renta"])}}
+<div style="padding: 30px; margin-bottom: 30px; background: #ffffff;">
+
+    <h3>Información Personal</h3>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            {{Form::label('nombre','Nombre')}}
+            {{Form::text('nombre', Request::old('nombre'), ["class"=>"form-control", "required" => true, "placeholder" => "Nombre"] )}}
+        </div>
+
+        <div class="form-group col-md-4">
+            {{Form::label('numero','Número celular')}}
+            {{Form::number('numero', Request::old('numero'), ["class"=>"form-control", "required" => true, "placeholder" => "Numero"] )}}
+        </div>
+    </div>
+
+    <div class="form-row">
+        <!-- 
+        <div class="form-group col-md-7">
+            {!! Form::label('clientes', 'Clientes') !!}
+            <select class="form-control" id="cliente" name="cliente" required>
+                <option value="" selected disabled>SELECCIONAR</option>
+                @foreach ($clientes as $cliente)
+                @foreach ($personas as $persona)
+                @if ($persona->id == $cliente->persona_id)
+                <option value="{{ $cliente->id }}">{{ $persona->nombre }}</option>
+                @endif
+                @endforeach
+                @endforeach
+            </select>
+            @error('cliente')
+            <div class="alert alert-danger" role="alert">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+        -->
+
         <div class="form-group col-md-4">
             {{Form::label('calle','Calle')}}
             {{Form::text('rcalle', Request::old('calle'), ["class"=>"form-control", "required" => true, "placeholder" => "Calle"] )}}
@@ -34,7 +69,7 @@
             {{Form::label('noexterior','No. Exterior')}}
             {{Form::text('rnoexterior', Request::old('noexterior'), ["class"=>"form-control", "required" => true, "placeholder" => "No. Exterior"] )}}
         </div>
-    </form>
+    </div>
 
     <h3>Detalle de la renta</h3>
 
@@ -103,10 +138,7 @@
 
         </div>
     </div>
-</div>
-
-<!-- Forma de pago -->
-<div style="padding: 30px; margin-bottom: 30px; background: #ffffff;">
+    <!-- Forma de pago -->
     <h3>Forma de pago</h3>
     <div class="col-md-12">
         <div class="form-check">
@@ -143,9 +175,11 @@
             </div>
         </div>
     </div>
+    <br><br>
 
-    {{Form::submit('Rentar', ["class"=>"btn btn-success"])}}
-    {{Form::close()}}
 </div>
+{{Form::submit('Rentar', ["class"=>"btn btn-success"])}}
+{{Form::close()}}
+
 
 @endsection

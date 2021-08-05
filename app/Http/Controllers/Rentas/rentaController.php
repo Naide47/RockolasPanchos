@@ -29,8 +29,8 @@ class rentaController extends Controller
     public function index()
     {
         // Traemos los datos del ModelPolicy
-        //$table = Rentas::all();
-        $table = Producto::all();
+        $table = Rentas::all();
+        //$table = Producto::all();
         return view('renta.view', compact('table'));
     }
 
@@ -88,7 +88,7 @@ class rentaController extends Controller
         $mRenta->save();
         
         // Mensaje Flash (una vez que se elimina la variable)
-        Session::flash('message', 'Renta Registrado!');
+        Session::flash('message', 'Renta Registrada!');
         return Redirect::to('renta');
 
         echo "Correcto";

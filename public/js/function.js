@@ -47,9 +47,9 @@ $(document).ready(function () {
         document.getElementById("rtipoTarjeta").value = "1";
     }
 
+
+
+    const fInicio = document.getElementById("fechaInicio");
+    console.log("Fecha inicio ", fInicio);
+
 });
-
-
-
-fInicio = document.getElementById("fechaInicio");
-console.log("Fecha inicio ", fInicio);

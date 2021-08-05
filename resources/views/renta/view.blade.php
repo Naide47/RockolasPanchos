@@ -98,14 +98,15 @@
                                         </div>
                                     </div>
                                     <div class="product-price">
-                                        <h3><span>$</span>{{ $row->precioCompra }}</h3>
+                                        <h3><span>$</span>{{ $row->precio }}</h3>
+                                        <a></a>
                                         <a class="btn" href="{{ route('renta.create', ['id' => $row->id]) }}"><i
                                                 class="fa fa-shopping-cart"></i>Rentar</a>
                                     </div>
                                 </div>
                             </div>
                         @empty
-                            <h3>No hay productos</h3>
+                            <h3>No hay paquetes</h3>
                         @endforelse
 
                         <!-- Pagination Start -->
