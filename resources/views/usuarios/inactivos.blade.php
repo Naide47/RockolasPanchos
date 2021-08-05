@@ -34,19 +34,10 @@
                     href="{{ route('usuarios.index') }}" role="button">Activos</a>
             </div>
             <div class="col-4">
-                <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block" disabled>Inactivos</button>
+                <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block"
+                    disabled>Inactivos</button>
             </div>
         </div>
-        {{-- Notificaciones --}}
-        @if (Session::has('message'))
-            <div class="row my-0">
-                <div class="col">
-                    <div class="alert alert-{{ Session::get('alert-class') }}" role="alert">
-                        {{ Session::get('message') }}
-                    </div>
-                </div>
-            </div>
-        @endif
         {{-- Tabla --}}
         <div class="row">
             <div class="col bg-light mb-5 rounded pt-5">
@@ -65,9 +56,6 @@
                         @forelse ($mUsuarios as $usuario)
                             <tr>
                                 <td scope="row">{{ $loop->iteration }}</td>
-                                {{-- <td>
-                                    {{print_r($usuario)}}
-                                </td> --}}
                                 <td>{{ $usuario->nombre }}</td>
                                 <td>{{ $usuario->rol }}</td>
                                 <td>
@@ -75,13 +63,11 @@
                                         href="{{ route('usuarios.show', $usuario->id) }}" role="button">Detalle</a>
                                 </td>
                                 <td>
-                                    <a name="btnEditar" id="btnEditar" class="btn btn-info"
-                                        href="{{ route('usuarios.edit', $usuario->id) }}" role="button">Editar</a>
-                                </td>
-                                <td>
-                                    {{ Form::open(['url' => route('usuarios.destroy', $usuario->id)]) }}
-                                    {{ Form::hidden('_method', 'DELETE') }}
-                                    {{ Form::submit('Eliminar', ['class' => 'btn btn-danger']) }}
+                                    {{-- {!! Form::open([route('usuarios.reactivate', $usuario->id)]) !!} --}}
+                                    {!! Form::open(['url' => route('usuarios.reactivate', $usuario->id)]) !!}
+                                    {{ Form::hidden('_method', 'PUT') }}
+                                    {!! Form::submit('Reactivar', ['class' => 'btn btn-primary']) !!}
+                                    {!! Form::close() !!}
                                 </td>
                             </tr>
                         @empty
@@ -90,7 +76,7 @@
                             </tr>
                         @endforelse
                     </tbody>
-                    <caption>Lista de usuarios</caption>
+                    <caption>Lista de usuarios inactivos</caption>
                 </table>
             </div>
         </div>
