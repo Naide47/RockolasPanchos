@@ -1,29 +1,32 @@
-@extends('layout.layout')
-@section('titulo')
+@extends('layout.users')
+
+@section('title')
     Detalle del producto
 @endsection
 
+@section('head')
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+@endsection
+
 @section('contents')
-    <div class="container">
-        <div class="row mb-3">
-            <div class="col text-center">
-                <h1>Producto</h1>
-                <h2>- Detalles del producto -</h2>
+    <div class="container-fluid bg-white my-5 py-3 text-center">
+        {{-- Titulo --}}
+        <div class="row">
+            <div class="col text-left">
+                <h1>Dellates del producto</h1>
             </div>
         </div>
-        <div class="row mb-4">
+        <div class="row align-items-center">
             <div class="col-4">
-                {{-- <img src="{{ asset('storage/' . $producto->imgNombreFisico) }}"
-                    alt="Imagen del producto {{ $producto->nombre }}" width="100%" class="img-thumbnail"> --}}
-                @if ($producto->imgNombreFisico)
-                    <img src="{{ asset('storage/' . $producto->imgNombreFisico) }}"
-                        alt="Imagen del producto {{ $producto->nombre }}" width="100%" class="img-thumbnail">
+                @if ($mProducto->imgNombreFisico)
+                    <img src="{{ asset('storage/' . $mProducto->imgNombreFisico) }}"
+                        alt="Imagen del producto {{ $mProducto->nombre }}" width="100%" class="img-thumbnail">
                 @else
                     <img src="{{ asset('storage/no_imagen.jpg') }}" alt="Imagen del producto {{ $producto->nombre }}"
                         width="100%" class="img-thumbnail">
                 @endif
             </div>
-            <div class="col-8 text-center">
+            <div class="col-8 bg-light mb-2 rounded pt-5 ">
                 <table class="table">
                     <thead>
                         <tr>
@@ -33,8 +36,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ $producto->nombre }}</td>
-                            <td>{{ $categoria->categoria }}</td>
+                            <td>{{ $mProducto->nombre }}</td>
+                            <td>{{ $mProducto->categoria }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -49,21 +52,20 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ $producto->existencias }}</td>
-                            <td>{{ $producto->disponibles }}</td>
-                            <td>${{ $producto->precioCompra }}</td>
-                            <td>${{ $producto->precioUnitario }}</td>
+                            <td>{{$mProducto->existencias}}</td>
+                            <td>{{$mProducto->disponibles}}</td>
+                            <td>${{$mProducto->precioCompra}}</td>
+                            <td>${{$mProducto->precioUnitario}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col text-right">
+        <div class="row mt-4">
+            <div class="col text-left">
                 <a class="btn btn-secondary" href="{{ route('productos.index') }}" role="button">Volver</a>
             </div>
         </div>
     </div>
-
 
 @endsection

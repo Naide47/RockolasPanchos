@@ -1,10 +1,8 @@
-$(document).ready(function (e) {
+$(document).ready(function () {
 
     calcularTotalFinal();
 
     var precios = JSON.parse(localStorage.getItem('precios'));
-
-    setZeros();
 
     $('select').on('change', function (e) {
         var value = $(this).children(":selected").attr("value");
@@ -26,6 +24,8 @@ $(document).ready(function (e) {
         calcularTotal(id);
 
     });
+
+
 });
 
 function calcularTotal(id) {
@@ -60,40 +60,4 @@ function calcularTotalFinal() {
     totalFinal = parseFloat(totalFinal);
 
     $("#totalFinal").val(totalFinal);
-}
-
-function setZeros() {
-    var precios = $('.precio');
-    // var cantidades = $('.cantidad');
-    var totales = $('.total');
-
-    for (i = 0; i < precios.length; i++) {
-        var elemento = precios[i];
-        $('#' + elemento.id).val(0);
-    }
-    // for (i = 0; i < cantidades.length; i++) {
-    //     var elemento = cantidades[i];
-    //     $('#' + elemento.id).val(0);
-    // }
-    for (i = 0; i < totales.length; i++) {
-        var elemento = totales[i];
-        $('#' + elemento.id).val(0);
-    }
-    $('#totalFinal').val(0);
-}
-
-function filterTable() {
-    search = $('#searchBar').val();
-    search = search.toLowerCase().trim();
-    // console.log(search);
-
-    $("table tr").each(function (index) {
-        if (!index) return;
-        $(this).find("td").each(function () {
-            var id = $(this).text().toLowerCase().trim();
-            var not_found = (id.indexOf(search) == -1);
-            $(this).closest('tr').toggle(!not_found);
-            return not_found;
-        });
-    });
 }
