@@ -4,6 +4,7 @@ namespace App\Models\Usuarios;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Cliente;
 
 class Persona extends Model
 {
@@ -19,4 +20,9 @@ class Persona extends Model
         "telefono",
         "celular"
     ];
+    
+    public function clientes()
+    {
+        return $this->hasMany('Cliente', 'persona_id');
+    }
 }
