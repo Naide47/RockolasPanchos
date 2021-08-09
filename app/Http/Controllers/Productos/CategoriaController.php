@@ -17,7 +17,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        $mCategorias = Categoria::all();
+        $mCategorias = Categoria::all()->sortBy("id");
         return view('categorias.index', compact('mCategorias'));
     }
 
@@ -39,12 +39,12 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        $validacion = $request->validate([
-            'categoria'=> 'required|min:4'
+        $request->validate([
+            'categoria'=> 'required|unique:categoria,categoria'
         ]);
 
         $mCategoria = new Categoria();
-        $mCategoria->categoria = $request->categoria;
+        $mCategoria->categoria = ucfirst($request->categoria);
         $mCategoria->save();
 
         Session::flash('message', 'Categoria agregada con exito');
@@ -86,12 +86,12 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validacion = $request->validate([
-            'categoria'=> 'required|min:4'
+        $request->validate([
+            'categoria'=> 'required|unique:categoria,categoria'
         ]);
 
         $mCategoria = Categoria::find($id);
-        $mCategoria->categoria = $request->categoria;
+        $mCategoria->categoria = ucfirst($request->categoria);
         $mCategoria->save();
 
         Session::flash('message', 'Categoria actualizada con exito');

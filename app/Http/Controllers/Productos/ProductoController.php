@@ -32,8 +32,8 @@ class ProductoController extends Controller
     public function create()
     {
 
-        $categorias = Categoria::all();
-        return view('productos.create', compact('categorias'));
+        $mCategorias = Categoria::all()->sortBy("id");
+        return view('productos.create', compact('mCategorias'));
     }
 
     /**
@@ -45,18 +45,19 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required',
+            'nombre' => 'required|unique:producto,nombre',
             'categoria' => 'required',
-            'existencias' => 'required',
-            'precioCompra' => 'required',
-            'precioUnitario' => 'required'
+            'cantidad' => 'required|integer|gte:0',
+            'precioCompra' => 'required|numeric|gte:0',
+            'precioUnitario' => 'required|numeric|gte:0',
+            'imagen' => 'image|mimes:png,jpg,jpeg',
         ]);
 
         $mProducto = new Producto();
         $mProducto->categoria_id = $request->categoria;
         $mProducto->nombre = $request->nombre;
-        $mProducto->existencias = $request->existencias;
-        $mProducto->disponibles = $request->existencias;
+        $mProducto->existencias = $request->cantidad;
+        $mProducto->disponibles = $request->cantidad;
         $mProducto->precioCompra = $request->precioCompra;
         $mProducto->precioUnitario = $request->precioUnitario;
         $mProducto->save();
@@ -64,8 +65,8 @@ class ProductoController extends Controller
         $file = $request->file('imagen');
         if ($file) {
             $fileName = strtok($file->getClientOriginalName(), ".jpg"); //Nombre sin extensión
-            $imgNombreVirtual = $fileName . "." . $file->getClientOriginalExtension();
-            $imgNombreFisico = $mProducto->id . "_" . $imgNombreVirtual . "_producto" . "." . $file->getClientOriginalExtension();
+            $imgNombreVirtual = $file->getClientOriginalName();
+            $imgNombreFisico = $mProducto->id . "_" . $fileName . "_producto" . "." . $file->getClientOriginalExtension();
             Storage::disk('local')->put($imgNombreFisico, File::get($file));
             $mProducto->imgNombreVirtual = $imgNombreVirtual;
             $mProducto->imgNombreFisico = $imgNombreFisico;
@@ -88,14 +89,12 @@ class ProductoController extends Controller
         $mProducto = DB::table('producto')
             ->join('categoria', 'producto.categoria_id', '=', 'categoria.id')
             ->select(
-                // 'producto.id as producto_id',
                 'producto.nombre',
                 'producto.existencias',
                 'producto.disponibles',
                 'producto.precioCompra',
                 'producto.precioUnitario',
                 'producto.imgNombreFisico',
-                // 'categoria.id as categoria_id',
                 'categoria.categoria'
             )
             ->where('producto.id', '=', $id)
@@ -112,9 +111,9 @@ class ProductoController extends Controller
      */
     public function edit($id)
     {
-        $producto = Producto::find($id);
-        $categorias = Categoria::all();
-        return view('productos.edit', compact('producto', 'categorias'));
+        $mProducto = Producto::find($id);
+        $mCategorias = Categoria::all()->sortBy("id");
+        return view('productos.edit', compact('mProducto', 'mCategorias'));
     }
 
     /**
@@ -127,11 +126,13 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombre' => 'required',
-            'existencias' => 'required|gte:disponibles',
-            'disponibles' => 'required|lte:existencias',
-            'precioCompra' => 'required',
-            'precioUnitario' => 'required'
+            'nombre' => 'required|unique:producto,nombre, ' . $id,
+            'existencias' => 'required|integer|gte:0|gte:disponibles',
+            'disponibles' => 'required|integer|gte:0|lte:existencias',
+            'precioCompra' => 'required|numeric|gte:0',
+            'precioUnitario' => 'required|numeric|gte:0',
+            'imagen' => 'image|mimes:png,jpg,jpeg'
+
         ]);
 
         $mProducto = Producto::find($id);
@@ -173,5 +174,5 @@ class ProductoController extends Controller
     {
         //
     }
-    */
+     */
 }

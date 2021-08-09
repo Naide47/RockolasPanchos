@@ -55,7 +55,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Categoria</th>
+                            <th>Nombre de la categoria</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>

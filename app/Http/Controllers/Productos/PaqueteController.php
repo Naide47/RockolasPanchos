@@ -39,7 +39,7 @@ class PaqueteController extends Controller
             ->select("producto.id", "producto.nombre", "producto.categoria_id")
             ->get();
 
-        $mCategorias = Categoria::all();
+        $mCategorias = Categoria::all()->sortBy("id");
 
         $mPreciosUnitarios = DB::table('producto')
             ->select('producto.id', 'producto.precioUnitario')

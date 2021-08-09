@@ -17,7 +17,7 @@ class CreateProductoTable extends Migration
             $table->id();
             // $table->foreignId("idCategoria")->constrained("categoria", 'idCategoria');
             $table->unsignedBigInteger('categoria_id');
-            $table->string("nombre", 50);
+            $table->string("nombre", 50)->unique();
             $table->integer("existencias");
             $table->integer("disponibles");
             $table->double("precioCompra");
