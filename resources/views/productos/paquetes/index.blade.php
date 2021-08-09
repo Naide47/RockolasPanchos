@@ -30,16 +30,20 @@
             </div>
         </div>
         {{-- Pestañas --}}
-        {{-- <div class="row justify-content-around my-3">
+        <div class="row justify-content-around my-3">
             <div class="col-4">
-                <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block"
-                    disabled>Productos</button>
+                <a class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
+                    href="{{ route('productos.index') }}" role="button">Productos</a>
             </div>
             <div class="col-4">
                 <a class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
                     href="{{ route('categorias.index') }}" role="button">Categorias</a>
             </div>
-        </div> --}}
+            <div class="col-4">
+                <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block"
+                    disabled>Paquetes</button>
+            </div>
+        </div>
         {{-- Notificaciones --}}
         @if (Session::has('message'))
             <div class="alert alert-{{ Session::get('alert-class') }}" role="alert">
@@ -67,7 +71,7 @@
                                 @if ($paquete->imgNombreFisico)
                                     <td class="align-middle"><img
                                             src="{{ asset('storage/' . $paquete->imgNombreFisico) }}"
-                                            alt="Imagen del producto {{ $paquete->nombre }}" width="75px"
+                                            alt="Imagen del paquete {{ $paquete->nombre }}" width="75px"
                                             class="img-thumbnail"></td>
                                 @else
                                     <td class="align-middle"><img src="{{ asset('storage/no_imagen.jpg') }}"
@@ -76,9 +80,9 @@
                                 @endif
                                 <td class="align-middle">${{ $paquete->precio }}</td>
                                 <td class="align-middle"><a class="btn btn-secondary"
-                                        href="{{ route('productos.show', $paquete->id) }}">Detalle</td>
+                                        href="{{ route('paquetes.show', $paquete->id) }}">Detalle</td>
                                 <td class="align-middle"><a class="btn btn-info"
-                                        href="{{ route('productos.edit', $paquete->id) }}" role="button">Editar</a>
+                                        href="{{ route('paquetes.edit', $paquete->id) }}" role="button">Editar</a>
                                 </td>
                                 {{-- <td>
                                     {{ Form::open(['url' => route('categorias.destroy', $paquete->idCategoria)]) }}

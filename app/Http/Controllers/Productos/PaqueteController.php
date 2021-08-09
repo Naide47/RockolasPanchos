@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Productos;
 
 use App\Http\Controllers\Controller;
+use App\Models\Productos\Categoria;
 use App\Models\Productos\DetallePaquete;
 use App\Models\Productos\Paquete;
 use App\Models\Productos\Producto;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Stmt\Foreach_;
+use stdClass;
 
 class PaqueteController extends Controller
 {
@@ -33,9 +36,21 @@ class PaqueteController extends Controller
     public function create()
     {
         $mProductos = DB::table('producto')
-            ->select("producto.id", "producto.nombre", "producto.categoria_id", "producto.precioUnitario")
+            ->select("producto.id", "producto.nombre", "producto.categoria_id")
             ->get();
-        return view("productos.paquetes.create", compact('mProductos'));
+
+        $mCategorias = Categoria::all();
+
+        $mPreciosUnitarios = DB::table('producto')
+            ->select('producto.id', 'producto.precioUnitario')
+            ->get()
+            ->toArray();
+
+        $mPreciosUnitarios = json_encode($mPreciosUnitarios);
+
+        $hola = "Hola!";
+
+        return view("productos.paquetes.create", compact('mProductos', 'mCategorias', 'mPreciosUnitarios', 'hola'));
     }
 
     /**
@@ -47,7 +62,7 @@ class PaqueteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "nombre" => "required",
+            "nombre" => "required|unique:paquete,nombre",
             "imagen" => "required",
             "silla" => "required",
             "sillaCantidad" => "required",
@@ -62,19 +77,19 @@ class PaqueteController extends Controller
             "totalFinal" => "required"
         ]);
 
-        $totalFinal = substr($request->totalFinal, strpos($request->totalFinal, "$") + 1);
+        $productos = $request->only('silla', 'mesa', 'rockola', 'carpa', 'inflable');
 
         DB::beginTransaction();
         try {
             $mPaquete = new Paquete();
             $mPaquete->nombre = $request->nombre;
-            $mPaquete->precio = $totalFinal;
+            $mPaquete->precio = $request->totalFinal;
             $mPaquete->save();
 
             $file = $request->file('imagen');
-            $fileName = strtok($file->getClientOriginalName(), ".jpg"); //Nombre sin extensión
-            $imgNombreVirtual = $fileName . "." . $file->getClientOriginalExtension();
-            $imgNombreFisico = $mPaquete->id . "_" . $fileName . "_paquete" . "." . $file->getClientOriginalExtension();
+            // $fileName = strtok($file->getClientOriginalName(), ".jpg"); //Nombre sin extensión
+            $imgNombreVirtual = $file->getClientOriginalName();
+            $imgNombreFisico = $mPaquete->id . "_" . $request->nombre . "_paquete" . "." . $file->getClientOriginalExtension();
             Storage::disk('local')->put($imgNombreFisico, File::get($file));
             $mPaquete->imgNombreVirtual = $imgNombreVirtual;
             $mPaquete->imgNombreFisico = $imgNombreFisico;
@@ -82,16 +97,33 @@ class PaqueteController extends Controller
 
             $dpController = new DetallePaqueteController();
 
-            $dpController->storeSilla($request->silla, $request->sillaCantidad, $mPaquete->id);
-            $dpController->storeMesa($request->mesa, $request->mesaCantidad, $mPaquete->id);
-            if ($request->rockola) {
-                $dpController->storeRockola($request->rockola, $request->rockolaCantidad, $mPaquete->id);
-            }
-            if ($request->carpa) {
-                $dpController->storeCarpa($request->carpa, $request->carpaCantidad, $mPaquete->id);
-            }
-            if ($request->inflable) {
-                $dpController->storeInflable($request->inflable, $request->inflableCantidad, $mPaquete->id);
+            foreach (array_keys($productos) as $key) {
+                $producto_id = -1;
+                $cantidad = -1;
+                switch ($key) {
+                    case "silla":
+                        $producto_id = $request->silla;
+                        $cantidad = $request->sillaCantidad;
+                        break;
+                    case "mesa":
+                        $producto_id = $request->mesa;
+                        $cantidad = $request->mesaCantidad;
+                        break;
+                    case "rockola":
+                        $producto_id = $request->rockola;
+                        $cantidad = $request->rockolaCantidad;
+                        break;
+                    case "carpa":
+                        $producto_id = $request->carpa;
+                        $cantidad = $request->carpaCantidad;
+                        break;
+                    case "inflable":
+                        $producto_id = $request->inflable;
+                        $cantidad = $request->inflableCantidad;
+                        break;
+                }
+    
+                $dpController->store($mPaquete->id, $producto_id, $cantidad);
             }
 
             DB::commit();
@@ -114,7 +146,25 @@ class PaqueteController extends Controller
      */
     public function show($id)
     {
-        //
+        $mPaquete = Paquete::find($id);
+        $mDetallesPaquete = DB::table('detalle_paquete')
+            ->join('producto', 'detalle_paquete.producto_id', '=', 'producto.id')
+            ->select(
+                "producto.nombre",
+                "producto.precioUnitario",
+                "detalle_paquete.cantidad",
+            )
+            ->where("detalle_paquete.paquete_id", "=", $mPaquete->id)
+            ->get();
+
+        $precios = new stdClass;
+        $precios->precio = array();
+        foreach ($mDetallesPaquete as $detallesPaquete) {
+            $precio = $detallesPaquete->precioUnitario * $detallesPaquete->cantidad;
+            $precios->precio[] = $precio;
+        }
+
+        return view("productos.paquetes.show", compact('mPaquete', 'mDetallesPaquete', 'precios'));
     }
 
     /**
@@ -125,7 +175,32 @@ class PaqueteController extends Controller
      */
     public function edit($id)
     {
-        //
+        $mPaquete = Paquete::find($id);
+        $mDetallesPaquete = DB::table('detalle_paquete')
+            ->join('producto', 'detalle_paquete.producto_id', '=', 'producto.id')
+            ->join('categoria', "producto.categoria_id", "=", "categoria.id")
+            ->select(
+                "producto.id as producto_id",
+                "producto.nombre",
+                "producto.precioUnitario",
+                "detalle_paquete.cantidad",
+                "categoria.categoria"
+            )
+            ->where("detalle_paquete.paquete_id", "=", $mPaquete->id)
+            ->get();
+
+        $precios = new stdClass;
+        $precios->precio = array();
+        foreach ($mDetallesPaquete as $detallesPaquete) {
+            $precio = $detallesPaquete->precioUnitario * $detallesPaquete->cantidad;
+            $precios->precio[] = $precio;
+        }
+
+        $mProductos = DB::table('producto')
+            ->select("producto.id", "producto.nombre", "producto.categoria_id", "producto.precioUnitario")
+            ->get();
+
+        return view("productos.paquetes.edit", compact('mPaquete', 'mDetallesPaquete', 'precios', 'mProductos'));
     }
 
     /**

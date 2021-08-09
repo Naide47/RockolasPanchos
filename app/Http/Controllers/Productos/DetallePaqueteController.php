@@ -9,20 +9,21 @@ use Illuminate\Support\Facades\DB;
 
 class DetallePaqueteController extends Controller
 {
+
+    public function store($paquete_id, $producto_id, $cantidad)
+    {
+        $mDetallePaquete = new DetallePaquete();
+        $mDetallePaquete->paquete_id = $paquete_id;
+        $mDetallePaquete->producto_id = $producto_id;
+        $mDetallePaquete->cantidad = $cantidad;
+        $mDetallePaquete->save();
+    }
     public function storeSilla($silla, $sillaCantidad, $paquete_id)
     {
         $mDetallePaquete = new DetallePaquete();
         $mDetallePaquete->paquete_id = $paquete_id;
         $mDetallePaquete->producto_id = $silla;
-        $mDetallePaquete->cantidad = $sillaCantidad;
-
-        $precioUnitario = DB::table('producto')
-            ->select("precioUnitario")
-            ->where("id", "=", $silla)
-            ->first();
-        $precioUnitario = $precioUnitario->precioUnitario;
-        
-        $mDetallePaquete->precioUnitario = $precioUnitario;
+        $mDetallePaquete->cantidad = $sillaCantidad;;
         $mDetallePaquete->save();
     }
 
@@ -32,14 +33,6 @@ class DetallePaqueteController extends Controller
         $mDetallePaquete->paquete_id = $paquete_id;
         $mDetallePaquete->producto_id = $mesa;
         $mDetallePaquete->cantidad = $mesaCantidad;
-
-        $precioUnitario = DB::table('producto')
-            ->select("precioUnitario")
-            ->where("id", "=", $mesa)
-            ->first();
-        $precioUnitario = $precioUnitario->precioUnitario;
-
-        $mDetallePaquete->precioUnitario = $precioUnitario;
         $mDetallePaquete->save();
     }
 
@@ -49,14 +42,6 @@ class DetallePaqueteController extends Controller
         $mDetallePaquete->paquete_id = $paquete_id;
         $mDetallePaquete->producto_id = $rockola;
         $mDetallePaquete->cantidad = $rockolaCantidad;
-
-        $precioUnitario = DB::table('producto')
-            ->select("precioUnitario")
-            ->where("id", "=", $rockola)
-            ->first();
-        $precioUnitario = $precioUnitario->precioUnitario;
-
-        $mDetallePaquete->precioUnitario = $precioUnitario;
         $mDetallePaquete->save();
     }
 
@@ -66,14 +51,6 @@ class DetallePaqueteController extends Controller
         $mDetallePaquete->paquete_id = $paquete_id;
         $mDetallePaquete->producto_id = $carpa;
         $mDetallePaquete->cantidad = $carpaCantidad;
-
-        $precioUnitario = DB::table('producto')
-            ->select("precioUnitario")
-            ->where("id", "=", $carpa)
-            ->first();
-        $precioUnitario = $precioUnitario->precioUnitario;
-
-        $mDetallePaquete->precioUnitario = $precioUnitario;
         $mDetallePaquete->save();
     }
 
@@ -83,14 +60,6 @@ class DetallePaqueteController extends Controller
         $mDetallePaquete->paquete_id = $paquete_id;
         $mDetallePaquete->producto_id = $inflable;
         $mDetallePaquete->cantidad = $inflableCantidad;
-
-        $precioUnitario = DB::table('producto')
-            ->select("precioUnitario")
-            ->where("id", "=", $inflable)
-            ->first();
-        $precioUnitario = $precioUnitario->precioUnitario;
-
-        $mDetallePaquete->precioUnitario = $precioUnitario;
         $mDetallePaquete->save();
     }
 }
