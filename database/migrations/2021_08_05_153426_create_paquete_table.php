@@ -15,7 +15,7 @@ class CreatePaqueteTable extends Migration
     {
         Schema::create('paquete', function (Blueprint $table) {
             $table->id();
-            $table->string("nombre", 25);
+            $table->string("nombre", 25)->unique();
             $table->string('imgNombreVirtual')->nullable();
             $table->string('imgNombreFisico')->nullable();
             $table->double("precio", 0);

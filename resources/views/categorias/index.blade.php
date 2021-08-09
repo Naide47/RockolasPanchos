@@ -36,6 +36,10 @@
                 <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block"
                     disabled>Categorias</button>
             </div>
+            <div class="col-4">
+                <a class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
+                    href="{{ route('paquetes.index') }}" role="button">Paquetes</a>
+            </div>
         </div>
         {{-- Notificaciones --}}
         @if (Session::has('message'))

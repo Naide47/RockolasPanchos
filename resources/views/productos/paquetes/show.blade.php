@@ -1,7 +1,7 @@
 @extends('layout.users')
 
 @section('title')
-    Detalle del producto
+    Detalle del paquete
 @endsection
 
 @section('head')
@@ -13,57 +13,68 @@
         {{-- Titulo --}}
         <div class="row">
             <div class="col text-left">
-                <h1>Dellates del producto</h1>
+                <h1>Dellates del paquete</h1>
             </div>
         </div>
         <div class="row align-items-center">
             <div class="col-4">
-                @if ($mProducto->imgNombreFisico)
-                    <img src="{{ asset('storage/' . $mProducto->imgNombreFisico) }}"
-                        alt="Imagen del producto {{ $mProducto->nombre }}" width="100%" class="img-thumbnail">
+                @if ($mPaquete->imgNombreFisico)
+                    <img src="{{ asset('storage/' . $mPaquete->imgNombreFisico) }}"
+                        alt="Imagen del producto {{ $mPaquete->nombre }}" width="100%" class="img-thumbnail">
                 @else
-                    <img src="{{ asset('storage/no_imagen.jpg') }}" alt="Imagen del producto {{ $producto->nombre }}"
+                    <img src="{{ asset('storage/no_imagen.jpg') }}" alt="Imagen del paquete {{ $mPaquete->nombre }}"
                         width="100%" class="img-thumbnail">
                 @endif
             </div>
-            <div class="col-8 bg-light mb-2 rounded pt-5 ">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Categoria</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ $mProducto->nombre }}</td>
-                            <td>{{ $mProducto->categoria }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Existencias</th>
-                            <th>Disponibles</th>
-                            <th>Precio de compra</th>
-                            <th>Precio unitario</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{$mProducto->existencias}}</td>
-                            <td>{{$mProducto->disponibles}}</td>
-                            <td>{{$mProducto->precioCompra}}</td>
-                            <td>{{$mProducto->precioUnitario}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-8">
+                <div class="row bg-light mb-2 rounded pt-5">
+                    <div class="col">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ $mPaquete->nombre }}</td>
+                                    <td>${{ $mPaquete->precio }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row bg-light mb-2 rounded pt-5">
+                    <div class="col">
+
+                        <table class="table">
+                            <thead>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio unitario</th>
+                                <th>Precio total</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($mDetallesPaquete as $detallePaquete)
+                                    <tr>
+                                        <td>{{ $detallePaquete->nombre }}</td>
+                                        <td>{{ $detallePaquete->cantidad }}</td>
+                                        <td>${{ $detallePaquete->precioUnitario }}</td>
+                                        <td>${{ $precios->precio[$loop->index] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="row mt-4">
             <div class="col text-left">
-                <a class="btn btn-secondary" href="{{ route('productos.index') }}" role="button">Volver</a>
+                <a class="btn btn-secondary" href="{{ route('paquetes.index') }}" role="button">Volver</a>
             </div>
         </div>
     </div>
