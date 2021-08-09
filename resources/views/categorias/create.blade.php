@@ -1,15 +1,15 @@
-@extends('layout.layout')
+@extends('layout.users')
 
-{{-- @section('titulo')
+@section('title')
     Agregar categoria
-@endsection --}}
+@endsection
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 @endsection
 
 @section('contents')
-    <div class="container-fluid bg-white mb-5">
+    <div class="container-fluid bg-white my-5">
         {{-- Titulo --}}
         <div class="row">
             <div class="col">
@@ -23,7 +23,7 @@
                 <div class="row bg-light mb-2 pt-2 rounded">
                     <div class="col">
                         <div class="form-group">
-                            {{ Form::label('categoria', 'Categoria') }}
+                            {{ Form::label('categoria', 'Nombre de la categoria') }}
                             {{ Form::text('categoria', old('categoria'), ['class' => 'form-control', 'required']) }}
                             @error('categoria')
                                 <div class="alert alert-danger" role="alert">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="row mb-5">
                     <div class="col">
-                        {{ Form::submit('Agregar producto', ['class' => 'btn btn-success']) }}
+                        {{ Form::submit('Agregar categoria', ['class' => 'btn btn-success']) }}
                         <a class="btn btn-secondary" href="{{ route('categorias.index') }}" role="button">Cancelar</a>
                     </div>
                 </div>

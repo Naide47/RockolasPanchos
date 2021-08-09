@@ -1,7 +1,7 @@
-@extends('layout.layout')
-{{-- @section('titulo')
+@extends('layout.users')
+@section('title')
     Editar producto
-@endsection --}}
+@endsection
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
@@ -9,7 +9,7 @@
 @endsection
 
 @section('contents')
-    <div class="container-fluid bg-white mb-5">
+    <div class="container-fluid bg-white my-5">
         <div class="row">
             <div class="col">
                 <h1>Editar producto</h1>
@@ -17,12 +17,12 @@
         </div>
         <div class="row">
             <div class="col">
-                {{ Form::model($producto, ['route' => ['productos.update', $producto->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data']) }}
+                {{ Form::model($mProducto, ['route' => ['productos.update', $mProducto->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data']) }}
                 <div class="row bg-light mb-2 rounded">
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('nombre', 'Nombre') !!}
-                            {!! Form::text('nombre', $producto->nombre, ['class' => 'form-control', 'required']) !!}
+                            {!! Form::text('nombre', $mProducto->nombre, ['class' => 'form-control', 'required']) !!}
                             @error('nombre')
                                 <div class="alert alert-danger" role="alert">
                                     {{ $message }}
@@ -34,8 +34,8 @@
                         <div class="form-group">
                             {!! Form::label('categoria', 'Categoria') !!}
                             <select name="categoria" id="categoria" class="form-control">
-                                @foreach ($categorias as $categoria)
-                                    @if ($categoria->id == $producto->id)
+                                @foreach ($mCategorias as $categoria)
+                                    @if ($categoria->id == $mProducto->id)
                                         <option value="{{ $categoria->id }}" selected>{{ $categoria->categoria }}
                                         </option>
                                     @else
@@ -55,7 +55,7 @@
                 <div class="row bg-light mb-2 rounded">
                     <div class="col">
                         {!! Form::label('existencias', 'Existencias') !!}
-                        {!! Form::number('existencias', $producto->existencias, ['class' => 'form-control', 'required']) !!}
+                        {!! Form::number('existencias', $mProducto->existencias, ['class' => 'form-control', 'required', 'min' => '0', 'step' => '1', 'oninput' => 'validity.valid||(value="");']) !!}
                         @error('existencias')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
@@ -64,7 +64,7 @@
                     </div>
                     <div class="col">
                         {!! Form::label('disponibles', 'Existencias disponibles') !!}
-                        {!! Form::number('disponibles', $producto->disponibles, ['class' => 'form-control', 'required']) !!}
+                        {!! Form::number('disponibles', $mProducto->disponibles, ['class' => 'form-control', 'required', 'min' => '0', 'step' => '1', 'oninput' => 'validity.valid||(value="");']) !!}
                         @error('disponibles')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
@@ -73,10 +73,15 @@
                     </div>
                 </div>
 
-                <div class="row bg-light mb-2 rounded">
+                <div class="row bg-light mb-2 pb-2 rounded">
                     <div class="col">
                         {!! Form::label('precioCompra', 'Precio de compra') !!}
-                        {!! Form::number('precioCompra', $producto->precioCompra, ['class' => 'form-control', 'step' => 'any', 'required']) !!}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            {!! Form::number('precioCompra', $mProducto->precioCompra, ['class' => 'form-control align-self-center', 'step' => 'any', 'required', 'min' => '0', 'step' => '1', 'oninput' => 'validity.valid||(value="");']) !!}
+                        </div>
                         @error('precioCompra')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
@@ -85,7 +90,12 @@
                     </div>
                     <div class="col">
                         {!! Form::label('precioUnitario', 'Precio por unidad') !!}
-                        {!! Form::number('precioUnitario', $producto->precioUnitario, ['class' => 'form-control', 'step' => 'any', 'required']) !!}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            {!! Form::number('precioUnitario', $mProducto->precioUnitario, ['class' => 'form-control align-self-center', 'step' => 'any', 'required', 'min' => '0', 'step' => '1', 'oninput' => 'validity.valid||(value="");']) !!}
+                        </div>
                         @error('precioUnitario')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
@@ -97,8 +107,8 @@
 
                 <div class="row bg-light mb-4 rounded">
                     <div class="col-8 p-2 text-center">
-                        @if ($producto->imgNombreFisico)
-                            <img src="{{ asset('storage/' . $producto->imgNombreFisico) }}" class="img-thumbnail"
+                        @if ($mProducto->imgNombreFisico)
+                            <img src="{{ asset('storage/' . $mProducto->imgNombreFisico) }}" class="img-thumbnail"
                                 id="image-preview" name="image-preview" width="200px" alt="Imagen del productos">
                         @else
                             <img src="{{ asset('storage/no_imagen.jpg') }}" id="image-preview" class="img-thumbnail"
@@ -110,7 +120,7 @@
                             {!! Form::label('imagen', 'Imagen del producto') !!}
                             {!! Form::file('imagen', ['accept' => 'image/x-png, image/gif, image/jpeg', 'class' => 'form-control-file', 'class' => 'form-control-file', 'onchange' => "document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])"]) !!}
                             <button type="button" class="btn btn-secondary mt-3"
-                                onclick="restoreImage('{{ asset('storage/' . $producto->imgNombreFisico) }}')">Deshacer</button>
+                                onclick="restoreImage('{{ asset('storage/' . $mProducto->imgNombreFisico) }}')">Deshacer</button>
                         </div>
                     </div>
                 </div>
