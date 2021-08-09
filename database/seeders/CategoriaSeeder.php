@@ -15,11 +15,11 @@ class CategoriaSeeder extends Seeder
     public function run()
     {
         DB::table('categoria')->insert([
-            ["categoria"=>"Silla"],
-            ["categoria"=>"Mesa"],
-            ["categoria"=>"Rockola"],
-            ["categoria"=>"Carpa"],
-            ["categoria"=>"Inflable"]
+            ["id" => 1, "categoria" => "Silla"],
+            ["id" => 2, "categoria" => "Mesa"],
+            ["id" => 3, "categoria" => "Rockola"],
+            ["id" => 4, "categoria" => "Carpa"],
+            ["id" => 5, "categoria" => "Inflable"]
         ]);
     }
 }
