@@ -118,7 +118,11 @@
                     <div class="col-4 h-100 align-self-center">
                         <div class="form-group mb-0">
                             {!! Form::label('imagen', 'Imagen del producto') !!}
-                            {!! Form::file('imagen', ['accept' => 'image/x-png, image/gif, image/jpeg', 'class' => 'form-control-file', 'class' => 'form-control-file', 'onchange' => "document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])"]) !!}
+                            {!! Form::file('imagen', [
+    'accept' => 'image/png, image/jpeg',
+    'class' => 'form-control-file',
+    'onchange' => "document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])",
+]) !!}
                             <button type="button" class="btn btn-secondary mt-3"
                                 onclick="restoreImage('{{ asset('storage/' . $mProducto->imgNombreFisico) }}')">Deshacer</button>
                         </div>

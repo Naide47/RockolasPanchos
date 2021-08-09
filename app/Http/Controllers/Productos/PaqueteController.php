@@ -48,8 +48,6 @@ class PaqueteController extends Controller
 
         $mPreciosUnitarios = json_encode($mPreciosUnitarios);
 
-        $hola = "Hola!";
-
         return view("productos.paquetes.create", compact('mProductos', 'mCategorias', 'mPreciosUnitarios', 'hola'));
     }
 
@@ -63,7 +61,7 @@ class PaqueteController extends Controller
     {
         $request->validate([
             "nombre" => "required|unique:paquete,nombre",
-            "imagen" => "required",
+            "imagen" => "required|image|mimes:png,jpg,jpeg",
             "silla" => "required",
             "sillaCantidad" => "required",
             "mesa" => "required",
@@ -87,9 +85,8 @@ class PaqueteController extends Controller
             $mPaquete->save();
 
             $file = $request->file('imagen');
-            // $fileName = strtok($file->getClientOriginalName(), ".jpg"); //Nombre sin extensión
             $imgNombreVirtual = $file->getClientOriginalName();
-            $imgNombreFisico = $mPaquete->id . "_" . $request->nombre . "_paquete" . "." . $file->getClientOriginalExtension();
+            $imgNombreFisico = $mPaquete->id . "_" . trim($request->nombre) . "_paquete" . "." . $file->getClientOriginalExtension();
             Storage::disk('local')->put($imgNombreFisico, File::get($file));
             $mPaquete->imgNombreVirtual = $imgNombreVirtual;
             $mPaquete->imgNombreFisico = $imgNombreFisico;
@@ -122,7 +119,7 @@ class PaqueteController extends Controller
                         $cantidad = $request->inflableCantidad;
                         break;
                 }
-    
+
                 $dpController->store($mPaquete->id, $producto_id, $cantidad);
             }
 
@@ -176,9 +173,10 @@ class PaqueteController extends Controller
     public function edit($id)
     {
         $mPaquete = Paquete::find($id);
+
         $mDetallesPaquete = DB::table('detalle_paquete')
-            ->join('producto', 'detalle_paquete.producto_id', '=', 'producto.id')
-            ->join('categoria', "producto.categoria_id", "=", "categoria.id")
+            ->join('producto', 'producto.id', '=', 'detalle_paquete.producto_id')
+            ->join('categoria', "categoria.id", "=", "producto.categoria_id")
             ->select(
                 "producto.id as producto_id",
                 "producto.nombre",
@@ -189,18 +187,20 @@ class PaqueteController extends Controller
             ->where("detalle_paquete.paquete_id", "=", $mPaquete->id)
             ->get();
 
-        $precios = new stdClass;
-        $precios->precio = array();
-        foreach ($mDetallesPaquete as $detallesPaquete) {
-            $precio = $detallesPaquete->precioUnitario * $detallesPaquete->cantidad;
-            $precios->precio[] = $precio;
-        }
-
         $mProductos = DB::table('producto')
             ->select("producto.id", "producto.nombre", "producto.categoria_id", "producto.precioUnitario")
             ->get();
 
-        return view("productos.paquetes.edit", compact('mPaquete', 'mDetallesPaquete', 'precios', 'mProductos'));
+        $mCategorias = Categoria::all()->sortBy("id");
+
+        $mPreciosUnitarios = DB::table('producto')
+            ->select('producto.id', 'producto.precioUnitario')
+            ->get()
+            ->toArray();
+
+        $mPreciosUnitarios = json_encode($mPreciosUnitarios);
+
+        return view("productos.paquetes.edit", compact('mPaquete', 'mDetallesPaquete', 'mProductos', 'mCategorias', 'mPreciosUnitarios'));
     }
 
     /**
@@ -212,7 +212,81 @@ class PaqueteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            "nombre" => "required|unique:paquete,nombre," . $id,
+            "imagen" => "nullable|image|mimes:png,jpg,jpeg",
+            "silla" => "required",
+            "sillaCantidad" => "required",
+            "mesa" => "required",
+            "mesaCantidad" => "required",
+            "rockola" => "nullable|required_with:rockolaCantidad",
+            "rockolaCantidad" => "required_with:rockola",
+            "carpa" => "nullable|required_with:carpaCantidad",
+            "carpaCantidad" => "required_with:carpa",
+            "inflable" => "nullable|required_with:inflableCantidad",
+            "inflableCantidad" => "required_with:inflable",
+            "totalFinal" => "required"
+        ]);
+
+        $productos = $request->only('silla', 'mesa', 'rockola', 'carpa', 'inflable');
+
+        DB::beginTransaction();
+        try {
+            $mPaquete = Paquete::find($id);
+            $mPaquete->nombre = $request->nombre;
+            $mPaquete->precio = $request->totalFinal;
+
+            $file = $request->file('imagen');
+            if ($file) {
+                $imgNombreFisico = $mPaquete->id . "_" . trim($request->nombre) . "_paquete" . "." . $file->getClientOriginalExtension();
+                Storage::disk('local')->put($imgNombreFisico, File::get($file));
+                $mPaquete->imgNombreVirtual = $file->getClientOriginalName();
+                $mPaquete->imgNombreFisico = $imgNombreFisico;
+            }
+
+            $mPaquete->save();
+
+            $dpController = new DetallePaqueteController();
+
+            foreach (array_keys($productos) as $key) {
+                $producto_id = -1;
+                $cantidad = -1;
+                switch ($key) {
+                    case "silla":
+                        $producto_id = $request->silla;
+                        $cantidad = $request->sillaCantidad;
+                        break;
+                    case "mesa":
+                        $producto_id = $request->mesa;
+                        $cantidad = $request->mesaCantidad;
+                        break;
+                    case "rockola":
+                        $producto_id = $request->rockola;
+                        $cantidad = $request->rockolaCantidad;
+                        break;
+                    case "carpa":
+                        $producto_id = $request->carpa;
+                        $cantidad = $request->carpaCantidad;
+                        break;
+                    case "inflable":
+                        $producto_id = $request->inflable;
+                        $cantidad = $request->inflableCantidad;
+                        break;
+                }
+
+                $dpController->store($mPaquete->id, $producto_id, $cantidad);
+            }
+
+            DB::commit();
+
+            Session::flash('message', 'Paquete modificado exitosamente');
+            Session::flash('alert-class', 'success');
+
+            return redirect('paquetes');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
     }
 
     /**
