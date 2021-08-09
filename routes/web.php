@@ -19,7 +19,19 @@ use Inertia\Inertia;
 */
 
 Route::resource('ventas','VentaController');
-#Route::get('/venta/compra','VentaController@create');
+Route::post('/ventas/comprar', 'VentaController@create')->name('comprar');
+Route::post('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
+Route::post('/ventas/eliminaritem', 'VentaController@elimnarItemCarrito')->name('eliminarItemCarrito');
+#Route::get('/ventas/pdf', 'PDFController@createPDFVentas');
+
+// Route::get('/pdf', function (Codedge\Fpdf\Fpdf\Fpdf $fpdf) {
+
+//     $fpdf->AddPage();
+//     $fpdf->SetFont('Courier', 'B', 18);
+//     $fpdf->Cell(50, 25, 'Hello World!');
+//     $fpdf->Output();
+
+// });
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

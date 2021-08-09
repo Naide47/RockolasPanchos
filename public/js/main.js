@@ -1,5 +1,5 @@
-(function ($) {
-    "use strict";
+// (function ($) {
+//     "use strict";
     
     // Dropdown on mouse hover
     $(document).ready(function () {
@@ -204,6 +204,9 @@
     $('.qty button').on('click', function () {
         var $button = $(this);
         var oldValue = $button.parent().find('input').val();
+        var id = $button.parent().find('input').attr('id');
+        id = id.substr(id.indexOf('_')+1);
+
         if ($button.hasClass('btn-plus')) {
             var newVal = parseFloat(oldValue) + 1;
         } else {
@@ -213,8 +216,37 @@
                 newVal = 0;
             }
         }
+        if(newVal > 3){
+            newVal = 3;
+        }
+        if(newVal < 1){
+            newVal = 1;
+        }
+
+        var precio = $('#precio'+id).val();
+        var total = parseFloat(precio) * parseFloat(newVal);
+        $('#total'+id).val(total);
+        //console.log(precio);
+        
+        calcularTotal();
+
         $button.parent().find('input').val(newVal);
     });
+
+    function calcularTotal() {
+        var totalCarrito = $('.totalCarrito');
+        var count = 0;
+
+        for(i=0; i<totalCarrito.length; i++){
+            var elemento = totalCarrito[i];
+            var totalProducto = $('#'+elemento.id).val();
+            //console.log(totalProducto);
+            //console.log(parseFloat(totalProducto));
+            count+=parseFloat(totalProducto);
+        }
+        
+        $('#totalFinal').text('$'+count);
+    }
     
     
     // Shipping address show hide
@@ -235,5 +267,5 @@
             $('#' + checkbox_id + '-show').slideDown();
         }
     });
-})(jQuery);
+// })(jQuery);
 

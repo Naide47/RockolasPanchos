@@ -11,6 +11,7 @@ use App\Models\Usuarios\Persona;
 
 use App\Http\Controllers\Persona\PersonaController;
 use App\Http\Controllers\Productos\ProductoController;
+use App\Http\Controllers\PDFController;
 use Session;
 use Redirect;
 
@@ -97,7 +98,7 @@ class VentaController extends Controller
             $mVenta->status = 1;
             $mVenta->save();
             
-            $venta_id = Venta::all();
+            #$venta_id = Venta::all();
 
             $mDetalle = new Detalle();
             $mDetalle->venta_id = $mVenta->id;
@@ -105,7 +106,6 @@ class VentaController extends Controller
             $mDetalle->cantidad = $request->cantidad;
             $mDetalle->precioUnitario = $request->precio;
             $mDetalle->save();
-            // $mVenta->detalle_ventas()->save($mDetalle);
 
             $producto = Producto::find($request->id);
             $existenciasF = $request->existencias - $request->cantidad;
@@ -116,8 +116,10 @@ class VentaController extends Controller
             $producto->save();
 
             DB::commit();
-            Session::flash('message','Venta realizada');
-            return Redirect::to('ventas');
+            $pdfController = new PDFController;
+            $pdfController->createPDFVentas($mCliente->id, $mCliente->persona_id, $mVenta->id, $mDetalle->id, $mDetalle->producto_id);
+            #Session::flash('message','Venta realizada');
+            #return Redirect::to('ventas');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -127,16 +129,6 @@ class VentaController extends Controller
             return $e->getMessage();
         }
         
-        // $mPersona = new Persona();
-        // $mPersona->nombre = $nombreCompleto;
-        // $mPersona->colonia = $request->colonia;
-        // $mPersona->calle  = $request->calle;
-        // $mPersona->codigoPostal = $request->codigoPostal;
-        // $mPersona->telefono = $request->telefono;
-        // $mPersona->celular = $request->celular;
-        // $mPersona->save();
-
-        // $persona_id = Persona::all();
     }
 
     /**
@@ -182,5 +174,54 @@ class VentaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function agregarCarrito(Request $request){
+
+        // session()->forget('carrito');
+        // echo var_dump(session()->has('carrito'));
+
+        $carrito = $request->session()->get('carrito');
+        foreach($carrito as $row){
+            if($row['IdProducto'] == $request->IdProducto){
+                Session::flash('message','Ya esta en el carrito '.$row['nombre'] );
+                return Redirect::to('ventas');
+                
+            }
+        }
+        if(!$carrito){
+            $carrito=[];
+        }
+
+        array_push($carrito, [
+            'IdProducto'=>$request->IdProducto,
+            'cantidad'=>$request->cantidad,
+            'nombre'=>$request->nombreProducto,
+            'imagen'=>$request->imagen,
+            'precio'=>$request->precioUnitario
+        ]);
+        
+        $request->session()->put('carrito',$carrito);
+        #echo var_dump($carrito);
+        // foreach($carrito as $row){
+        //     echo ($row['nombre']);
+        // }
+        //echo ('Son iguales');
+        return view('ventas.carrito', compact('carrito'));
+    }
+
+
+    public function elimnarItemCarrito(Request $request){
+        $carrito = $request->session()->get('carrito');
+        $idP = $request->idP;
+        unset($carrito[$idP]);
+        #session()->forget('carrito');
+        // if($idP < 1){
+        //     $carrito = [];
+        //     session()->forget('carrito');
+        // }
+        // echo ($idP);
+        // echo var_dump($carrito);
+        return view('ventas.carrito', compact('carrito'));
     }
 }

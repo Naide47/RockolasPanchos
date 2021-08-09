@@ -63,7 +63,7 @@
             </div>
         </div>
     </div>
-    <div style="padding: 30px; background: #ffffff;">
+    <div style="padding: 30px; margin-bottom: 30px; background: #ffffff;">
         <h3>Detalle de la compra</h3>
         <div class="col-md-12">
             @if ($modelo->imgNombreFisico)
@@ -118,43 +118,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div style="padding: 30px; margin-bottom: 30px; background: #ffffff;">
-        <h3>Forma de pago</h3>
-        <div class="col-md-12">    
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="pago" id="pago1" value="1" checked>
-                <label class="form-check-label" for="pago1">
-                    Efectivo
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="pago" id="pago2" value="2">
-                <label class="form-check-label" for="pago2">
-                    Tarjeta
-                </label>
-            </div>
-        </div>
-        <h3 id="tituloTarjeta" style="visibility:hidden">Informacion de la tarjeta</h3>
-        <div class="col-md-12">
-            <div class="row">
-                <div class="form-group col-md-4">
-                    {{Form::label('numTarjeta','Numero de tarjeta', ["style"=>"visibility:hidden", "id"=>"labelnumTarjeta"])}}
-                    {{Form::hidden('numTarjeta', '0', ["class"=>"form-control", "required" => true, "placeholder" => "Numero de tarjeta", "id"=>"numTarjeta"] )}}      
-                </div>
-                <div class="form-group col-md-4">
-                {{Form::label('tipoTarjeta','Tipo de tarjeta', ["style"=>"visibility:hidden", "id"=>"labeltipoTarjeta"])}}
-                    <div class="input-group mb-3">
-                        <select class="custom-select" id="tipoTarjeta" name="tipoTarjeta" required="true" style="visibility:hidden">
-                            <option selected value="0">Eliga un tipo</option>
-                            <option value="1">Debito</option>
-                            <option value="2">Credito</option>
-                        </select>
-                    </div>    
-                </div>
-            </div>
-        </div>
-    
         {{Form::submit('Comprar', ["class"=>"btn btn-success"])}}
         {{Form::close()}}
     </div>
