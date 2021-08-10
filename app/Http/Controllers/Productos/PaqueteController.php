@@ -48,7 +48,7 @@ class PaqueteController extends Controller
 
         $mPreciosUnitarios = json_encode($mPreciosUnitarios);
 
-        return view("productos.paquetes.create", compact('mProductos', 'mCategorias', 'mPreciosUnitarios', 'hola'));
+        return view("productos.paquetes.create", compact('mProductos', 'mCategorias', 'mPreciosUnitarios'));
     }
 
     /**

@@ -17,10 +17,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::resource('ventas','VentaController');
 Route::post('/ventas/comprar', 'VentaController@create')->name('comprar');
-Route::post('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
+Route::get('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
+Route::get('/ventas/showCarrito', 'VentaController@showCarrito')->name('mostrarCarrito');
 Route::post('/ventas/eliminaritem', 'VentaController@elimnarItemCarrito')->name('eliminarItemCarrito');
+Route::resource('ventas','VentaController');
 #Route::get('/ventas/pdf', 'PDFController@createPDFVentas');
 
 // Route::get('/pdf', function (Codedge\Fpdf\Fpdf\Fpdf $fpdf) {
@@ -44,10 +45,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('productos', 'ProductoController');
         Route::resource('categorias', 'CategoriaController');
         Route::resource('paquetes', 'PaqueteController');
-
-        // Route::namespace('Paquetes')->group(function () {
-        //     Route::resource('paquetes', 'PaqueteController');
-        // });
     });
 });
 
