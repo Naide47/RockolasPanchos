@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Productos\Categoria;
 use Illuminate\Http\Request;
 use App\Models\Productos\Producto;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -19,8 +20,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::all();
-        return view('productos.index', compact('productos'));
+        $mProductos = Producto::all();
+        return view('productos.index', compact('mProductos'));
     }
 
     /**
@@ -31,8 +32,8 @@ class ProductoController extends Controller
     public function create()
     {
 
-        $categorias = Categoria::all();
-        return view('productos.create', compact('categorias'));
+        $mCategorias = Categoria::all()->sortBy("id");
+        return view('productos.create', compact('mCategorias'));
     }
 
     /**
@@ -43,32 +44,33 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        $validacion = $request->validate([
-            'nombre' => 'required',
+        $request->validate([
+            'nombre' => 'required|unique:producto,nombre',
             'categoria' => 'required',
-            'existencias' => 'required',
-            'precioCompra' => 'required'
+            'cantidad' => 'required|integer|gte:0',
+            'precioCompra' => 'required|numeric|gte:0',
+            'precioUnitario' => 'required|numeric|gte:0',
+            'imagen' => 'image|mimes:png,jpg,jpeg',
         ]);
 
-        $nuevoProducto = new Producto();
-        $nuevoProducto->categoria_id = $request->categoria;
-        $nuevoProducto->nombre = $request->nombre;
-        $nuevoProducto->existencias = $request->existencias;
-        $nuevoProducto->disponibles = $request->existencias;
-        $nuevoProducto->precioCompra = $request->precioCompra;
-        $precioUnitario = $request->precioCompra / $request->existencias;
-        // $precioUnitario = ?
-        $nuevoProducto->precioUnitario = $precioUnitario;
-        $nuevoProducto->save();
+        $mProducto = new Producto();
+        $mProducto->categoria_id = $request->categoria;
+        $mProducto->nombre = $request->nombre;
+        $mProducto->existencias = $request->cantidad;
+        $mProducto->disponibles = $request->cantidad;
+        $mProducto->precioCompra = $request->precioCompra;
+        $mProducto->precioUnitario = $request->precioUnitario;
+        $mProducto->save();
 
         $file = $request->file('imagen');
         if ($file) {
+            $fileName = strtok($file->getClientOriginalName(), ".jpg"); //Nombre sin extensión
             $imgNombreVirtual = $file->getClientOriginalName();
-            $imgNombreFisico = "$nuevoProducto->idProducto_$imgNombreVirtual";
+            $imgNombreFisico = $mProducto->id . "_" . $fileName . "_producto" . "." . $file->getClientOriginalExtension();
             Storage::disk('local')->put($imgNombreFisico, File::get($file));
-            $nuevoProducto->imgNombreVirtual = $imgNombreVirtual;
-            $nuevoProducto->imgNombreFisico = $imgNombreFisico;
-            $nuevoProducto->save();
+            $mProducto->imgNombreVirtual = $imgNombreVirtual;
+            $mProducto->imgNombreFisico = $imgNombreFisico;
+            $mProducto->save();
         }
 
         Session::flash('message', 'Producto agregado con exito');
@@ -84,9 +86,21 @@ class ProductoController extends Controller
      */
     public function show($id)
     {
-        $producto = Producto::find($id);
-        $categoria = Categoria::find($producto->categoria_id);
-        return view('productos.show', compact('producto', 'categoria'));
+        $mProducto = DB::table('producto')
+            ->join('categoria', 'producto.categoria_id', '=', 'categoria.id')
+            ->select(
+                'producto.nombre',
+                'producto.existencias',
+                'producto.disponibles',
+                'producto.precioCompra',
+                'producto.precioUnitario',
+                'producto.imgNombreFisico',
+                'categoria.categoria'
+            )
+            ->where('producto.id', '=', $id)
+            ->first();
+
+        return view('productos.show', compact('mProducto'));
     }
 
     /**
@@ -97,9 +111,9 @@ class ProductoController extends Controller
      */
     public function edit($id)
     {
-        $producto = Producto::find($id);
-        $categorias = Categoria::all();
-        return view('productos.edit', compact('producto', 'categorias'));
+        $mProducto = Producto::find($id);
+        $mCategorias = Categoria::all()->sortBy("id");
+        return view('productos.edit', compact('mProducto', 'mCategorias'));
     }
 
     /**
@@ -111,34 +125,38 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validacion = $request->validate([
-            'nombre' => 'required',
-            'existencias' => 'required',
-            'precioCompra' => 'required',
-            'precioUnitario' => 'required'
+        $request->validate([
+            'nombre' => 'required|unique:producto,nombre, ' . $id,
+            'existencias' => 'required|integer|gte:0|gte:disponibles',
+            'disponibles' => 'required|integer|gte:0|lte:existencias',
+            'precioCompra' => 'required|numeric|gte:0',
+            'precioUnitario' => 'required|numeric|gte:0',
+            'imagen' => 'image|mimes:png,jpg,jpeg'
+
         ]);
 
-        $producto = Producto::find($id);
-        $producto->nombre = $request->nombre;
-        $producto->categoria_id = $request->categoria;
-        $producto->existencias = $request->existencias;
-        $producto->disponibles = $request->disponibles;
-        $producto->precioCompra = $request->precioCompra;
-        $producto->precioUnitario = $request->precioUnitario;
+        $mProducto = Producto::find($id);
+        $mProducto->nombre = $request->nombre;
+        $mProducto->categoria_id = $request->categoria;
+        $mProducto->existencias = $request->existencias;
+        $mProducto->disponibles = $request->disponibles;
+        $mProducto->precioCompra = $request->precioCompra;
+        $mProducto->precioUnitario = $request->precioUnitario;
 
         $file = $request->file('imagen');
         if ($file) {
-            $imgFisicoOriginal = $producto->imgNombreFisico;
+            $imgFisicoOriginal = $mProducto->imgNombreFisico;
             Storage::delete($imgFisicoOriginal);
 
+            $fileName = strtok($file->getClientOriginalName(), ".jpg"); //Nombre sin extensión
             $imgNombreVirtual = $file->getClientOriginalName();
-            $imgNombreFisico = "$producto->idProducto_$imgNombreVirtual";
+            $imgNombreFisico = $mProducto->id . "_" . $fileName . "_paquete" . "." . $file->getClientOriginalExtension();
             Storage::disk('local')->put($imgNombreFisico, File::get($file));
-            $producto->imgNombreVirtual = $imgNombreVirtual;
-            $producto->imgNombreFisico = $imgNombreFisico;
+            $mProducto->imgNombreVirtual = $imgNombreVirtual;
+            $mProducto->imgNombreFisico = $imgNombreFisico;
         }
 
-        $producto->save();
+        $mProducto->save();
 
         Session::flash('message', 'Producto actualizado con exito');
         Session::flash('alert-class', 'success');
@@ -151,9 +169,10 @@ class ProductoController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+     *
     public function destroy($id)
     {
         //
     }
+     */
 }

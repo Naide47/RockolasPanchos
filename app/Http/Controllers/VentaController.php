@@ -8,12 +8,13 @@ use App\Models\Ventas\Detalle;
 use App\Models\Ventas\Venta;
 use App\Models\Ventas\Cliente;
 use App\Models\Usuarios\Persona;
+use Redirect;
 
 use App\Http\Controllers\Persona\PersonaController;
 use App\Http\Controllers\Productos\ProductoController;
 use App\Http\Controllers\PDFController;
-use Session;
-use Redirect;
+
+use Illuminate\Support\Facades\Session;
 
 use Illuminate\Support\Facades\DB;
 
@@ -29,6 +30,7 @@ class VentaController extends Controller
      */
     public function index()
     {
+        // return session()->all();
         $table = Producto::all();
         return view('ventas.index', compact('table'));
     }
@@ -40,11 +42,10 @@ class VentaController extends Controller
      */
     public function create(Request $request)
     {
-        if($request->id){
+        if ($request->id) {
             $modelo = Producto::find($request->id);
         }
         return view('ventas.create', compact('modelo'));
-        
     }
 
     /**
@@ -55,7 +56,7 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData = $request -> validate([
+        $validateData = $request->validate([
             'nombre' => 'required|min:3|max:30',
             'apellido' => 'required|min:3|max:30',
             'calle' => 'required|min:3|max:30',
@@ -76,7 +77,7 @@ class VentaController extends Controller
         ]);
 
         DB::beginTransaction();
-        try{
+        try {
 
             $nombreCompleto = $request->nombre . " " . $request->apellido;
 
@@ -87,7 +88,7 @@ class VentaController extends Controller
             $mCliente = new Cliente();
             $mCliente->persona_id = $idPersona;
             $mCliente->save();
-            
+
             $mVenta = new Venta();
             $mVenta->cliente_id = $mCliente->id;
             $mVenta->users_id = 1;
@@ -97,7 +98,7 @@ class VentaController extends Controller
             $mVenta->tipoTarjeta = $request->tipoTarjeta;
             $mVenta->status = 1;
             $mVenta->save();
-            
+
             #$venta_id = Venta::all();
 
             $mDetalle = new Detalle();
@@ -128,7 +129,6 @@ class VentaController extends Controller
             // return redirect('usuarios.create');
             return $e->getMessage();
         }
-        
     }
 
     /**
@@ -176,55 +176,65 @@ class VentaController extends Controller
         //
     }
 
-    public function agregarCarrito(Request $request){
+    public function showCarrito()
+    {
+        return view('ventas.carrito');
+    }
+
+    public function agregarCarrito(Request $request)
+    {
 
         // session()->forget('carrito');
         // echo var_dump(session()->has('carrito'));
 
         $carrito = $request->session()->get('carrito');
+        if (!$carrito) {
+            $carrito = [];
+        }
 
-        if(!$carrito){
-            $carrito=[];
-        }else {
-            foreach($carrito as $row){
-                if($row['IdProducto'] == $request->IdProducto){
-                    Session::flash('message','Ya esta en el carrito '.$row['nombre'] );
-                    return Redirect::to('ventas');
-                    
-                }
+        foreach ($carrito as $row) {
+            if ($row['IdProducto'] == $request->IdProducto) {
+                Session::flash('message', '"' . $row['nombre'] . '" ya esta en el carrito ');
+                return redirect('ventas');
             }
         }
         
 
+
         array_push($carrito, [
-            'IdProducto'=>$request->IdProducto,
-            'cantidad'=>$request->cantidad,
-            'nombre'=>$request->nombreProducto,
-            'imagen'=>$request->imagen,
-            'precio'=>$request->precioUnitario
+            'IdProducto' => $request->IdProducto,
+            'cantidad' => $request->cantidad,
+            'nombre' => $request->nombreProducto,
+            'imagen' => $request->imagen,
+            'precio' => $request->precioUnitario
         ]);
-        
-        $request->session()->put('carrito',$carrito);
+
+        $request->session()->put('carrito', $carrito);
         #echo var_dump($carrito);
         // foreach($carrito as $row){
         //     echo ($row['nombre']);
         // }
         //echo ('Son iguales');
-        return view('ventas.carrito', compact('carrito'));
+        return redirect()->route('mostrarCarrito');
+
+        // return view('ventas.carrito', compact('carrito'));
     }
 
 
-    public function elimnarItemCarrito(Request $request){
+    public function elimnarItemCarrito(Request $request)
+    {
         $carrito = $request->session()->get('carrito');
         $idP = $request->idP;
-        unset($carrito[$idP]);
-        #session()->forget('carrito');
+        unset($carrito[$idP - 1]);
+        // $request->session()->forget('carrito');
+        $request->session()->put('carrito', $carrito);
         // if($idP < 1){
         //     $carrito = [];
         //     session()->forget('carrito');
         // }
         // echo ($idP);
         // echo var_dump($carrito);
-        return view('ventas.carrito', compact('carrito'));
+        // return view('ventas.carrito', compact('carrito'));
+        return redirect()->route('mostrarCarrito');
     }
 }

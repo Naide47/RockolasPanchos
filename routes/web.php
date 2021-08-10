@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\Productos\CategoriaController;
-use App\Http\Controllers\Productos\ProductoController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,10 +17,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::resource('ventas','VentaController');
 Route::post('/ventas/comprar', 'VentaController@create')->name('comprar');
-Route::post('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
+Route::get('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
+Route::get('/ventas/showCarrito', 'VentaController@showCarrito')->name('mostrarCarrito');
 Route::post('/ventas/eliminaritem', 'VentaController@elimnarItemCarrito')->name('eliminarItemCarrito');
+Route::resource('ventas','VentaController');
 #Route::get('/ventas/pdf', 'PDFController@createPDFVentas');
 
 // Route::get('/pdf', function (Codedge\Fpdf\Fpdf\Fpdf $fpdf) {
@@ -33,26 +33,38 @@ Route::post('/ventas/eliminaritem', 'VentaController@elimnarItemCarrito')->name(
 
 // });
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+Route::group(['middleware' => ['auth']], function () {
+    Route::namespace('Usuarios')->group(function () {
+        Route::get('/usuarios/inactivos', 'UsuarioController@inactiveIndex')->name('usuarios.inactivos');
+        Route::put('/usuarios/reactivar/{id}', 'UsuarioController@reactivate')->name('usuarios.reactivate');
+
+        Route::resource('usuarios', 'UsuarioController');
+    });
+
+    Route::namespace('Productos')->group(function () {
+        Route::resource('productos', 'ProductoController');
+        Route::resource('categorias', 'CategoriaController');
+        Route::resource('paquetes', 'PaqueteController');
+    });
 });
 
+Route::get('/', 'VentaController@index')->name('home');
+Route::get('/login', 'Auth\AuthController@loginPage')->name('login');
+Route::post('/login', 'Auth\AuthController@login');
+Route::post('/logout', 'Auth\AuthController@logout')->name('logout');
 
-Route::namespace('Usuarios')->group(function(){
-    Route::resource('usuarios', 'UsuarioController');
-});
+Route::resource('ventas', 'VentaController');
+#Route::get('/venta/compra','VentaController@create');
 
-Route::namespace('Productos')->group(function () {
-    Route::resource('productos', 'ProductoController');
-    Route::resource('categorias', 'CategoriaController');
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->name('dashboard');
