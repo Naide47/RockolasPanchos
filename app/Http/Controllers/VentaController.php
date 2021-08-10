@@ -182,16 +182,19 @@ class VentaController extends Controller
         // echo var_dump(session()->has('carrito'));
 
         $carrito = $request->session()->get('carrito');
-        foreach($carrito as $row){
-            if($row['IdProducto'] == $request->IdProducto){
-                Session::flash('message','Ya esta en el carrito '.$row['nombre'] );
-                return Redirect::to('ventas');
-                
-            }
-        }
+
         if(!$carrito){
             $carrito=[];
+        }else {
+            foreach($carrito as $row){
+                if($row['IdProducto'] == $request->IdProducto){
+                    Session::flash('message','Ya esta en el carrito '.$row['nombre'] );
+                    return Redirect::to('ventas');
+                    
+                }
+            }
         }
+        
 
         array_push($carrito, [
             'IdProducto'=>$request->IdProducto,
