@@ -229,6 +229,12 @@ $('.qty button').on('click', function () {
     $('#total' + id).val(total);
     //console.log(precio);
 
+    /**
+     * Copiamos la cantidad que mostramos, 
+     * en el formulario oculto
+     */
+    $('#cantidad' + id).val(newVal);
+
     calcularTotal();
 
     $button.parent().find('input').val(newVal);
@@ -245,8 +251,13 @@ function calcularTotal() {
         //console.log(parseFloat(totalProducto));
         count += parseFloat(totalProducto);
     }
+    
+    $('#totalFinalEnviar').val(count);
+    $('#anticipoCarritoEnviar').val(count * 0.30);
 
     $('#totalFinal').text('$' + count);
+    $('#anticipoCarrito').text('$' + (count * 0.30));
+    
 }
 
 // function calcularTotalFinal() {

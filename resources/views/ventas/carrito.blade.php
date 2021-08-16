@@ -8,8 +8,8 @@
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="#">Venta</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Venta</a></li>
                 <li class="breadcrumb-item active">Carrito</li>
             </ul>
         </div>
@@ -19,7 +19,7 @@
 @section('contents')
 
     @php
-    $carrito = session()->get('carrito');
+        $carrito = session()->get('carrito');
     @endphp
 
 
@@ -101,14 +101,27 @@
                             <div class="col-md-12">
                                 <div class="cart-summary">
                                     <div class="cart-content">
+                                        {{ Form::open(['route' => ['compras'], 'method' => 'GET']) }}
                                         <h1>Cart Summary</h1>
-                                        <p>Sub Total<span>$99</span></p>
-                                        <p>Shipping Cost<span>$1</span></p>
-                                        <h2>Grand Total<span id="totalFinal"></span></h2>
+                                        <p>Anticipo<span id="anticipoCarrito"></span></p>
+                                        <h2>Total<span id="totalFinal"></span></h2>
                                     </div>
                                     <div class="cart-btn">
-                                        <button>Update Cart</button>
-                                        <button>Checkout</button>
+                                        <button><a>Seguir comprando</a></button>
+                                        @forelse($carrito as $row)
+                                        {{ Form::hidden('idP'.($loop->iteration), $row['IdProducto']) }}
+                                        {{ Form::hidden('cantidad'.($loop->iteration), $row['cantidad'], ['id'=>'cantidad'.($loop->iteration)]) }}
+                                        {{ Form::hidden('nombre'.($loop->iteration), $row['nombre']) }}
+                                        {{ Form::hidden('imagen'.($loop->iteration), $row['imagen']) }}
+                                        {{ Form::hidden('precio'.($loop->iteration), $row['precio']) }}
+
+                                        @empty
+
+                                        @endforelse
+                                        {{ Form::hidden('anticipoCarritoEnviar', '', ['id'=>'anticipoCarritoEnviar']) }}
+                                        {{ Form::hidden('totalFinalEnviar', '', ['id'=>'totalFinalEnviar']) }}
+                                        <button type="submit">Continuar</button>
+                                        {{ Form::close() }}
                                     </div>
                                 </div>
                             </div>

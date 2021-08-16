@@ -94,8 +94,9 @@ class VentaController extends Controller
             $mVenta->users_id = 1;
             $mVenta->total = $request->total;
             $mVenta->anticipoPagado = $request->anticipo;
-            $mVenta->noTarjeta = $request->numTarjeta;
-            $mVenta->tipoTarjeta = $request->tipoTarjeta;
+            // $mVenta->noTarjeta = $request->numTarjeta;
+            // $mVenta->tipoTarjeta = $request->tipoTarjeta;
+            // $mVenta->identificador = '0';
             $mVenta->status = 1;
             $mVenta->save();
 
@@ -178,6 +179,7 @@ class VentaController extends Controller
 
     public function showCarrito()
     {
+        // echo var_dump(session()->get('carrito'));
         return view('ventas.carrito');
     }
 
@@ -199,8 +201,6 @@ class VentaController extends Controller
             }
         }
         
-
-
         array_push($carrito, [
             'IdProducto' => $request->IdProducto,
             'cantidad' => $request->cantidad,
@@ -225,16 +225,145 @@ class VentaController extends Controller
     {
         $carrito = $request->session()->get('carrito');
         $idP = $request->idP;
-        unset($carrito[$idP - 1]);
+        $idP = $idP - 1;
+        array_splice($carrito, $idP, 1);
         // $request->session()->forget('carrito');
         $request->session()->put('carrito', $carrito);
-        // if($idP < 1){
-        //     $carrito = [];
-        //     session()->forget('carrito');
-        // }
+        if($idP < 0) {
+            $request->session()->forget('carrito');
+        }
         // echo ($idP);
         // echo var_dump($carrito);
         // return view('ventas.carrito', compact('carrito'));
         return redirect()->route('mostrarCarrito');
     }
+
+    public function compras(Request $request)
+    {
+        // $request->session()->forget('detalle');
+        $carrito = $request->session()->get('carrito');
+        // return $request->only('idP1','cantidad1','nombre1','imagen1','precio1');
+        if (!$carrito) {
+            return redirect()->route('mostrarCarrito');
+        }
+
+        $nuevoCarrito = [];
+        
+        for ($i=0; $i < count($carrito); $i++) {
+            $idP = 'idP'.($i+1);
+            $cantidad = 'cantidad'.($i+1);
+            $nombre = 'nombre'.($i+1);
+            $imagen = 'imagen'.($i+1);
+            $precio = 'precio'.($i+1);
+            // $producto = $request->only($idP, $cantidad, $nombre, $imagen, $precio);
+            // $arreglo = []
+            $producto = ['idP'=>$request->input($idP),
+                         'cantidad'=>$request->input($cantidad),
+                         'nombre'=>$request->input($nombre),   
+                         'imagen'=>$request->input($imagen),   
+                         'precio'=>$request->input($precio)  
+                        ];
+                array_push($nuevoCarrito, [
+                    'IdProducto' => $producto['idP'],
+                    'cantidad' => $producto['cantidad'],
+                    'nombre' => $producto['nombre'],
+                    'imagen' => $producto['imagen'],
+                    'precio' => $producto['precio']
+                ]);
+                $request->session()->put('nuevoCarrito', $nuevoCarrito);
+            
+        }
+        
+        // return $nuevoCarrito;
+        $anticipo = $request->anticipoCarritoEnviar;
+        $total = $request->totalFinalEnviar;
+        
+        return view('ventas.compra', compact('anticipo', 'total'));
+    }
+
+    public function guardarCompra(Request $request)
+    {
+        $validateData = $request->validate([
+            'nombre' => 'required|min:3|max:30',
+            'apellido' => 'required|min:3|max:30',
+            'calle' => 'required|min:3|max:30',
+            'colonia' => 'required|min:3|max:30',
+            'codigoPostal' => 'required|min:3|max:9',
+            'telefono' => 'required|min:3|max:15',
+            'celular' => 'required|min:3|max:15'
+        ]);
+
+        $carrito = $request->session()->get('nuevoCarrito');
+
+        DB::beginTransaction();
+        try {
+
+            $nombreCompleto = $request->nombre . " " . $request->apellido;
+
+            $personaController = new  PersonaController();
+            $request->nombre = $nombreCompleto;
+            $idPersona = $personaController->store($request);
+
+            $mCliente = new Cliente();
+            $mCliente->persona_id = $idPersona;
+            $mCliente->save();
+
+            for($i=0; $i < count($carrito); $i++){
+                $idP = 'idPCompra'.($i+1);
+                $cantidad = 'cantidadCompra'.($i+1);
+                $precio = 'precioCompra'.($i+1);
+
+                $mVenta = new Venta();
+                $mVenta->cliente_id = $mCliente->id;
+                $mVenta->users_id = 1;
+                $mVenta->total = $request->totalCompra;
+                $mVenta->anticipoPagado = $request->anticipoCompra;
+                // $mVenta->noTarjeta = 0;
+                // $mVenta->tipoTarjeta = 0;
+                $mVenta->status = 1;
+                $mVenta->save();
+
+                $mDetalle = new Detalle();
+                $mDetalle->venta_id = $mVenta->id;
+                $mDetalle->producto_id = $request->input($idP);
+                $mDetalle->cantidad = $request->input($cantidad);
+                $mDetalle->precioUnitario = $request->input($precio);
+                $mDetalle->save();
+
+                $producto = Producto::find($request->input($idP));
+                $existenciasF = $producto->existencias - $request->input($cantidad);
+                $disponiblesF = $producto->disponibles - $request->input($cantidad);
+
+                $producto->existencias = $existenciasF;
+                $producto->disponibles = $disponiblesF;
+                $producto->save();
+
+            }
+
+            DB::commit();
+            $pdfController = new PDFController;
+            $pdfController->createPDFVentasCompra($mCliente->id, $mCliente->persona_id);
+            Session::flash('message','Venta realizada');
+            return Redirect::to('ventas');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Session::flash('message', $e->getMessage());
+            // Session::flash('alert-class', 'danger');
+            // return redirect('usuarios.create');
+            return $e->getMessage();
+        }
+    }
+
+    public function mostrarCompra(){
+        $mPersonas = Persona::all();
+        $mClientes = Cliente::all();
+        $mVentas = Venta::all();
+        $mDetalles = Detalle::all();
+        $mProductos = Producto::all();
+
+        return view('ventas.mostrarVentas', compact('mProductos','mPersonas','mClientes','mVentas','mDetalles'));
+    }
+
+
 }
