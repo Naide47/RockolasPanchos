@@ -73,6 +73,12 @@ class PDFVentas extends FPDF
         $fecha = explode(' ', $fecha);
         // Separa en año, mes y dia
         $fecha = explode('-', $fecha[0]);
+
+        // $identificador = $fecha[2]."/".$fecha[1]."/".$fecha[0]."/".$cantidad."/".$idCliente;
+        // $mVenta = new Venta();
+        // $mVenta->identificador = $identificador;
+        // $mVenta->save();
+
         // Texto del identifiador
         $this->Cell(0,6,utf8_decode("Identificador: ".$fecha[2]."/".$fecha[1]."/".$fecha[0]."/".$cantidad."/".$idCliente),0,1,'R');
 
@@ -90,16 +96,7 @@ class PDFVentas extends FPDF
         $this->Cell(0,6,utf8_decode("A nombre de EMILIO PANCHO"),0,1,'L',true);
         $this->Cell(0,6,utf8_decode("Concepto: Compra material"),0,1,'L',true);
         $this->Cell(0,6,utf8_decode("Fecha de Impresión: ".$fecha[2]."/".$fecha[1]."/".$fecha[0]),0,1,'L',true);
-        $fecha[2] = $fecha[2]+5;
-        if(intval($fecha[2])>30){
-            $fecha[1] = $fecha[1]+1;
-            $fecha[2] = $fecha[2]-30;
-        }elseif($fecha[2]>28 and $fecha[2]==2){
-            $fecha[2] = $fecha[2]+1;
-        }
-        if($fecha[1]>12){
-            $fecha[0] = $fecha[0]+1;
-        }
+        
         $this->Cell(0,6,utf8_decode("Fecha de limite para anticipo: ".$fecha[2]."/".$fecha[1]."/".$fecha[0]),0,1,'L',true);
         $this->Cell(0,6,utf8_decode("Monto del anticipo: ".$anticipo),0,1,'L',true);
         $fecha[2] = $fecha[2]+5;
@@ -114,7 +111,6 @@ class PDFVentas extends FPDF
         }
         $this->Cell(0,6,utf8_decode("Fecha de limite para pago total: ".$fecha[2]."/".$fecha[1]."/".$fecha[0]),0,1,'L',true);
         $this->Cell(0,6,utf8_decode("Monto del pago total: ".$total),0,1,'L',true);
-
         // Salto de línea
         $this->Ln(6);
     }
@@ -169,12 +165,90 @@ class PDFVentas extends FPDF
         $this->Ln();
     }
 
+    function tituloTabla(){
+        // Fuente para el titulo
+        $this->setFont('Arial','B',12);
+        // Titulo
+        $this->Cell(0,6,"Datos de la compra",0,1,'L');
+    }
+
+    function titulosTabla(){
+        $header = array('Producto', 'Cantidad', 'Precio', 'Fecha');
+        // Fuente para la Cabecera
+        $this->SetFont('Arial','',11);
+        // Cabecera
+        foreach($header as $col){
+            $this->CellFitSpace(38,8,utf8_decode($col),1);
+        }
+        $this->Ln();
+    }
+
+    function DatosVentaCompra($prodcuto, $cantidad, $precio, $fecha)
+    {
+        
+        $fecha = explode(' ', $fecha);
+        // Separa en año, mes y dia
+        $fecha = explode('-', $fecha[0]);
+        $data = array($prodcuto, $cantidad, $precio, $fecha[2]."/".$fecha[1]."/".$fecha[0]);
+
+        // Times 12
+        $this->SetFont('Times','',12);
+        // Datos
+        foreach($data as $row){
+            $this->CellFitSpace(38,7,utf8_decode($row),1);
+        }
+        $this->Ln();
+    }
+
     function ImprimirDatos($nombre, $calle, $colonia, $celular, $producto, $cantidad, $anticipo, $total, $fecha, $idCliente)
     {
         $this->AddPage();
         $this->DatosPago($fecha,$anticipo,$total,$cantidad,$idCliente);
         $this->DatoPersona($nombre, $calle, $colonia, $celular, $fecha, $cantidad, $idCliente);
         $this->DatosVenta($producto, $cantidad, $anticipo, $total, $fecha);
+    } 
+
+    function ImprimirDatosCompra($nombre, $calle, $colonia, $celular, $idCliente)
+    {
+        $mVentas = Venta::all();
+        $mDetalles = Detalle::all();
+        $mProductos = Producto::all();
+
+        foreach($mVentas as $rowVenta){
+            foreach($mDetalles as $rowDetalle){
+                foreach($mProductos as $rowProducto){
+                    if($rowVenta->cliente_id == $idCliente){
+                        if($rowDetalle->venta_id == $rowVenta->id){
+                            if($rowProducto->id == $rowDetalle->producto_id){
+                                $fecha = $rowVenta->fechaRegistro;
+                                $anticipo = $rowVenta->anticipoPagado;
+                                $total = $rowVenta->total;
+                                $cantidad = $rowDetalle->cantidad;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->AddPage();
+        $this->DatosPago($fecha,$anticipo,$total,$cantidad,$idCliente);
+        $this->DatoPersona($nombre, $calle, $colonia, $celular, $fecha, $cantidad, $idCliente);
+        $this->tituloTabla();
+        $this->titulosTabla();
+        foreach($mVentas as $rowVenta){
+            foreach($mDetalles as $rowDetalle){
+                foreach($mProductos as $rowProducto){
+                    if($rowVenta->cliente_id == $idCliente){
+                        if($rowDetalle->venta_id == $rowVenta->id){
+                            if($rowProducto->id == $rowDetalle->producto_id){
+                                $this->DatosVentaCompra($rowProducto->nombre, $rowDetalle->cantidad, $rowDetalle->precioUnitario,  $rowVenta->fechaRegistro);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //***** Aquí comienza código para ajustar texto *************
@@ -276,6 +350,25 @@ class PDFController extends Controller
         $this->fpdf->SetTitle($title);
         $this->fpdf->ImprimirDatos($mPersona->nombre, $mPersona->calle, $mPersona->colonia, $mPersona->celular, $mProducto->nombre, $mDetalle->cantidad, $mVenta->anticipoPagado, $mVenta->total, $mVenta->fechaRegistro, $mCliente->id);
          
+        $this->fpdf->Output();
+        exit;
+        
+    }
+
+    public function createPDFVentasCompra($idCliente, $idPersona)
+    {
+        $mCliente = Cliente::find($idCliente);
+        $mPersona = Persona::find($idPersona);
+
+        // Creación del objeto de la clase heredada
+        $this->fpdf = new PDFVentas();
+        $title = 'Comprobante de compra';
+        $this->fpdf->SetTitle($title);
+        $this->fpdf->ImprimirDatosCompra($mPersona->nombre, $mPersona->calle, $mPersona->colonia, $mPersona->celular, $mCliente->id);
+
+        session()->forget('carrito');
+        session()->forget('nuevoCarrito');
+
         $this->fpdf->Output();
         exit;
         

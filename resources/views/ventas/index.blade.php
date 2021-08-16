@@ -4,8 +4,8 @@
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="#">Venta</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Venta</a></li>
             </ul>
         </div>
     </div>
@@ -56,7 +56,7 @@
                                             <button><i class="fa fa-search"></i></button>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <!-- <div class="col-md-4">
                                         <div class="product-short">
                                             <div class="dropdown">
                                                 <div class="dropdown-toggle" data-toggle="dropdown">
@@ -90,7 +90,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                                                     @endif
                                                 </a>
                                                 <div class="product-action">
-                                                    {{ Form::submit('Agregar', ['class' => 'btn btn-primary']) }}
+                                                    <button type="sumbit"><a><i class="fa fa-cart-plus"></i></a></button>
                                                     {{ Form::close() }}
                                                     <!-- <a href="#"><i class="fa fa-cart-plus"></i></a>
                                                                     <a href="#"><i class="fa fa-heart"></i></a>
@@ -143,8 +143,8 @@
                                                 <h3><span>$</span>{{ $row->precioUnitario }}</h3>
 
                                                 {{ Form::hidden('id', $row->id, ['class' => 'form-control']) }}
-                                                <!-- <i class="fa fa-shopping-cart"></i> -->
-                                                {{ Form::submit('Comprar', ['class' => 'btn btn-primary']) }}
+                                                
+                                                <button class="btn" type="sumbit"><i class="fa fa-shopping-cart"></i>Comprar</button>
                                                 {{ Form::close() }}
                                             </div>
                                         </div>
@@ -157,7 +157,7 @@
 
 
                         <!-- Pagination Start -->
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item disabled">
@@ -171,13 +171,13 @@
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
+                        </div> -->
                         <!-- Pagination Start -->
                     </div>
                 </div>
 
                 <!-- Side Bar Start -->
-                <div class="col-lg-4 sidebar">
+                <!-- <div class="col-lg-4 sidebar">
                     <div class="sidebar-widget category">
                         <h2 class="title">Categorias</h2>
                         <nav class="navbar bg-light">
@@ -282,7 +282,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
