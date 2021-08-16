@@ -18,9 +18,18 @@ use Inertia\Inertia;
 */
 
 Route::post('/ventas/comprar', 'VentaController@create')->name('comprar');
+Route::post('/ventas/procesarcomprar', 'VentaController@store')->name('procesarComprar');
 Route::get('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
 Route::get('/ventas/showCarrito', 'VentaController@showCarrito')->name('mostrarCarrito');
 Route::post('/ventas/eliminaritem', 'VentaController@elimnarItemCarrito')->name('eliminarItemCarrito');
+Route::get('/ventas/compras', 'VentaController@compras')->name('compras');
+Route::post('/ventas/compras/comprar', 'VentaController@guardarCompra')->name('guardarCompra');
+
+/**
+ * Parte de administrativa
+ */
+Route::get('/ventas/mostrar', 'VentaController@show')->name('mostrarVentas');
+
 Route::resource('ventas','VentaController');
 #Route::get('/ventas/pdf', 'PDFController@createPDFVentas');
 

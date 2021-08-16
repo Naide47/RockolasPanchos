@@ -67,8 +67,8 @@ session_start();
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link">Inicio</a>
-                            <a href="product-list.html" class="nav-item nav-link active">Productos</a>
+                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link">Inicio</a>
+                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link active">Venta</a>
 
                             <!-- <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
                             <a href="cart.html" class="nav-item nav-link">Cart</a>
@@ -83,16 +83,6 @@ session_start();
                                 </div>
                             </div>
                         </div> -->
-
-                        <div class="navbar-nav ml-auto">
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cuenta</a>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">Inicio de sesión</a>
-                                    <a href="#" class="dropdown-item">Registrarse</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </nav>
             </div>
@@ -118,13 +108,8 @@ session_start();
                     </div>
                     <div class="col-md-3">
                         <div class="user">
-                            <a href="wishlist.html" class="btn wishlist">
-                                <i class="fa fa-heart"></i>
-                                <span>(0)</span>
-                            </a>
-                            <a href="cart.html" class="btn cart">
+                            <a href="{{ URL::to('/ventas/showCarrito') }}" class="btn cart">
                                 <i class="fa fa-shopping-cart"></i>
-                                <span>(0)</span>
                             </a>
                         </div>
                     </div>
