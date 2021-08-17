@@ -139,7 +139,7 @@
                                                 </div>
                                             </div>
                                             <div class="product-price">
-                                                {{ Form::open(['url' => 'ventas/comprar']) }}
+                                            {{ Form::open(['route' => ['previoComprar'], 'method' => 'POST']) }}
                                                 <h3><span>$</span>{{ $row->precioUnitario }}</h3>
 
                                                 {{ Form::hidden('id', $row->id, ['class' => 'form-control']) }}

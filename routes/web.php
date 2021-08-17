@@ -17,8 +17,6 @@ use Inertia\Inertia;
 |
 */
 
-Route::post('/ventas/comprar', 'VentaController@create')->name('comprar');
-Route::post('/ventas/procesarcomprar', 'VentaController@store')->name('procesarComprar');
 Route::get('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
 Route::get('/ventas/showCarrito', 'VentaController@showCarrito')->name('mostrarCarrito');
 Route::post('/ventas/eliminaritem', 'VentaController@elimnarItemCarrito')->name('eliminarItemCarrito');

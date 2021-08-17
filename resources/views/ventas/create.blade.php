@@ -19,7 +19,7 @@
 
 @section('contents')
     {{HTML::ul($errors->all())}}
-    {{Form::open(["url"=>"ventas"])}}
+    {{ Form::open(['route' => ['postCompra'], 'method' => 'POST']) }}
    <div style="padding: 30px; background: #ffffff;">
         <h3>Datos personales</h3>
         <div class="col-md-12">
