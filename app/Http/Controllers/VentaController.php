@@ -56,6 +56,7 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
+        
         $validateData = $request->validate([
             'nombre' => 'required|min:3|max:30',
             'apellido' => 'required|min:3|max:30',
@@ -71,10 +72,9 @@ class VentaController extends Controller
             'nombre_producto' => 'required|min:3|max:150',
             'precio' => 'required|min:1|max:30',
             'anticipo' => 'required|min:1|max:30',
-            'total' => 'required|min:1|max:30',
-            'numTarjeta' => 'required',
-            'tipoTarjeta' => 'required'
-        ]);
+            'total' => 'required|min:1|max:30'
+            
+        ]);        
 
         DB::beginTransaction();
         try {
@@ -118,16 +118,18 @@ class VentaController extends Controller
             $producto->save();
 
             DB::commit();
-            $pdfController = new PDFController;
+            $pdfController = new PDFController();
             $pdfController->createPDFVentas($mCliente->id, $mCliente->persona_id, $mVenta->id, $mDetalle->id, $mDetalle->producto_id);
-            #Session::flash('message','Venta realizada');
-            #return Redirect::to('ventas');
+            // Session::flash('message','Venta realizada');
+            // return redirect('ventas');
+            // return "Si";
 
         } catch (\Exception $e) {
             DB::rollBack();
             // Session::flash('message', $e->getMessage());
             // Session::flash('alert-class', 'danger');
             // return redirect('usuarios.create');
+            // return "No";
             return $e->getMessage();
         }
     }
@@ -138,9 +140,9 @@ class VentaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        return $request->input();
     }
 
     /**
@@ -151,7 +153,7 @@ class VentaController extends Controller
      */
     public function edit($id)
     {
-        //
+        return "Edit";
     }
 
     /**
@@ -163,7 +165,7 @@ class VentaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return "Update";
     }
 
     /**
@@ -174,7 +176,7 @@ class VentaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return "destroy";
     }
 
     public function showCarrito()
@@ -344,7 +346,8 @@ class VentaController extends Controller
             $pdfController = new PDFController;
             $pdfController->createPDFVentasCompra($mCliente->id, $mCliente->persona_id);
             Session::flash('message','Venta realizada');
-            return Redirect::to('ventas');
+            // return Redirect::to('ventas');
+            return redirect('ventas');
 
         } catch (\Exception $e) {
             DB::rollBack();
