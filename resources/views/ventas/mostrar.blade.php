@@ -1,7 +1,7 @@
 @extends('layout.users')
 
 @section('title')
-    Productos
+    Ventas
 @endsection
 
 @section('head')
@@ -38,34 +38,35 @@
                         <tr>
                             <th>#</th>
                             <th>Cliente</th>
-                            <th>Producto</th>
-                            <th>Cantida</th>
                             <th>Anticipo</th>
                             <th>Total</th>
+                            <th>Identificador</th>
                             <th colspan="2">Acciones</th>
                             {{-- <th colspan="3">Acciones</th> --}}
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($mVentas as $venta)
-                            
-                                                
-                                                        
-                                                                <tr>
-                                                                    <td scope="row" class="align-middle">{{ $loop->iteration }}</td>
-                                                                    <td class="align-middle">{{ $venta->cliente_id }}</td>
-                                                                    <td class="align-middle">{{ $venta->users_id }}</td>
-                                                                    <td class="align-middle">{{ $venta->fechaRegistro }}</td>
-                                                                    
-                                                                    <td class="align-middle">{{ $venta->anticipoPagado }}</td>
-                                                                    <td class="align-middle">${{ $venta->total }}</td>
-
-                                                                </tr>
-                                                        
-                                            
+                        @foreach($mVentas as $rowVenta)
+                            @foreach($mClientes as $rowCliente)
+                                @foreach($mPersonas as $rowPersona)
+                                    @if($rowVenta->cliente_id == $rowCliente->id)
+                                        @if($rowCliente->persona_id == $rowPersona->id)
+                                            <tr>
+                                                <td scope="row" class="align-middle">{{ $loop->iteration }}</td>
+                                                <td class="align-middle">{{ $rowPersona->nombre }}</td>
+                                                <td class="align-middle">{{ $rowVenta->anticipoPagado }}</td>
+                                                <td class="align-middle">{{ $rowVenta->total }}</td>
+                                                <td class="align-middle">{{ $rowVenta->identificador }}</td>
+                                                <td class="align-middle"><a class="btn btn-secondary"
+                                                    href="{{ route('ventas.show', $rowVenta->id) }}">Detalle</a></td>
+                                            </tr>
+                                        @endif                        
+                                    @endif    
+                                @endforeach                                
+                            @endforeach
                         @endforeach
                     </tbody>
-                    <caption>Lista de productos</caption>
+                    <caption>Lista de ventas</caption>
                 </table>
             </div>
         </div>

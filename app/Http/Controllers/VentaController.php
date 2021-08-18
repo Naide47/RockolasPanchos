@@ -8,6 +8,7 @@ use App\Models\Ventas\Detalle;
 use App\Models\Ventas\Venta;
 use App\Models\Ventas\Cliente;
 use App\Models\Usuarios\Persona;
+use App\Models\Usuarios\Usuario;
 use Redirect;
 
 use App\Http\Controllers\Persona\PersonaController;
@@ -42,7 +43,11 @@ class VentaController extends Controller
      */
     public function create(Request $request)
     {
-        //
+        if($request){
+            $modelo = Producto::find($request->id);
+        }
+
+        return view('ventas.create', compact('modelo'));
     }
 
     /**
@@ -107,8 +112,8 @@ class VentaController extends Controller
             $mDetalle->save();
 
             $producto = Producto::find($request->id);
-            $existenciasF = $request->existencias - $request->cantidad;
-            $disponiblesF = $request->disponibles - $request->cantidad;
+            $existenciasF = $producto->existencias - $request->input($request->cantidad);
+            $disponiblesF = $producto->disponibles - $request->input($request->cantidad);
 
             $producto->existencias = $existenciasF;
             $producto->disponibles = $disponiblesF;
@@ -137,9 +142,35 @@ class VentaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        //return $request->input();
+        $mVenta = Venta::where('venta.id', $id)
+            ->join('cliente', 'venta.cliente_id', '=', 'cliente.id')
+            ->select(
+                'venta.id',
+                'venta.users_id',
+                'venta.total',
+                'venta.anticipoPagado',
+                'venta.fechaRegistro',
+                'venta.identificador',
+                'venta.status',
+                'cliente.persona_id'
+            )->first();
+        
+        $mPersona = Persona::where('id', $mVenta->persona_id)->first();    
+
+        $mDetalle = Detalle::where('detalle_venta.venta_id', $id)
+            ->join('producto', 'detalle_venta.producto_id', '=', 'producto.id')
+            ->select(
+                'detalle_venta.cantidad',
+                'detalle_venta.precioUnitario',
+                'producto.nombre',
+                'producto.imgNombreFisico'
+            )->get();
+
+        $mUsuario = Usuario::find($mVenta->users_id);
+
+        return view('ventas.show', compact('mVenta', 'mPersona', 'mDetalle', 'mUsuario'));
     }
 
     /**
@@ -162,7 +193,7 @@ class VentaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return "Update";
+        //
     }
 
     /**
@@ -174,6 +205,32 @@ class VentaController extends Controller
     public function destroy($id)
     {
         return "destroy";
+    }
+
+    public function mostrar(){
+        $mVentas = Venta::all();
+        $mClientes = Cliente::all();
+        $mPersonas = Persona::all();
+
+        return view('ventas.mostrar', compact('mVentas', 'mClientes', 'mPersonas'));
+    }
+
+    public function tomar(Request $request){
+        $mVenta = Venta::find($request->id);
+        $mVenta->users_id = $request->idUsuario;
+        $mVenta->status = 2;
+        $mVenta->save();
+
+        return redirect('ventas/mostrar');
+    }
+
+    public function completar(Request $request){
+        $mVenta = Venta::find($request->id);
+        $mVenta->users_id = $request->idUsuario;
+        $mVenta->status = 3;
+        $mVenta->save();
+
+        return redirect('ventas/mostrar');
     }
 
     public function showCarrito()
@@ -307,20 +364,18 @@ class VentaController extends Controller
             $mCliente->persona_id = $idPersona;
             $mCliente->save();
 
-            for($i=0; $i < count($carrito); $i++){
-                $idP = 'idPCompra'.($i+1);
-                $cantidad = 'cantidadCompra'.($i+1);
-                $precio = 'precioCompra'.($i+1);
-
-                $mVenta = new Venta();
+            $mVenta = new Venta();
                 $mVenta->cliente_id = $mCliente->id;
                 $mVenta->users_id = 1;
                 $mVenta->total = $request->totalCompra;
                 $mVenta->anticipoPagado = $request->anticipoCompra;
-                // $mVenta->noTarjeta = 0;
-                // $mVenta->tipoTarjeta = 0;
                 $mVenta->status = 1;
                 $mVenta->save();
+
+            for($i=0; $i < count($carrito); $i++){
+                $idP = 'idPCompra'.($i+1);
+                $cantidad = 'cantidadCompra'.($i+1);
+                $precio = 'precioCompra'.($i+1);
 
                 $mDetalle = new Detalle();
                 $mDetalle->venta_id = $mVenta->id;

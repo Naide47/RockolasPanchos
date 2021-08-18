@@ -74,13 +74,20 @@ class PDFVentas extends FPDF
         // Separa en año, mes y dia
         $fecha = explode('-', $fecha[0]);
 
-        // $identificador = $fecha[2]."/".$fecha[1]."/".$fecha[0]."/".$cantidad."/".$idCliente;
+        $identificador = $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0] . "/" . $cantidad . "/" . $idCliente;
+        
         // $mVenta = new Venta();
-        // $mVenta->identificador = $identificador;
-        // $mVenta->save();
+        // $mVenta = Venta::where('cliente_id', '=', $idCliente);
+        $mVentas = Venta::all();
+        foreach($mVentas as $rowVenta){
+            if($rowVenta->cliente_id == $idCliente){
+                $rowVenta->identificador = $identificador;
+                $rowVenta->save();
+            }
+        }
 
         // Texto del identifiador
-        $this->Cell(0, 6, utf8_decode("Identificador: " . $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0] . "/" . $cantidad . "/" . $idCliente), 0, 1, 'R');
+        $this->Cell(0, 6, utf8_decode("Identificador: " . $identificador), 0, 1, 'R');
 
         // Arial 12
         $this->SetFont('Arial', 'B', 12);
@@ -110,7 +117,7 @@ class PDFVentas extends FPDF
             $fecha[0] = $fecha[0] + 1;
         }
         $this->Cell(0, 6, utf8_decode("Fecha de limite para pago total: " . $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0]), 0, 1, 'L', true);
-        $this->Cell(0, 6, utf8_decode("Monto del pago total: " . $total), 0, 1, 'L', true);
+        $this->Cell(0, 6, utf8_decode("Monto del pago total (sin anticipo): " . $total), 0, 1, 'L', true);
         // Salto de línea
         $this->Ln(6);
     }
@@ -206,7 +213,7 @@ class PDFVentas extends FPDF
     {
         $this->AddPage();
         $this->DatosPago($fecha, $anticipo, $total, $cantidad, $idCliente);
-        $this->DatoPersona($nombre, $calle, $colonia, $celular, $fecha, $cantidad, $idCliente);
+        $this->DatoPersona($nombre, $calle, $colonia, $celular, $fecha);
         $this->DatosVenta($producto, $cantidad, $anticipo, $total, $fecha);
     }
 

@@ -17,17 +17,16 @@ use Inertia\Inertia;
 |
 */
 
-<<<<<<< HEAD
-=======
 Route::get('/ventas/comprar', 'VentaController@create')->name('comprar');
-Route::post('/ventas/procesarcomprar', 'VentaController@store')->name('procesarComprar');
->>>>>>> b203bd53c3b7631f952bd31ed7a38eab8793e80b
 Route::get('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
 Route::get('/ventas/showCarrito', 'VentaController@showCarrito')->name('mostrarCarrito');
 Route::post('/ventas/eliminaritem', 'VentaController@elimnarItemCarrito')->name('eliminarItemCarrito');
 Route::get('/ventas/compras', 'VentaController@compras')->name('compras');
 Route::post('/ventas/compras/comprar', 'VentaController@guardarCompra')->name('guardarCompra');
 Route::post('/ventas/comprar/confimar', 'VentaController@store')->name('ventas.store2');
+Route::get('/ventas/mostrar', 'VentaController@mostrar')->name('mostrar');
+Route::get('/ventas/mostrar/tomar', 'VentaController@tomar')->name('tomar');
+Route::get('/ventas/mostrar/completar', 'VentaController@completar')->name('completar');
 
 
 Route::resource('ventas', 'VentaController');
