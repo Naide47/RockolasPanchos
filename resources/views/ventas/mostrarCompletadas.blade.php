@@ -27,16 +27,16 @@
         {{-- Pestañas --}}
         <div class="row justify-content-around my-3">
             <div class="col-4">
-                <button type="button" class="btn btn-primary btn-block btn-large btn-lg btn-block"
-                    disabled>Pendientes</button>
+                <a type="button" class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
+                href="{{ route('mostrar') }}" role="button">Pendientes</a>
             </div>
             <div class="col-4">
                 <a class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
                     href="{{ route('enproceso') }}" role="button">En proceso</a>
             </div>
             <div class="col-4">
-                <a class="btn btn-outline-secondary btn-block btn-large btn-lg btn-block"
-                    href="{{ route('completas') }}" role="button">Completadas</a>
+                <button class="btn btn-primary btn-block btn-large btn-lg btn-block"
+                    disabled>Completadas</button>
             </div>
         </div>
         {{-- Notificaciones --}}
@@ -45,7 +45,7 @@
                 {{ Session::get('message') }}
             </div>
         @endif
-        {{-- Tabla Inicio--}}
+        {{-- Tabla --}}
         <div class="row">
             <div class="col bg-light mb-5 rounded pt-5">
                 <table class="table">
@@ -62,7 +62,7 @@
                     </thead>
                     <tbody>
                         @forelse ($mVentas as $item)
-                            @if($item->status == 1)
+                            @if($item->status == 3)
                             <tr>
                                 <td scope="row" class="align-middle">{{ $loop->iteration }}</td>
                                 <td class="align-middle">{{ $item->nombre }}</td>
@@ -74,12 +74,12 @@
                             </tr>
                             {{-- @else
                                 <tr>
-                                    <td colspan="6"class="align-middle">No hay ventas pendientes</td>
+                                    <td colspan="6"class="align-middle">No hay ventas completas</td>
                                 </tr> --}}
                             @endif
                         @empty
                             <tr>
-                                <td colspan="6"class="align-middle">No hay ventas pendientes</td>
+                                <td colspan="6"class="align-middle">No hay ventas completas</td>
                             </tr>
                         @endforelse              
                     </tbody>
@@ -87,7 +87,6 @@
                 </table>
             </div>
         </div>
-        {{-- Tabla Fin--}}
     </div>
 
 @endsection

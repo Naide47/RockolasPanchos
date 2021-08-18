@@ -113,7 +113,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     {{ Form::label('total', 'Total (Sin Anticipo)') }}
-                    {{ Form::hidden('total', $modelo->precioUnitario - $anticipo, ['class' => 'form-control', 'id' => 'total']) }}
+                    {{ Form::hidden('total', $modelo->precioUnitario, ['class' => 'form-control', 'id' => 'total']) }}
                     <input type="text" id="totalView" value="{{ $modelo->precioUnitario }}"
                         class="form-control" disabled>
                 </div>

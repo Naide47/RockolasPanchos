@@ -11,6 +11,8 @@ use App\Models\Ventas\Detalle;
 use App\Models\Productos\Producto;
 use App\Models\Ventas\Cliente;
 
+use Illuminate\Support\Facades\DB;
+
 class PDFVentas extends FPDF
 {
     // Cabecera de página
@@ -65,6 +67,7 @@ class PDFVentas extends FPDF
         // Número de página
         $this->Cell(0, 10, utf8_decode('Página ') . $this->PageNo(), 0, 0, 'C');
     }
+
     function DatosPago($fecha, $anticipo, $total, $cantidad, $idCliente)
     {
         //Fuente para identificador
@@ -103,6 +106,17 @@ class PDFVentas extends FPDF
         $this->Cell(0, 6, utf8_decode("A nombre de EMILIO PANCHO"), 0, 1, 'L', true);
         $this->Cell(0, 6, utf8_decode("Concepto: Compra material"), 0, 1, 'L', true);
         $this->Cell(0, 6, utf8_decode("Fecha de Impresión: " . $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0]), 0, 1, 'L', true);
+        
+        $fecha[2] = $fecha[2] + 3;
+        if (intval($fecha[2]) > 30) {
+            $fecha[1] = $fecha[1] + 1;
+            $fecha[2] = $fecha[2] - 30;
+        } elseif ($fecha[2] > 28 and $fecha[2] == 2) {
+            $fecha[2] = $fecha[2] + 1;
+        }
+        if ($fecha[1] > 12) {
+            $fecha[0] = $fecha[0] + 1;
+        }
 
         $this->Cell(0, 6, utf8_decode("Fecha de limite para anticipo: " . $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0]), 0, 1, 'L', true);
         $this->Cell(0, 6, utf8_decode("Monto del anticipo: " . $anticipo), 0, 1, 'L', true);
@@ -219,25 +233,23 @@ class PDFVentas extends FPDF
 
     function ImprimirDatosCompra($nombre, $calle, $colonia, $celular, $idCliente)
     {
-        $mVentas = Venta::all();
-        $mDetalles = Detalle::all();
-        $mProductos = Producto::all();
-
-        foreach ($mVentas as $rowVenta) {
-            foreach ($mDetalles as $rowDetalle) {
-                foreach ($mProductos as $rowProducto) {
-                    if ($rowVenta->cliente_id == $idCliente) {
-                        if ($rowDetalle->venta_id == $rowVenta->id) {
-                            if ($rowProducto->id == $rowDetalle->producto_id) {
-                                $fecha = $rowVenta->fechaRegistro;
-                                $anticipo = $rowVenta->anticipoPagado;
-                                $total = $rowVenta->total;
-                                $cantidad = $rowDetalle->cantidad;
-                            }
-                        }
-                    }
-                }
-            }
+        $mVentas = DB::table('venta')
+            ->join('detalle_venta', 'venta.id', '=', 'detalle_venta.venta_id')
+            ->join('producto', 'detalle_venta.producto_id', '=', 'producto.id')
+            ->select(
+                'producto.nombre',
+                'venta.fechaRegistro',
+                'venta.anticipoPagado',
+                'venta.total',
+                'detalle_venta.cantidad',
+                'detalle_venta.precioUnitario'
+            )->where('venta.cliente_id', '=', $idCliente)->get();
+        
+        foreach($mVentas as $item){
+            $fecha = $item->fechaRegistro;
+            $anticipo = $item->anticipoPagado;
+            $total = $item->total;
+            $cantidad = $item->cantidad;
         }
 
         $this->AddPage();
@@ -245,18 +257,8 @@ class PDFVentas extends FPDF
         $this->DatoPersona($nombre, $calle, $colonia, $celular, $fecha, $cantidad, $idCliente);
         $this->tituloTabla();
         $this->titulosTabla();
-        foreach ($mVentas as $rowVenta) {
-            foreach ($mDetalles as $rowDetalle) {
-                foreach ($mProductos as $rowProducto) {
-                    if ($rowVenta->cliente_id == $idCliente) {
-                        if ($rowDetalle->venta_id == $rowVenta->id) {
-                            if ($rowProducto->id == $rowDetalle->producto_id) {
-                                $this->DatosVentaCompra($rowProducto->nombre, $rowDetalle->cantidad, $rowDetalle->precioUnitario,  $rowVenta->fechaRegistro);
-                            }
-                        }
-                    }
-                }
-            }
+        foreach($mVentas as $item){
+            $this->DatosVentaCompra($item->nombre, $item->cantidad, $item->precioUnitario,  $item->fechaRegistro);
         }
     }
 

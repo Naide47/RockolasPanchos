@@ -20,14 +20,21 @@
         </div>
         {{-- Barra de busqueda y boton de agregar --}}
         <div class="d-flex flex-row-reverse">
+            @if ($mVenta->status == 1)
+                <div class="col-3">
+                    {{ Form::open(['route'=>['tomar']]) }}
+                    @method('GET')
+                    {{ Form::hidden('id', $mVenta->id) }}
+                    {{ Form::hidden('idUsuario', Auth::user()->id)}}
+                        <button class="btn btn-success" type="sumbit">Tomar orden</button>
+                    {{ Form::close() }}
+                </div>
+            @elseif($mVenta->status == 3)
             <div class="col-3">
-                {{ Form::open(['route'=>['tomar']]) }}
-                @method('GET')
-                {{ Form::hidden('id', $mVenta->id) }}
-                {{ Form::hidden('idUsuario', Auth::user()->id)}}
-                    <button class="btn btn-success" type="sumbit">Tomar orden</button>
-                {{ Form::close() }}
+                
             </div>
+            @endif
+            @if (!$mVenta->status == 1)
             <div class="col-3">
                 {{ Form::open(['route'=>['completar']]) }}
                 @method('GET')
@@ -36,6 +43,16 @@
                     <button class="btn btn-danger" type="sumbit">Completar</button>
                 {{ Form::close() }}
             </div>
+            @elseif($mVenta->status == 2)
+            <div class="col-3">
+                {{ Form::open(['route'=>['completar']]) }}
+                @method('GET')
+                {{ Form::hidden('id', $mVenta->id) }}
+                {{ Form::hidden('idUsuario', Auth::user()->id)}}
+                    <button class="btn btn-danger" type="sumbit">Completar</button>
+                {{ Form::close() }}
+            </div>
+            @endif
         </div>
         {{-- Tabla --}}
         <div class="row">

@@ -208,11 +208,57 @@ class VentaController extends Controller
     }
 
     public function mostrar(){
-        $mVentas = Venta::all();
-        $mClientes = Cliente::all();
-        $mPersonas = Persona::all();
+        $mVentas = DB::table('venta')
+            ->join('cliente', 'venta.cliente_id', '=', 'cliente.id')
+            ->join('persona', 'cliente.persona_id', '=', 'persona.id')
+            ->select(
+                'venta.id',
+                'persona.nombre',
+                'venta.total',
+                'venta.anticipoPagado',
+                'venta.identificador',
+                'venta.status'
+            )->get();
+        // $mClientes = Cliente::all();
+        // $mPersonas = Persona::all();
 
-        return view('ventas.mostrar', compact('mVentas', 'mClientes', 'mPersonas'));
+        return view('ventas.mostrar', compact('mVentas'));
+    }
+
+    public function enproceso(){
+        $mVentas = DB::table('venta')
+            ->join('cliente', 'venta.cliente_id', '=', 'cliente.id')
+            ->join('persona', 'cliente.persona_id', '=', 'persona.id')
+            ->select(
+                'venta.id',
+                'persona.nombre',
+                'venta.total',
+                'venta.anticipoPagado',
+                'venta.identificador',
+                'venta.status'
+            )->get();
+        // $mClientes = Cliente::all();
+        // $mPersonas = Persona::all();
+        
+        return view('ventas.mostrarenproceso', compact('mVentas'));
+    }
+
+    public function completas(){
+        $mVentas = DB::table('venta')
+            ->join('cliente', 'venta.cliente_id', '=', 'cliente.id')
+            ->join('persona', 'cliente.persona_id', '=', 'persona.id')
+            ->select(
+                'venta.id',
+                'persona.nombre',
+                'venta.total',
+                'venta.anticipoPagado',
+                'venta.identificador',
+                'venta.status'
+            )->get();
+        // $mClientes = Cliente::all();
+        // $mPersonas = Persona::all();
+        
+        return view('ventas.mostrarcompletadas', compact('mVentas'));
     }
 
     public function tomar(Request $request){
