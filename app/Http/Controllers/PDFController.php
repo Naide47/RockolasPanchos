@@ -10,6 +10,7 @@ use App\Models\Ventas\Venta;
 use App\Models\Ventas\Detalle;
 use App\Models\Productos\Producto;
 use App\Models\Ventas\Cliente;
+use App\Models\Ventas\Devolucion;
 
 use Illuminate\Support\Facades\DB;
 
@@ -223,6 +224,27 @@ class PDFVentas extends FPDF
         $this->Ln();
     }
 
+    function DatosDevolucion()
+    {
+        // Arial 12
+        $this->SetFont('Arial', 'B', 12);
+        // Color del borde
+        $this->SetFillColor(225, 225, 225);
+        // Título
+        $this->Cell(0, 6, utf8_decode("Datos de la devolucion"), 0, 1, 'L', true);
+        // Arial 12
+        $this->SetFont('Arial', '', 12);
+        // Color del borde
+        $this->SetFillColor(225, 225, 225);
+        // Título
+        $this->Cell(0, 6, utf8_decode("Nombre: $nombre"), 0, 1, 'L', true);
+        $this->Cell(0, 6, utf8_decode("Domicilio: $calle," . " " . "$colonia"), 0, 1, 'L', true);
+        $this->Cell(0, 6, utf8_decode("Celular: $celular"), 0, 1, 'L', true);
+
+        // Salto de línea
+        $this->Ln(4);
+    }
+
     function ImprimirDatos($nombre, $calle, $colonia, $celular, $producto, $cantidad, $anticipo, $total, $fecha, $idCliente)
     {
         $this->AddPage();
@@ -324,6 +346,108 @@ class PDFVentas extends FPDF
     }
 }
 
+class PDFDevolucion extends FPDF
+{
+    // Cabecera de página
+    function Header()
+    {
+        $title = 'Comprobante de devolucion';
+        $image = public_path("img/logos/rockolaG.png");
+        // Logo
+        $this->Image($image, 10, 8, 33);
+        // Fuente para la empresa
+        $this->setFont('Arial', 'B', 18);
+        $n = $this->GetStringWidth("Rockolas Panchos") + 6;
+        // Color de fondo y texto
+        $this->SetFillColor(253, 116, 140);
+        $this->SetTextColor(254, 2222, 214);
+        // Nombre de la empresa
+        $this->SetX((140 - $n) / 2);
+        $this->Cell(($n + 80), 9, " ", 0, 1, 'C', true);
+        $this->SetX((140 - $n) / 2);
+        $this->Cell(($n + 80), 9, utf8_decode("Rockolas Panchos"), 0, 1, 'C', true);
+        $this->SetX((140 - $n) / 2);
+        $this->Cell(($n + 80), 9, " ", 0, 1, 'C', true);
+        //Salto de línea
+        $this->Ln(10);
+
+        // Arial bold 15
+        $this->SetFont('Arial', 'B', 15);
+        // Calculamos ancho y posición del título.
+        $w = $this->GetStringWidth($title) + 6;
+        $this->SetX((210 - $w) / 2);
+        
+        $this->SetTextColor(0, 0, 0);
+        // Ancho del borde (1 mm)
+        $this->SetLineWidth(1);
+        // Título
+        $this->Cell($w, 9, utf8_decode($title), 0, 1, 'C');
+        // Salto de línea
+        $this->Ln(4);
+    }
+
+    // Pie de página
+    function Footer()
+    {
+        // Posición a 1,5 cm del final
+        $this->SetY(-15);
+        // Arial itálica 8
+        $this->SetFont('Arial', 'I', 8);
+        // Color del texto en gris
+        $this->SetTextColor(128);
+        // Número de página
+        $this->Cell(0, 10, utf8_decode('Página ') . $this->PageNo(), 0, 0, 'C');
+    }
+
+    function DatosDevolucion($nombre, $celular, $identificador, $producto, $cantidad, $descripcion)
+    {
+        // Arial 12
+        $this->SetFont('Arial', 'B', 12);
+        // Color del borde
+        $this->SetFillColor(225, 225, 225);
+        // Título
+        $this->Cell(0, 6, utf8_decode("Datos de la devolucion"), 0, 1, 'L', true);
+        // Arial 12
+        $this->SetFont('Arial', '', 12);
+        // Color del borde
+        $this->SetFillColor(225, 225, 225);
+        // Título
+        $this->Cell(0, 6, utf8_decode("Nombre: $nombre"), 0, 1, 'L', true);
+        $this->Cell(0, 6, utf8_decode("Celular: $celular"), 0, 1, 'L', true);
+        $this->Cell(0, 6, utf8_decode("Identificador: $identificador"), 0, 1, 'L', true);
+        $this->Cell(0, 6, utf8_decode("Producto: $producto"), 0, 1, 'L', true);
+        $this->Cell(0, 6, utf8_decode("Cantidad: $cantidad"), 0, 1, 'L', true);
+        $this->MultiCell(0, 6, utf8_decode("Descripcion: $descripcion"), 0, 1, 'L', true);
+        
+        // Salto de línea
+        $this->Ln(4);
+
+        $this->SetFont('Arial', 'B', 12);
+        // Color del borde
+        $this->SetFillColor(225, 225, 225);
+        // Título
+        $this->Cell(0, 6, utf8_decode("Datos de la devolucion"), 0, 1, 'L', true);
+        // Arial 12
+        $this->SetFont('Arial', '', 12);
+        // Color del borde
+        $this->SetFillColor(225, 225, 225);
+        // Título
+        
+        $this->Cell(0, 6, utf8_decode("Horario: de 9:00 AM a 9:00 PM"), 0, 1, 'L', true);
+        $this->MultiCell(0, 6, utf8_decode("Pasar a entregar a la siguente dirección: Aurora, San Carlos la Roncha, 37860 León, Gto."), 0, 1, 'L', true);
+        $this->MultiCell(0, 6, utf8_decode("Debe trear su comprobante de devolución"), 0, 1, 'L', true);
+
+         // Salto de línea
+         $this->Ln(4);
+    }
+
+    function ImprimirDatos($nombre, $celular, $identificador, $producto, $cantidad, $descripcion)
+    {
+        $this->AddPage();
+        $this->DatosDevolucion($nombre, $celular, $identificador, $producto, $cantidad, $descripcion);
+    }
+}
+
 class PDFController extends Controller
 {
     private $fpdf;
@@ -379,6 +503,25 @@ class PDFController extends Controller
 
         session()->forget('carrito');
         session()->forget('nuevoCarrito');
+
+        $this->fpdf->Output();
+        exit;
+    }
+
+    public function createPDFDevolucion($idDevolucion)
+    {
+        $mDevolucion = Devolucion::find($idDevolucion);
+
+        $this->fpdf = new PDFDevolucion();
+        $title = 'Comprobante de la devolucion';
+        $this->fpdf->SetTitle($title);
+        $this->fpdf->ImprimirDatos(
+            $mDevolucion->cliente,
+            $mDevolucion->celular,
+            $mDevolucion->venta_identificador,
+            $mDevolucion->producto,
+            $mDevolucion->cantidad,
+            $mDevolucion->descripcion);
 
         $this->fpdf->Output();
         exit;

@@ -30,8 +30,11 @@ Route::get('/ventas/mostrar/completas', 'VentaController@completas')->name('comp
 Route::get('/ventas/mostrar/tomar', 'VentaController@tomar')->name('tomar');
 Route::get('/ventas/mostrar/completar', 'VentaController@completar')->name('completar');
 
+Route::get('/devolucion/mostrar', 'DevolucionController@mostrar')->name('mostrar');
+
 
 Route::resource('ventas', 'VentaController');
+Route::resource('devoluciones', 'DevolucionController');
 /**
  * Parte de administrativa
  */
