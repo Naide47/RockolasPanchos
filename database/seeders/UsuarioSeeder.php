@@ -17,6 +17,16 @@ class UsuarioSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
+                'id' => 0,
+                "name" => "null",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                "persona_id" => 0,
+                "email" => '885FE50722A118BEBD817C0960F93021AC7684E38D9C8BC6A58F818E25E90F2D',
+                'password' => bcrypt('A0FCBE9152B3FA32A352E0ECC2DAA5B1F8D28227E63348FFDF33C258C7B0E0ED'),
+                'rol_id' => 1, //Vendedor
+            ],
+            [
                 'id' => 1,
                 "name" => "Juan Martinez",
                 'created_at' => Carbon::now(),
