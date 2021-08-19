@@ -54,8 +54,8 @@
                         <tr>
                             <td>{{$mProducto->existencias}}</td>
                             <td>{{$mProducto->disponibles}}</td>
-                            <td>{{$mProducto->precioCompra}}</td>
-                            <td>{{$mProducto->precioUnitario}}</td>
+                            <td>${{$mProducto->precioCompra}}</td>
+                            <td>${{$mProducto->precioUnitario}}</td>
                         </tr>
                     </tbody>
                 </table>

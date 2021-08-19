@@ -16,8 +16,34 @@ use Inertia\Inertia;
 |
 */
 
-Route::group(['middleware' => ['auth']], function () {
+Route::get('/ventas/comprar', 'VentaController@create')->name('comprar');
+Route::post('/ventas/procesarcomprar', 'VentaController@store')->name('procesarComprar');
+Route::get('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
+Route::get('/ventas/showCarrito', 'VentaController@showCarrito')->name('mostrarCarrito');
+Route::post('/ventas/eliminaritem', 'VentaController@elimnarItemCarrito')->name('eliminarItemCarrito');
+Route::get('/ventas/compras', 'VentaController@compras')->name('compras');
+Route::post('/ventas/compras/comprar', 'VentaController@guardarCompra')->name('guardarCompra');
+Route::post('/ventas/comprar/confimar', 'VentaController@store')->name('ventas.store2');
 
+
+Route::resource('ventas', 'VentaController');
+/**
+ * Parte de administrativa
+ */
+
+
+#Route::get('/ventas/pdf', 'PDFController@createPDFVentas');
+
+// Route::get('/pdf', function (Codedge\Fpdf\Fpdf\Fpdf $fpdf) {
+
+//     $fpdf->AddPage();
+//     $fpdf->SetFont('Courier', 'B', 18);
+//     $fpdf->Cell(50, 25, 'Hello World!');
+//     $fpdf->Output();
+
+// });
+
+Route::group(['middleware' => ['auth']], function () {
     Route::namespace('Usuarios')->group(function () {
         Route::get('/usuarios/inactivos', 'UsuarioController@inactiveIndex')->name('usuarios.inactivos');
         Route::put('/usuarios/reactivar/{id}', 'UsuarioController@reactivate')->name('usuarios.reactivate');
@@ -29,10 +55,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('productos', 'ProductoController');
         Route::resource('categorias', 'CategoriaController');
         Route::resource('paquetes', 'PaqueteController');
-
-        // Route::namespace('Paquetes')->group(function () {
-        //     Route::resource('paquetes', 'PaqueteController');
-        // });
     });
 });
 
@@ -40,19 +62,6 @@ Route::get('/', 'VentaController@index')->name('home');
 Route::get('/login', 'Auth\AuthController@loginPage')->name('login');
 Route::post('/login', 'Auth\AuthController@login');
 Route::post('/logout', 'Auth\AuthController@logout')->name('logout');
-
-
-
-// Route::namespace('Usuarios')->group(function () {
-//     Route::resource('usuarios', 'UsuarioController');
-// });
-
-// Route::namespace('Productos')->group(function () {
-//     Route::resource('productos', 'ProductoController');
-//     Route::resource('categorias', 'CategoriaController');
-// });
-
-Route::resource('ventas', 'VentaController');
 #Route::get('/venta/compra','VentaController@create');
 
 // Route::get('/', function () {

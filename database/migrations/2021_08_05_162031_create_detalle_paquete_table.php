@@ -18,7 +18,6 @@ class CreateDetallePaqueteTable extends Migration
             $table->unsignedBigInteger("paquete_id");
             $table->unsignedBigInteger("producto_id");
             $table->integer("cantidad");
-            $table->double("precioUnitario");
 
             $table->foreign("paquete_id")->references("id")->on("paquete");
             $table->foreign("producto_id")->references("id")->on("producto");

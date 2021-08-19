@@ -161,6 +161,7 @@
                         <a class="btn btn-secondary" href="{{ route('usuarios.index') }}" role="button">Cancelar</a>
                     </div>
                 </div>
+                
                 {!! Form::close() !!}
             </div>
         </div>

@@ -4,15 +4,33 @@
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="#">Productos</a></li>
-                <li class="breadcrumb-item active">Venta</li>
+                <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Venta</a></li>
             </ul>
         </div>
     </div>
 @endsection
 
 @section('contents')
+    {{-- @if (Session::has('message'))
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4" style="background-color:  #ffffff">
+                                    <h3>{{ Session::get('message') }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif --}}
+    {{-- {{var_dump(session()->all())}} --}}
+    {{-- {{ var_dump(session()->get('carrito')) }} --}}
 
     <!-- Product List Start -->
     <div class="product-view">
@@ -23,13 +41,22 @@
                         <div class="col-md-12">
                             <div class="product-view-top">
                                 <div class="row">
+                                    <div class="col bg-white">
+                                        @if (Session::has('message'))
+                                            <div class="alert alert-danger" role="alert">
+                                                <h3>{{ Session::get('message') }}</h3>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-4">
                                         <div class="product-search">
                                             <input type="email" placeholder="Busqueda">
                                             <button><i class="fa fa-search"></i></button>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <!-- <div class="col-md-4">
                                         <div class="product-short">
                                             <div class="dropdown">
                                                 <div class="dropdown-toggle" data-toggle="dropdown">
@@ -63,53 +90,76 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
 
                         @forelse($table as $row)
-                            <div class="col-md-4">
-                                <div class="product-item">
-                                    <div class="product-title">
-                                        <a href="#">{{ $row->nombre }}</a>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                            @if ($row->existencias > 3)
+                                @if ($row->disponibles > 3)
+                                    <div class="col-md-4">
+                                        {{ Form::open(['route' => ['agregarCarrito'], 'method' => 'GET']) }}
+
+                                        {{ Form::hidden('IdProducto', $row->id, ['class' => 'form-control']) }}
+                                        {{ Form::hidden('cantidad', 1, ['class' => 'form-control']) }}
+                                        {{ Form::hidden('nombreProducto', $row->nombre, ['class' => 'form-control']) }}
+                                        {{ Form::hidden('imagen', $row->imgNombreFisico, ['class' => 'form-control']) }}
+                                        {{ Form::hidden('precioUnitario', $row->precioUnitario, ['class' => 'form-control']) }}
+                                        <div class="product-item">
+                                            <div class="product-title">
+
+                                                <a href="#">{{ $row->nombre }}</a>
+                                                <div class="ratting">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                </div>
+                                            </div>
+                                            <div class="product-image">
+                                                <a class="imagen-venta" href="product-detail.html">
+                                                    @if ($row->imgNombreFisico)
+                                                        <img src="{{ asset('storage/' . $row->imgNombreFisico) }}"
+                                                            alt="Imagen del producto {{ $row->nombre }}"
+                                                            class="img-thumbnail">
+                                                    @else
+                                                        <img src="{{ asset('storage/no_imagen.jpg') }}"
+                                                            alt="Imagen del producto {{ $row->nombre }}"
+                                                            class="img-thumbnail">
+                                                    @endif
+                                                </a>
+                                                <div class="product-action">
+                                                    <button type="sumbit"><a><i class="fa fa-cart-plus"></i></a></button>
+                                                    {{ Form::close() }}
+                                                    <!-- <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                                                    <a href="#"><i class="fa fa-search"></i></a> -->
+                                                </div>
+                                            </div>
+                                            <div class="product-price">
+                                                {{-- {{ Form::open(['url' => 'ventas/comprar']) }} --}}
+                                                {{ Form::open(['route'=>['comprar']]) }}
+                                                @method('GET')
+                                                <h3><span>$</span>{{ $row->precioUnitario }}</h3>
+
+                                                {{ Form::hidden('id', $row->id, ['class' => 'form-control']) }}
+                                                
+                                                <button class="btn" type="sumbit"><i class="fa fa-shopping-cart"></i>Comprar</button>
+                                                {{ Form::close() }}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="product-image">
-                                        <a class="imagen-venta" href="product-detail.html">
-                                            @if ($row->imgNombreFisico)
-                                                <img src="{{ asset('storage/' . $row->imgNombreFisico) }}"
-                                                    alt="Imagen del producto {{ $row->nombre }}" class="img-thumbnail">
-                                            @else
-                                                <img src="{{ asset('storage/no_imagen.jpg') }}"
-                                                    alt="Imagen del producto {{ $row->nombre }}" class="img-thumbnail">
-                                            @endif
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="#"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-price">
-                                        <h3><span>$</span>{{ $row->precioCompra }}</h3>
-                                        <a class="btn" href="{{ route('ventas.create', ['id' => $row->id]) }}"><i
-                                                class="fa fa-shopping-cart"></i>Comprar</a>
-                                    </div>
-                                </div>
-                            </div>
+                                @endif
+                            @endif
                         @empty
                             <h3>No hay productos</h3>
                         @endforelse
 
+
                         <!-- Pagination Start -->
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item disabled">
@@ -123,13 +173,13 @@
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
+                        </div> -->
                         <!-- Pagination Start -->
                     </div>
                 </div>
 
                 <!-- Side Bar Start -->
-                <div class="col-lg-4 sidebar">
+                <!-- <div class="col-lg-4 sidebar">
                     <div class="sidebar-widget category">
                         <h2 class="title">Categorias</h2>
                         <nav class="navbar bg-light">
@@ -234,7 +284,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

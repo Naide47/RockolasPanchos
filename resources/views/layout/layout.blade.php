@@ -1,3 +1,7 @@
+<?php 
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -71,8 +75,8 @@
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link">Inicio</a>
-                            <a href="product-list.html" class="nav-item nav-link active">Productos</a>
+                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link">Inicio</a>
+                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link active">Venta</a>
 
                             <!-- <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
                             <a href="cart.html" class="nav-item nav-link">Cart</a>
@@ -87,16 +91,6 @@
                                 </div>
                             </div>
                         </div> -->
-
-                        <div class="navbar-nav ml-auto">
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cuenta</a>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">Inicio de sesión</a>
-                                    <a href="#" class="dropdown-item">Registrarse</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </nav>
             </div>
@@ -122,13 +116,8 @@
                     </div>
                     <div class="col-md-3">
                         <div class="user">
-                            <a href="wishlist.html" class="btn wishlist">
-                                <i class="fa fa-heart"></i>
-                                <span>(0)</span>
-                            </a>
-                            <a href="cart.html" class="btn cart">
+                            <a href="{{ URL::to('/ventas/showCarrito') }}" class="btn cart">
                                 <i class="fa fa-shopping-cart"></i>
-                                <span>(0)</span>
                             </a>
                         </div>
                     </div>
@@ -236,5 +225,15 @@
         <!-- Back to Top -->
         <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
         
+        <!-- JavaScript Libraries -->
+        {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="{{asset('lib/easing/easing.min.js')}}"></script>
+        <script src="{{asset('lib/slick/slick.min.js')}}"></script> --}}
+        
+        <!-- Template Javascript -->
+        <script src="{{asset('js/main.js')}}"></script>
+
+        <script src="{{asset('js/ventas.js')}}"></script>
     </body>
 </html>
