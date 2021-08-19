@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Usuarios;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PDFProductos;
 use App\Http\Controllers\Persona\PersonaController;
 use App\Models\User;
 use App\Models\Usuarios\Persona;
 use App\Models\Usuarios\Rol;
 use App\Models\Usuarios\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Session;
@@ -22,10 +24,14 @@ class UsuarioController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->rol_id != 3) {
+            abort(403);
+        }
         $mUsuarios = DB::table('users')
             ->join('persona', 'users.persona_id', '=', 'persona.id')
             ->join('rol', 'users.rol_id', '=', 'rol.id')
             ->select('users.id', 'users.email', 'persona.nombre', 'rol.rol')
+            ->where('users.id', '!=', 0)
             ->where('estatus', '=', 1)
             ->get()->toArray();
 
@@ -208,6 +214,7 @@ class UsuarioController extends Controller
             ->join('persona', 'users.persona_id', '=', 'persona.id')
             ->join('rol', 'users.rol_id', '=', 'rol.id')
             ->select('users.id', 'users.email', 'persona.nombre', 'rol.rol')
+            ->where('users.id', '!=', 0)
             ->where('estatus', '=', 0)
             ->get();
 

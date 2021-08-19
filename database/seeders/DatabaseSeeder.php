@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // php artisan migrate:fresh --seed
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,6 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";');
         $this->call(RolSeeder::class);
         $this->call(CategoriaSeeder::class);
         $this->call(PersonaSeeder::class);

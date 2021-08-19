@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Productos;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PDFController;
+use App\Http\Controllers\PDFProductos;
 use App\Models\Productos\Categoria;
 use Illuminate\Http\Request;
 use App\Models\Productos\Producto;
@@ -175,4 +177,22 @@ class ProductoController extends Controller
         //
     }
      */
+
+    public function generarReporte()
+    {
+        $pdf = new PDFController();
+
+        $mProductos = DB::table('producto')
+            ->join("categoria", "categoria.id", "=", "producto.categoria_id")
+            ->select(
+                "producto.*",
+                "categoria.categoria as categoria"
+            )
+            ->orderBy("id")
+            ->get();
+
+        // return $mProductos;
+
+        $pdf->crearPDFProductos($mProductos);
+    }
 }

@@ -18,6 +18,10 @@ use Inertia\Inertia;
 */
 Route::get('/', 'FrontController@index')->name('home');
 
+Route::get('/login', 'Auth\AuthController@loginPage')->name('login');
+Route::post('/login', 'Auth\AuthController@login');
+Route::post('/logout', 'Auth\AuthController@logout')->name('logout');
+
 Route::get('/ventas/comprar', 'VentaController@create')->name('comprar');
 Route::get('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
 Route::get('/ventas/showCarrito', 'VentaController@showCarrito')->name('mostrarCarrito');
@@ -61,15 +65,12 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::namespace('Productos')->group(function () {
+        Route::get('/productos/reporte', "ProductoController@generarReporte")->name("productos.generarReporte");
         Route::resource('productos', 'ProductoController');
         Route::resource('categorias', 'CategoriaController');
         Route::resource('paquetes', 'PaqueteController');
     });
 });
-
-Route::get('/login', 'Auth\AuthController@loginPage')->name('login');
-Route::post('/login', 'Auth\AuthController@login');
-Route::post('/logout', 'Auth\AuthController@logout')->name('logout');
 #Route::get('/venta/compra','VentaController@create');
 
 // Route::get('/', function () {
