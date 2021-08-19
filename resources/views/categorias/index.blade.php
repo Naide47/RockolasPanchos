@@ -56,7 +56,9 @@
                         <tr>
                             <th>#</th>
                             <th>Nombre de la categoria</th>
-                            <th>Acciones</th>
+                            @if (Auth::user()->rol_id > 1)
+                                <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -64,10 +66,14 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $categoria->categoria }}</td>
-                                <td>
-                                    <a name="btnEdit" id="btnEdit" class="btn btn-info"
-                                        href="{{ route('categorias.edit', $categoria->id) }}" role="button">Editar</a>
-                                </td>
+                                @if (Auth::user()->rol_id > 1)
+                                    <td>
+                                        <a name="btnEdit" id="btnEdit" class="btn btn-info"
+                                            href="{{ route('categorias.edit', $categoria->id) }}" role="button">
+                                            Editar
+                                        </a>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>

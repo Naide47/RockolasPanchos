@@ -47,7 +47,7 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav mr-auto">
-                    @if (Auth::user()->rol_id == 1)
+                    @if (Auth::user()->rol_id == 3)
                         <a id="navUsuarios" href="{{route('usuarios.index')}}" class="nav-item nav-link">Usuarios</a>
                     @endif
 
