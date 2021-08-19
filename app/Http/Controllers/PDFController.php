@@ -224,27 +224,6 @@ class PDFVentas extends FPDF
         $this->Ln();
     }
 
-    function DatosDevolucion()
-    {
-        // Arial 12
-        $this->SetFont('Arial', 'B', 12);
-        // Color del borde
-        $this->SetFillColor(225, 225, 225);
-        // Título
-        $this->Cell(0, 6, utf8_decode("Datos de la devolucion"), 0, 1, 'L', true);
-        // Arial 12
-        $this->SetFont('Arial', '', 12);
-        // Color del borde
-        $this->SetFillColor(225, 225, 225);
-        // Título
-        $this->Cell(0, 6, utf8_decode("Nombre: $nombre"), 0, 1, 'L', true);
-        $this->Cell(0, 6, utf8_decode("Domicilio: $calle," . " " . "$colonia"), 0, 1, 'L', true);
-        $this->Cell(0, 6, utf8_decode("Celular: $celular"), 0, 1, 'L', true);
-
-        // Salto de línea
-        $this->Ln(4);
-    }
-
     function ImprimirDatos($nombre, $calle, $colonia, $celular, $producto, $cantidad, $anticipo, $total, $fecha, $idCliente)
     {
         $this->AddPage();

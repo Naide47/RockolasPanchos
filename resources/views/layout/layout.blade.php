@@ -67,8 +67,8 @@ session_start();
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link">Inicio</a>
-                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link active">Venta</a>
+                            <a href="{{ route('home') }}" class="nav-item nav-link">Inicio</a>
+                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link">Venta</a>
 
                             <!-- <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
                             <a href="cart.html" class="nav-item nav-link">Cart</a>
@@ -95,8 +95,8 @@ session_start();
                 <div class="row align-items-center">
                     <div class="col-md-3">
                         <div class="logo">
-                            <a href="index.html">
-                                <img src="{{asset('img/logo.png')}}" alt="Logo">
+                            <a href="{{ route('home') }}">
+                                <img src="{{asset('img/logos/rockolaG.png')}}" alt="Logo">
                             </a>
                         </div>
                     </div>

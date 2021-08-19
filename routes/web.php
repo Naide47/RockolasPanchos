@@ -16,6 +16,7 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'FrontController@index')->name('home');
 
 Route::get('/ventas/comprar', 'VentaController@create')->name('comprar');
 Route::get('/ventas/agregarCarrito', 'VentaController@agregarCarrito')->name('agregarCarrito');
@@ -66,7 +67,6 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
-Route::get('/', 'VentaController@index')->name('home');
 Route::get('/login', 'Auth\AuthController@loginPage')->name('login');
 Route::post('/login', 'Auth\AuthController@login');
 Route::post('/logout', 'Auth\AuthController@logout')->name('logout');
