@@ -68,11 +68,11 @@
                             </div>
                         </div>
 
-                        @forelse($table as $row)
+                        @forelse($paquete as $paquetes)
                             <div class="col-md-4">
                                 <div class="product-item">
                                     <div class="product-title">
-                                        <a href="#">{{ $row->nombre }}</a>
+                                        <a href="#">{{ $paquetes->nombre }}</a>
                                         <div class="ratting">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
@@ -83,12 +83,12 @@
                                     </div>
                                     <div class="product-image">
                                         <a class="imagen-venta" href="product-detail.html">
-                                            @if ($row->imgNombreFisico)
-                                                <img src="{{ asset('storage/' . $row->imgNombreFisico) }}"
-                                                    alt="Imagen del producto {{ $row->nombre }}" class="img-thumbnail">
+                                            @if ($paquetes->imgNombreFisico)
+                                                <img src="{{ asset('storage/' . $paquetes->imgNombreFisico) }}"
+                                                    alt="Imagen del producto {{ $paquetes->nombre }}" class="img-thumbnail">
                                             @else
                                                 <img src="{{ asset('storage/no_imagen.jpg') }}"
-                                                    alt="Imagen del producto {{ $row->nombre }}" class="img-thumbnail">
+                                                    alt="Imagen del producto {{ $paquetes->nombre }}" class="img-thumbnail">
                                             @endif
                                         </a>
                                         <div class="product-action">
@@ -97,12 +97,21 @@
                                             <a href="#"><i class="fa fa-search"></i></a>
                                         </div>
                                     </div>
-                                    <div class="product-price">
-                                        <h3><span>$</span>{{ $row->precio }}</h3>
-                                        <a></a>
-                                        <a class="btn" href="{{ route('renta.create', ['id' => $row->id]) }}"><i
+                                    <div class="product-price"> 
+                                        <h3><span>$</span>{{ $paquetes->precio }}</h3>
+                                        @foreach($detallePaquete as $detallePaquetes)    
+                                            @if ($detallePaquetes->paquete_id == $paquetes->id)
+                                                @foreach ($productos as $producto)
+                                                    @if ($producto->id == $detallePaquetes->producto_id)                                      
+                                                        <a>{{ $producto->nombre }},</a>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                        <a class="btn" href="{{ route('renta.create', ['id' => $paquetes->id]) }}"><i
                                                 class="fa fa-shopping-cart"></i>Rentar</a>
                                     </div>
+                                    
                                 </div>
                             </div>
                         @empty

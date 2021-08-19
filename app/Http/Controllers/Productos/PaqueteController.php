@@ -100,6 +100,7 @@ class PaqueteController extends Controller
             Session::flash('alert-class', 'success');
 
             return redirect('paquetes');
+            
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();

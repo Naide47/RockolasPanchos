@@ -3,183 +3,141 @@
 <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 
 @section('Breadcrumb')
-<div class="breadcrumb-wrap">
-    <div class="container-fluid">
-        <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="#">Rentas</a></li>
-            <li class="breadcrumb-item active">Rentar</li>
-        </ul>
+    <div class="breadcrumb-wrap">
+        <div class="container-fluid">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="#">Rentas</a></li>
+                <li class="breadcrumb-item active">Rentar</li>
+            </ul>
+        </div>
     </div>
-</div>
 @endsection
 
 @section('contents')
 
-{{HTML::ul($errors->all())}}
-{{Form::open(["url"=>"renta"])}}
-
-<div style="padding: 30px; margin-bottom: 30px; background: #ffffff;">
-
-    <h3>Información Personal</h3>
-
-    <div class="row">
-        <div class="form-group col-md-6">
-            {{Form::label('nombre','Nombre')}}
-            {{Form::text('nombre', Request::old('nombre'), ["class"=>"form-control", "required" => true, "placeholder" => "Nombre"] )}}
-        </div>
-
-        <div class="form-group col-md-4">
-            {{Form::label('numero','Número celular')}}
-            {{Form::number('numero', Request::old('numero'), ["class"=>"form-control", "required" => true, "placeholder" => "Numero"] )}}
-        </div>
-    </div>
-
-    <div class="form-row">
-        <!-- 
-        <div class="form-group col-md-7">
-            {!! Form::label('clientes', 'Clientes') !!}
-            <select class="form-control" id="cliente" name="cliente" required>
-                <option value="" selected disabled>SELECCIONAR</option>
-                @foreach ($clientes as $cliente)
-                @foreach ($personas as $persona)
-                @if ($persona->id == $cliente->persona_id)
-                <option value="{{ $cliente->id }}">{{ $persona->nombre }}</option>
-                @endif
-                @endforeach
-                @endforeach
-            </select>
-            @error('cliente')
-            <div class="alert alert-danger" role="alert">
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
-        -->
-
-        <div class="form-group col-md-4">
-            {{Form::label('calle','Calle')}}
-            {{Form::text('rcalle', Request::old('calle'), ["class"=>"form-control", "required" => true, "placeholder" => "Calle"] )}}
-        </div>
-        <div class="form-group col-md-4">
-            {{Form::label('colonia','Colonia')}}
-            {{Form::text('rcolonia', Request::old('colonia'), ["class"=>"form-control", "required" => true, "placeholder" => "Colonia"] )}}
-        </div>
-        <div class="form-group col-md-4">
-            {{Form::label('noexterior','No. Exterior')}}
-            {{Form::text('rnoexterior', Request::old('noexterior'), ["class"=>"form-control", "required" => true, "placeholder" => "No. Exterior"] )}}
-        </div>
-    </div>
-
-    <h3>Detalle de la renta</h3>
-
+    {{ HTML::ul($errors->all()) }}
+    {{ Form::open(['url' => 'renta']) }}
+    {!! Form::hidden('paquete_id', $modelo->id) !!} 
     <div style="padding: 30px; margin-bottom: 30px; background: #ffffff;">
-        <div class="col-md-12">
-            @if ($modelo->imgNombreFisico)
-            <div class="align-middle">
-                <img src="{{ asset('storage/' . $modelo->imgNombreFisico) }}" alt="Imagen del producto {{ $modelo->nombre }}" width="300px" class="img-thumbnail">
-            </div>
-            @else
-            <div class="align-middle">
-                <img src="{{ asset('storage/no_imagen.jpg') }}" alt="Imagen del producto {{ $modelo->nombre }}" width="300px" class="img-thumbnail">
-            </div>
-            @endif
-        </div>
-    </div>
 
-    <div class="col-md-12">
+        <h3>Información Personal</h3>
+
         <div class="row">
-            <!-- {{Form::hidden('id', $value = ($modelo->id), ["class"=>"form-control", "disabled"] )}} -->
-            <input type="hidden" name="id" value="{{$modelo->id}}" class="form-control">
-            <input type="hidden" name="existencias" value="{{$modelo->existencias}}">
-            <input type="hidden" name="disponibles" value="{{$modelo->disponibles}}">
             <div class="form-group col-md-4">
-                {{Form::label('cantidad','Cantidad')}}
-                <div class="input-group mb-3">
-                    <select class="custom-select" id="rcantidad" name="rcantidad" required="true" onchange="calcularTotal()">
-                        <option selected value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                {{Form::label('nombre_producto','Nombre producto')}}
-                {{Form::hidden('rnombre_producto', ($modelo->nombre), ["class"=>"form-control"] )}}
-                <input type="text" value="{{$modelo->nombre}}" class="form-control" disabled>
-            </div>
-            <div class="form-group col-md-4">
-                {{Form::label('precio','Precio')}}
-                {{Form::hidden('rprecio', ($modelo->precioUnitario), ["class"=>"form-control", "id"=>"rprecio"] )}}
-                <input type="text" value="{{$modelo->precioUnitario}}" class="form-control" disabled>
-            </div>
-            <div class="form-group col-md-4">
-                {{Form::label('anticipo','Anticipo')}}
-                {{Form::hidden('ranticipo', ($anticipo=$modelo->precioUnitario*0.10), ["class"=>"form-control", "placeholder" => "Anticipo", "id"=>"ranticipo"] )}}
-                <input type="number" id="ranticipoView" value="{{$anticipo=$modelo->precioUnitario*0.10}}" class="form-control" placeholder="Anticipo" disabled>
-            </div>
-            <div class="form-group col-md-4">
-                {{Form::label('total','Total')}}
-                {{Form::hidden('rtotal', ($modelo->precioUnitario - $anticipo), ["class"=>"form-control", "id"=>"rtotal"] )}}
-                <input type="text" id="rtotalView" value="{{$modelo->precioUnitario - $anticipo}}" class="form-control" disabled>
-            </div>
-            <div class="form-group col-md-7">
-                <div class="form-outline">
-                    <label class="control-label">Fecha de entrega: </label>
-                    {{Form::date('fechaInicio', Request::old('fechaInicio'),  ["id"=>"fechaInicio"])}}
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                <div class="form-outline">
-                    <label class="control-label">Fecha de recogida: </label>
-                    {{Form::date('fechaTermino', Request::old('fechaTermino'), ["id"=>"fechaTermino"])}}
-                </div>
+                {{ Form::label('nombre', 'Nombre') }}
+                {{ Form::text('nombre', Request::old('nombre'), ['class' => 'form-control', 'required' => true, 'placeholder' => 'Nombre']) }}
             </div>
 
+            <div class="form-group col-md-4">
+                {{ Form::label('celular', 'Número celular') }}
+                {{ Form::number('celular', Request::old('celular'), ['class' => 'form-control', 'required' => true, 'placeholder' => 'Celular']) }}
+            </div>
+
+            <div class="form-group col-md-4">
+                {{ Form::label('telefono', 'Número Teléfono') }}
+                {{ Form::number('telefono', Request::old('telefono'), ['class' => 'form-control', 'required' => true, 'placeholder' => 'Teléfono']) }}
+            </div>
         </div>
-    </div>
-    <!-- Forma de pago -->
-    <h3>Forma de pago</h3>
-    <div class="col-md-12">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="pago" id="rentaPago1" value="1" checked>
-            <label class="form-check-label" for="rentaPago1">
-                Efectivo
-            </label>
+        <h3>Dirección de la renta</h3>
+        <div class="form-row">
+
+            <div class="form-group col-md-4">
+                {{ Form::label('calle', 'Calle y Número') }}
+                {{ Form::text('calle', Request::old('calle'), ['class' => 'form-control', 'required' => true, 'placeholder' => 'Calle y Número']) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ Form::label('colonia', 'Colonia') }}
+                {{ Form::text('colonia', Request::old('colonia'), ['class' => 'form-control', 'required' => true, 'placeholder' => 'Colonia']) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ Form::label('codigoPostal', 'Codigo Postal') }}
+                {{ Form::text('codigoPostal', Request::old('codigoPostal'), ['class' => 'form-control', 'required' => true, 'placeholder' => 'Codigo Postal']) }}
+            </div>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="pago" id="rentaPago2" value="2">
-            <label class="form-check-label" for="rentaPago2">
-                Tarjeta
-            </label>
+
+        <h3>Detalle de la renta</h3>
+
+        <div style="padding: 30px; margin-bottom: 30px; background: #ffffff;">
+            <div class="col-md-12">
+                @if ($modelo->imgNombreFisico)
+                    <div class="align-middle">
+                        <img src="{{ asset('storage/' . $modelo->imgNombreFisico) }}"
+                            alt="Imagen del producto {{ $modelo->nombre }}" width="300px" class="img-thumbnail">
+                    </div>
+                @else
+                    <div class="align-middle">
+                        <img src="{{ asset('storage/no_imagen.jpg') }}"
+                            alt="Imagen del producto {{ $modelo->nombre }}" width="300px" class="img-thumbnail">
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
-    <div style="display: none;" id="rdatos">
-        <h3 id="rtituloTarjeta" style="visibility:hidden;">Informacion de la tarjeta</h3>
+
+        <h3>Productos</h3>
+
+        <div class="col-md-12">
+            <div class="row">                
+                @foreach ($mPaquetes as $mPaquete)
+                    <div class="col-md-8">                                            
+                        {{ Form::text('producto'.$loop->index, $mPaquete->nombre, ['class' => 'form-control', 'disabled']) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ Form::text('cantidad'.$loop->index, $mPaquete->cantidad, ['class' => 'form-control', 'disabled']) }}
+                    </div>
+                @endforeach
+            </div>
+        </div>
         <div class="col-md-12">
             <div class="row">
                 <div class="form-group col-md-4">
-                    <label style="visibility:hidden" id="rlabelnumTarjeta"> Numero de tarjeta </label>
-                    {{Form::hidden('rnumTarjeta', '0', ["class"=>"form-control", "required" => true, "placeholder" => "Numero de tarjeta", "id"=>"rnumTarjeta"] )}}
+                    {{ Form::label('nombre_producto', 'Nombre Paquete') }}
+                    {{ Form::hidden('rnombre_producto', $modelo->nombre, ['class' => 'form-control', 'disabled']) }}
+                    <input type="text" value="{{ $modelo->nombre }}" class="form-control" disabled>
                 </div>
                 <div class="form-group col-md-4">
-                    {{Form::label('rtipoTarjeta','Tipo de tarjeta', ["style"=>"visibility:hidden", "id"=>"rlabeltipoTarjeta"])}}
-                    <div class="input-group mb-3">
-                        <select class="custom-select" id="rtipoTarjeta" name="rtipoTarjeta" required="true" style="visibility:hidden">
-                            <option selected value="0">Eliga un tipo</option>
-                            <option value="1">Debito</option>
-                            <option value="2">Credito</option>
-                        </select>
-                    </div>
+                    {{ Form::label('precio', 'Precio') }}
+                    {{ Form::hidden('rprecio', $modelo->precio, ['class' => 'form-control', 'id' => 'rprecio']) }}
+                    <input type="text" value="{{ $modelo->precio }}" class="form-control" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    {{ Form::label('ranticipoView', 'Anticipo') }}
+                    {{ Form::hidden('anticipo', $anticipo = $modelo->precio * 0.1, ['class' => 'form-control', 'placeholder' => 'Anticipo', 'id' => 'ranticipoView']) }}
+                    <input type="number" id="ranticipoView" value="{{ $anticipo = $modelo->precio * 0.1 }}"
+                        class="form-control" placeholder="Anticipo" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    {{ Form::label('rtotalView', 'Total') }}
+                    {{ Form::hidden('rtotal', $modelo->precio, ['class' => 'form-control', 'id' => 'rtotal']) }}
+                    <input type="text" id="rtotalView" value="{{ $modelo->precio }}" class="form-control" disabled>
                 </div>
             </div>
         </div>
+        <h3>Fecha de renta</h3>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="form-outline">
+                        <label class="control-label">Fecha de entrega: </label>
+                        {{ Form::date('fechaInicio', Request::old('fechaInicio'), ['id' => 'fechaInicio', 'name' => 'fechaInicio', 'class' => 'form-control']) }}
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="form-outline">
+                        <label class="control-label">Fecha de recogida: </label>
+                        {{ Form::date('fechaTermino', Request::old('fechaTermino'), ['id' => 'fechaTermino', 'name' => 'fechaTermino', 'class' => 'form-control']) }}
+                    </div>                  
+                </div>
+                <script type="text/javascript">
+                    fechaInicio.min = new Date().toISOString().split("T")[0];
+                    fechaTermino.min = new Date().toISOString().split("T")[0];
+                </script>
+            </div>
+        </div>
+
+        <br><br>        
+        {{ Form::submit('Rentar', ['class' => 'btn btn-success']) }}
+        {{ Form::close() }}
     </div>
-    <br><br>
-
-</div>
-{{Form::submit('Rentar', ["class"=>"btn btn-success"])}}
-{{Form::close()}}
-
 
 @endsection

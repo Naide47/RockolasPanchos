@@ -70,4 +70,5 @@ Route::resource('ventas', 'VentaController');
 
 Route::namespace('Rentas')->group(function () {
     Route::resource('renta', 'rentaController');
+    Route::resource('rentaUsuario', 'RentaControllerUsuario');
 });

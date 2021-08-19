@@ -5,17 +5,16 @@ namespace App\Http\Controllers\Rentas;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Controllers\Persona\PersonaController;
 use App\Models\Rentas\Rentas;
-use App\Models\Usuarios\Persona;
-use App\Models\Usuarios\Rol;
-use App\Models\Usuarios\Clientes;
-use App\Models\Usuarios\Usuario;
-
 use App\Models\Rentas\DetalleRentas;
-use App\Models\Productos\Categoria;
-use App\Models\Productos\Producto;
 
+use App\Models\Usuarios\Clientes;
+use App\Models\Productos\Producto;
+use App\Models\Productos\Paquete;
+use App\Models\Productos\DetallePaquete;
+
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
@@ -30,8 +29,10 @@ class rentaController extends Controller
     {
         // Traemos los datos del ModelPolicy
         $table = Rentas::all();
-        //$table = Producto::all();
-        return view('renta.view', compact('table'));
+        $paquete = Paquete::all();
+        $detallePaquete = DetallePaquete::all();
+        $productos = Producto::all();
+        return view('renta.view', compact('paquete', 'table', 'productos'), compact('detallePaquete'));
     }
 
     /**
@@ -41,19 +42,24 @@ class rentaController extends Controller
      */
     public function create(Request $request)
     {
-        if($request->id){
-            $modelo = Producto::find($request->id);
+        if ($request->id) {
+            $modelo = Paquete::find($request->id);
         }
 
-        $clientes = Rol::all();
-        $personas = Persona::all();
-        $usuarios = Usuario::all();
-        $categorias = Categoria::all();
-        #$productos = Producto::all();
-        $clientes = Clientes::all();
+        $mPaquetes = DB::table('detalle_paquete')
+            ->join('producto', 'producto.id', '=', 'detalle_paquete.producto_id')
+            ->select(
+                'producto.id',
+                'producto.nombre',
+                'producto.precioUnitario',
+                'detalle_paquete.cantidad'
+            )
+            ->where('detalle_paquete.paquete_id', '=', $request->id)
+            ->get();
 
-        return view('renta.create', compact('clientes',  'personas', 'usuarios'), compact('categorias', 'modelo'));
-    
+        return view('renta.create', compact('modelo', 'mPaquetes'));
+        #return $mPaquetes;
+
     }
 
     /**
@@ -64,31 +70,76 @@ class rentaController extends Controller
      */
     public function store(Request $request)
     {
+        $validacion = $request->validate([
+            "rtotal" => "required",
+            "anticipo" => "required",
+            "fechaInicio" => "required",
+            "fechaTermino" => "required",
+            "nombre" => "required",
+            "colonia" => "required",
+            "codigoPostal" => "required",
+            "calle" => "required",
+            "telefono" => "required",
+            "celular" => "required",
+        ]);
 
-        $mRenta = new Rentas();
-        $mDetalleRenta = new DetalleRentas();
+        DB::beginTransaction();
 
-        $mRenta->total = $request->total;
-        $mRenta->anticipoPagado = $request->anticipoPagado;
-        $mRenta->fechaInicio = $request->fechaInicio;
-        $mRenta->fechaTermino = $request->fechaTermino;
-        $mRenta->fechaRegistro = now();
-        $mRenta->noTarjeta = $request->noTarjeta;
-        $mRenta->tipoTarjeta = $request->tipoTarjeta;
+        try {
 
-        $mRenta->user_id = $request->usuario;
-        $mRenta->cliente_id = $request->cliente;
-        $mRenta->estatus = 1;
+            $mRenta = new Rentas();
 
-        $mDetalleRenta->producto_id = $request->producto_id;
-        $mDetalleRenta->renta_id = $request->renta_id;
-        $mDetalleRenta->precioUnitario = $request->precioUnitario;
-        $mDetalleRenta->cantidad = $request->cantidad;
+            $mRenta->total = $request->rtotal;
+            $mRenta->anticipoPagado = $request->anticipo;
+            $mRenta->fechaInicio = $request->fechaInicio;
+            $mRenta->fechaTermino = $request->fechaTermino;
+            $mRenta->fechaRegistro = now();
 
-        $mRenta->save();
-        
+            $personaController = new  PersonaController();
+            $idPersona = $personaController->store($request);
+
+            $mCliente = new Clientes;
+            $mCliente->persona_id = $idPersona;
+            $mCliente->save();
+
+            $mRenta->user_id = 1;
+            $mRenta->cliente_id = $mCliente->id;
+            $mRenta->estatus = 1;
+
+            $mRenta->save();
+
+            $mDetallePaquete = DB::table('detalle_paquete')
+                ->select('producto_id', 'precioUnitario', 'cantidad')
+                ->where('detalle_paquete.paquete_id', '=', $request->paquete_id)
+                ->get();
+
+            foreach ($mDetallePaquete as $mDetalle){
+
+                $mDetalleRenta = new DetalleRentas();
+            
+                $mDetalleRenta->renta_id = $mRenta->id;
+    
+                $mDetalleRenta->producto_id = $mDetalle->producto_id;            
+                $mDetalleRenta->precioUnitario = $mDetalle->precioUnitario;
+                $mDetalleRenta->cantidad = $mDetalle->cantidad;
+             
+                $mDetalleRenta->save();
+                
+            }
+
+            DB::commit();
+
+            Session::flash('message', 'Renta Registrada!');
+            Session::flash('alert-class', 'success');
+
+            return redirect('renta');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
+
+
         // Mensaje Flash (una vez que se elimina la variable)
-        Session::flash('message', 'Renta Registrada!');
         return Redirect::to('renta');
 
         echo "Correcto";

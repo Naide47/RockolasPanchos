@@ -25,13 +25,7 @@ class CreateRenta extends Migration
             $table->date('fechaInicio')->format('d-m-Y');
             #$table->time('horaRecogida');
             $table->date('fechaTermino')->format('d-m-Y');
-            $table->string('noTarjeta');
-            $table->string('tipoTarjeta');
             $table->integer('estatus');
-
-            $table->string('calle');
-            $table->string('colonia');
-            $table->string('noexterior');
 
 	        $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('cliente_id')->references('id')->on('cliente');

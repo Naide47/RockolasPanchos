@@ -11,5 +11,7 @@ class DetalleRentas extends Model
 
     use HasFactory;
 
+    public $timestamps = false;
+    
     protected $fillable = ["renta_id", "producto_id", "cantidad", "precioUnitario"];
 }
