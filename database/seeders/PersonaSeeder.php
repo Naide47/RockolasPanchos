@@ -14,8 +14,18 @@ class PersonaSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";');
         // Personas de usuarios
         DB::table('persona')->insert([
+            [
+                'id' => 0,
+                'nombre' => 'null',
+                'colonia' => 'null',
+                'calle' => 'null',
+                'codigoPostal' => 'null',
+                'telefono' => 'null',
+                'celular' => 'null'
+            ],
             [
                 'id' => 1,
                 'nombre' => 'Juan Martinez',

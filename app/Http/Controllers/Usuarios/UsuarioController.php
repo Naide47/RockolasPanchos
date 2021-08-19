@@ -26,6 +26,7 @@ class UsuarioController extends Controller
             ->join('persona', 'users.persona_id', '=', 'persona.id')
             ->join('rol', 'users.rol_id', '=', 'rol.id')
             ->select('users.id', 'users.email', 'persona.nombre', 'rol.rol')
+            ->where('users.id', '!=', 0)
             ->where('estatus', '=', 1)
             ->get()->toArray();
 
@@ -208,6 +209,7 @@ class UsuarioController extends Controller
             ->join('persona', 'users.persona_id', '=', 'persona.id')
             ->join('rol', 'users.rol_id', '=', 'rol.id')
             ->select('users.id', 'users.email', 'persona.nombre', 'rol.rol')
+            ->where('users.id', '!=', 0)
             ->where('estatus', '=', 0)
             ->get();
 
