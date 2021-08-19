@@ -16,8 +16,8 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'FrontController@index')->name('home');
 
-Route::get('/', 'VentaController@index')->name('home');
 Route::get('/login', 'Auth\AuthController@loginPage')->name('login');
 Route::post('/login', 'Auth\AuthController@login');
 Route::post('/logout', 'Auth\AuthController@logout')->name('logout');
@@ -71,8 +71,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('paquetes', 'PaqueteController');
     });
 });
-
-
 #Route::get('/venta/compra','VentaController@create');
 
 // Route::get('/', function () {

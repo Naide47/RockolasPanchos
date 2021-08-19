@@ -8,10 +8,9 @@
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="#">Productos</a></li>
-                <li class="breadcrumb-item"><a href="#">Venta</a></li>
-                <li class="breadcrumb-item active">Compra</li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Venta</a></li>
+                <li class="breadcrumb-item"><a>Compra</a></li>
             </ul>
         </div>
     </div>
