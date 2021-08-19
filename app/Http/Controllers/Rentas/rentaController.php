@@ -129,10 +129,13 @@ class rentaController extends Controller
 
             DB::commit();
 
-            Session::flash('message', 'Renta Registrada!');
-            Session::flash('alert-class', 'success');
+            $pdfControllerRenta = new PDFControllerRenta();
+            $pdfControllerRenta->createPDFRentasCompra($mCliente->id, $mCliente->persona_id);
 
-            return redirect('renta');
+            // Session::flash('message', 'Renta Registrada!');
+            // Session::flash('alert-class', 'success');
+
+            // return redirect('renta');
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();
