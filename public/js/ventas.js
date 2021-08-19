@@ -7,10 +7,10 @@ function calcularTotalSinAnticipo() {
     //console.log(totalF);
     var anticipo = totalF * 0.10;
     document.getElementById("anticipo").value = anticipo;
-    document.getElementById("total").value = totalF - anticipo;
+    document.getElementById("total").value = totalF;
     
     document.getElementById("anticipoView").value = anticipo;
-    document.getElementById("totalView").value = totalF - anticipo;
+    document.getElementById("totalView").value = totalF;
 }
 
 // const pago1 = document.getElementById("pago1");

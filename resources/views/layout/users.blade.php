@@ -53,7 +53,7 @@
 
                     <a id="navProductos" href="{{route('productos.index')}}" class="nav-item nav-link">Productos</a>
                     <a id="navRentas" href="product-list.html" class="nav-item nav-link">Rentas</a>
-                    <a id="navVentas" href="product-list.html" class="nav-item nav-link">Ventas</a>
+                    <a id="navVentas" href="{{ route('mostrar') }}" class="nav-item nav-link">Ventas</a>
                 </div>
             </div>
 

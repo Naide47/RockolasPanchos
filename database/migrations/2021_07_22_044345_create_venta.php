@@ -20,6 +20,7 @@ class CreateVenta extends Migration
             $table->decimal('total', 13, 2)->default(0);
             $table->decimal('anticipoPagado', 13, 2)->default(0);
             $table->timestamp('fechaRegistro')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('identificador')->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();
 

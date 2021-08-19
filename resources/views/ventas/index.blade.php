@@ -139,7 +139,6 @@
                                                 </div>
                                             </div>
                                             <div class="product-price">
-                                                {{-- {{ Form::open(['url' => 'ventas/comprar']) }} --}}
                                                 {{ Form::open(['route'=>['comprar']]) }}
                                                 @method('GET')
                                                 <h3><span>$</span>{{ $row->precioUnitario }}</h3>
