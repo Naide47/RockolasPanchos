@@ -47,23 +47,28 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav mr-auto">
-                    @if (Auth::user()->rol_id == 1)
+                    @if (Auth::user()->rol_id == 3)
                         <a id="navUsuarios" href="{{route('usuarios.index')}}" class="nav-item nav-link">Usuarios</a>
                     @endif
 
                     <a id="navProductos" href="{{route('productos.index')}}" class="nav-item nav-link">Productos</a>
                     <a id="navRentas" href="product-list.html" class="nav-item nav-link">Rentas</a>
-                    <a id="navVentas" href="product-list.html" class="nav-item nav-link">Ventas</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Ventas</a>
+                        <div class="dropdown-menu">
+                            <a id="navVentas" href="{{ route('mostrar') }}" class="nav-item nav-link">Ventas</a>
+                            <a id="navVentas" href="{{ route('devolucion.mostrar') }}" class="nav-item nav-link">Devoluciones</a>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
 
             <div class="navbar-nav">
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{Auth::user()->name}}</a>
-                    {{-- <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Nombre de usuario.docx</a> --}}
                     <div class="dropdown-menu text-center">
-                        {{-- <a href="#" class="dropdown-item">Inicio de sesión</a>
-                        <a href="#" class="dropdown-item">Registrarse</a> --}}
+                        
                         {!! Form::open(['route' => 'logout']) !!}
                         {!! Form::submit('Cerrar sesión', ['class' => 'btn btn-danger']) !!}
                         {!! Form::close() !!}

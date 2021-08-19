@@ -8,10 +8,9 @@
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="#">Productos</a></li>
-                <li class="breadcrumb-item"><a href="#">Venta</a></li>
-                <li class="breadcrumb-item active">Compra</li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Venta</a></li>
+                <li class="breadcrumb-item"><a>Compra</a></li>
             </ul>
         </div>
     </div>
@@ -112,9 +111,9 @@
                         class="form-control" placeholder="Anticipo" disabled>
                 </div>
                 <div class="form-group col-md-4">
-                    {{ Form::label('total', 'Total') }}
-                    {{ Form::hidden('total', $modelo->precioUnitario - $anticipo, ['class' => 'form-control', 'id' => 'total']) }}
-                    <input type="text" id="totalView" value="{{ $modelo->precioUnitario - $anticipo }}"
+                    {{ Form::label('total', 'Total (Sin Anticipo)') }}
+                    {{ Form::hidden('total', $modelo->precioUnitario, ['class' => 'form-control', 'id' => 'total']) }}
+                    <input type="text" id="totalView" value="{{ $modelo->precioUnitario }}"
                         class="form-control" disabled>
                 </div>
             </div>

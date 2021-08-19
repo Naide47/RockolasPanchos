@@ -75,21 +75,9 @@ session_start();
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link">Inicio</a>
-                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link active">Venta</a>
-
-                            <!-- <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
-                            <a href="cart.html" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a> 
-                            <a href="my-account.html" class="nav-item nav-link">My Account</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
-                                <div class="dropdown-menu">
-                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                                    <a href="login.html" class="dropdown-item">Login & Register</a>
-                                    <a href="contact.html" class="dropdown-item">Contact Us</a>
-                                </div>
-                            </div>
+                            <a href="{{ route('home') }}" class="nav-item nav-link">Inicio</a>
+                            <a href="{{ route('ventas.index') }}" class="nav-item nav-link">Venta</a>
+                            <a href="{{route('devoluciones.index')}}" class="nav-item nav-link">Devoluciones</a>                        
                         </div> -->
                     </div>
                 </nav>
@@ -103,8 +91,8 @@ session_start();
                 <div class="row align-items-center">
                     <div class="col-md-3">
                         <div class="logo">
-                            <a href="index.html">
-                                <img src="{{asset('img/logo.png')}}" alt="Logo">
+                            <a href="{{ route('home') }}">
+                                <img src="{{asset('img/logos/rockolaG.png')}}" alt="Logo">
                             </a>
                         </div>
                     </div>

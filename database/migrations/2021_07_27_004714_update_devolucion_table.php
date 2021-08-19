@@ -13,9 +13,9 @@ class UpdateDevolucionTable extends Migration
      */
     public function up()
     {
-        Schema::table('devolucion', function (Blueprint $table) {
-            $table->foreign('venta_id')->references('id')->on('venta');
-        });
+        // Schema::table('devolucion', function (Blueprint $table) {
+        //     $table->foreign('venta_identificador')->references('identificador')->on('venta');
+        // });
     }
 
     /**
@@ -25,8 +25,8 @@ class UpdateDevolucionTable extends Migration
      */
     public function down()
     {
-        Schema::table('devolucion', function (Blueprint $table) {
-            $table->dropForeign('venta_id');
-        });
+        // Schema::table('devolucion', function (Blueprint $table) {
+        //     $table->dropForeign('venta_identificador');
+        // });
     }
 }

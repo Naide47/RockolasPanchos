@@ -60,8 +60,11 @@
                             <th>Imagen</th>
                             <th>Precio unitario</th>
                             <th>Disponibles</th>
-                            <th colspan="2">Acciones</th>
-                            {{-- <th colspan="3">Acciones</th> --}}
+                            @if (Auth::user()->rol_id > 1)
+                                <th colspan="2">Acciones</th>
+                            @else
+                                <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -79,22 +82,20 @@
                                             alt="Imagen del producto {{ $producto->nombre }}" width="75px"
                                             class="img-thumbnail"></td>
                                 @endif
-
                                 <td class="align-middle">${{ $producto->precioUnitario }}</td>
                                 <td class="align-middle">{{ $producto->disponibles }}</td>
-                                {{-- <td><a class="btn btn-primary"
-                                        href="{{ route('productos.add', $producto->id) }}">Agregar
-                                        existencias</a></td> --}}
-                                <td class="align-middle"><a class="btn btn-secondary"
-                                        href="{{ route('productos.show', $producto->id) }}">Detalle</td>
-                                <td class="align-middle"><a class="btn btn-info"
-                                        href="{{ route('productos.edit', $producto->id) }}" role="button">Editar</a>
+                                <td class="align-middle">
+                                    <a class="btn btn-secondary" href="{{ route('productos.show', $producto->id) }}">
+                                        Detalle
+                                    </a>
                                 </td>
-                                {{-- <td>
-                                    {{ Form::open(['url' => route('categorias.destroy', $producto->idCategoria)]) }}
-                                    {{ Form::hidden('_method', 'DELETE') }}
-                                    {{ Form::submit('Borrar', ['class' => 'btn btn-danger']) }}
-                                </td> --}}
+                                @if (Auth::user()->rol_id > 1)
+                                    <td class="align-middle"><a class="btn btn-info"
+                                            href="{{ route('productos.edit', $producto->id) }}" role="button">
+                                            Editar
+                                        </a>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
@@ -104,6 +105,10 @@
                     </tbody>
                     <caption>Lista de productos</caption>
                 </table>
+                <div class="mb-3 text-right">
+                    <a target="_blank" name="btnAgregarCategoria" id="btnAgregarCategoria" class="btn btn-success"
+                        href="{{ route('productos.generarReporte') }}" role="button">Generar reporte</a>
+                </div>
             </div>
         </div>
     </div>

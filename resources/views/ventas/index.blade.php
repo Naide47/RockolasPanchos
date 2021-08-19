@@ -4,7 +4,7 @@
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('ventas.index') }}">Venta</a></li>
             </ul>
         </div>
@@ -119,7 +119,7 @@
                                                 </div>
                                             </div>
                                             <div class="product-image">
-                                                <a class="imagen-venta" href="product-detail.html">
+                                                <a class="imagen-venta">
                                                     @if ($row->imgNombreFisico)
                                                         <img src="{{ asset('storage/' . $row->imgNombreFisico) }}"
                                                             alt="Imagen del producto {{ $row->nombre }}"
@@ -139,7 +139,6 @@
                                                 </div>
                                             </div>
                                             <div class="product-price">
-                                                {{-- {{ Form::open(['url' => 'ventas/comprar']) }} --}}
                                                 {{ Form::open(['route'=>['comprar']]) }}
                                                 @method('GET')
                                                 <h3><span>$</span>{{ $row->precioUnitario }}</h3>

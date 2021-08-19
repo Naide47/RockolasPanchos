@@ -60,7 +60,11 @@
                             <th>Paquete</th>
                             <th>Imagen</th>
                             <th>Precio</th>
-                            <th colspan="2">Acciones</th>
+                            @if (Auth::user()->rol_id > 1)
+                                <th>Acciones</th>
+                            @else
+                                <th colspan="2">Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -79,16 +83,19 @@
                                             class="img-thumbnail"></td>
                                 @endif
                                 <td class="align-middle">${{ $paquete->precio }}</td>
-                                <td class="align-middle"><a class="btn btn-secondary"
-                                        href="{{ route('paquetes.show', $paquete->id) }}">Detalle</td>
-                                <td class="align-middle"><a class="btn btn-info"
-                                        href="{{ route('paquetes.edit', $paquete->id) }}" role="button">Editar</a>
+                                <td class="align-middle">
+                                    <a class="btn btn-secondary" href="{{ route('paquetes.show', $paquete->id) }}">
+                                        Detalle
+                                    </a>
                                 </td>
-                                {{-- <td>
-                                    {{ Form::open(['url' => route('categorias.destroy', $paquete->idCategoria)]) }}
-                                    {{ Form::hidden('_method', 'DELETE') }}
-                                    {{ Form::submit('Borrar', ['class' => 'btn btn-danger']) }}
-                                </td> --}}
+                                @if (Auth::user()->rol_id > 1)
+                                    <td class="align-middle">
+                                        <a class="btn btn-info" href="{{ route('paquetes.edit', $paquete->id) }}"
+                                            role="button">
+                                            Editar
+                                        </a>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>

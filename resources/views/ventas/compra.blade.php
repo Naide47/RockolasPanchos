@@ -124,12 +124,12 @@
                             <div class="col-md-12">
                                 <div class="cart-summary">
                                     <div class="cart-content">
-                                        <h1>Cart Summary</h1>
+                                        <h1>Pagos</h1>
                                         {{Form::label('anticipoCompra','Anticipo')}}
                                         {{ Form::text('anticipoCompra', ($anticipo), ['class'=>'form-control', 'readonly']) }}
                                         
 
-                                        {{Form::label('totalCompra','Total')}}
+                                        {{Form::label('totalCompra','Total (Sin Anticipo)')}}
                                         {{ Form::text('totalCompra', ($total), ['class'=>'form-control', 'readonly']) }}
                                     </div>
                                 </div>
