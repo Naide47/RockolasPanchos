@@ -29,6 +29,7 @@
 
     {{-- Template Javascript --}}
     <script src="{{ asset('js/main.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/function.js') }}"></script>
 
     {{-- Template Stylesheet --}}
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
