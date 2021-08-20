@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.users')
 
 @section('Breadcrumb')
     <div class="breadcrumb-wrap">
@@ -6,7 +6,7 @@
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="#">Productos</a></li>
-                <li class="breadcrumb-item active">Venta</li>
+                <li class="breadcrumb-item active">Rentas</li>
             </ul>
         </div>
     </div>

@@ -18,10 +18,6 @@
             <div class="col-10">
                 @include('layout.searchbar')
             </div>
-            <div class="col-2">
-                <a name="btnAgregarCategoria" id="btnAgregarCategoria" class="btn btn-success"
-                    href="{{ route('renta.create') }}" role="button">Agregar Renta</a>
-            </div>
         </div>
         {{-- Notificaciones --}}
         @if (Session::has('message'))

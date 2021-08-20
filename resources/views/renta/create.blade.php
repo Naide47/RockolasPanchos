@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.users')
 
 <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 
