@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Usuarios;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PDFProductos;
 use App\Http\Controllers\Persona\PersonaController;
-use App\Models\User;
-use App\Models\Usuarios\Persona;
 use App\Models\Usuarios\Rol;
 use App\Models\Usuarios\Usuario;
 use Illuminate\Http\Request;

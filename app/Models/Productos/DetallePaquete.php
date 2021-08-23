@@ -9,4 +9,11 @@ class DetallePaquete extends Model
     public $timestamps = false;
     
     protected $table = "detalle_paquete";
+
+    protected $fillable = [
+        'paquete_id',
+        'producto_id',
+        'cantidad',
+        'PrecioUnitario'
+    ];    
 }

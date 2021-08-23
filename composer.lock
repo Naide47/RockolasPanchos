@@ -1552,17 +1552,22 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Laravel\\Sanctum\\SanctumServiceProvider"
-                    ]
+                    "dev-master": "8.x-dev"
                 }
             },
             "autoload": {
+                "files": [
+                    "src/Illuminate/Collections/helpers.php",
+                    "src/Illuminate/Events/functions.php",
+                    "src/Illuminate/Foundation/helpers.php",
+                    "src/Illuminate/Support/helpers.php"
+                ],
                 "psr-4": {
-                    "Laravel\\Sanctum\\": "src/"
+                    "Illuminate\\": "src/Illuminate/",
+                    "Illuminate\\Support\\": [
+                        "src/Illuminate/Macroable/",
+                        "src/Illuminate/Collections/"
+                    ]
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1575,17 +1580,17 @@
                     "email": "taylor@laravel.com"
                 }
             ],
-            "description": "Laravel Sanctum provides a featherweight authentication system for SPAs and simple APIs.",
+            "description": "The Laravel Framework.",
+            "homepage": "https://laravel.com",
             "keywords": [
-                "auth",
-                "laravel",
-                "sanctum"
+                "framework",
+                "laravel"
             ],
             "support": {
-                "issues": "https://github.com/laravel/sanctum/issues",
-                "source": "https://github.com/laravel/sanctum"
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-06-15T15:56:21+00:00"
+            "time": "2021-06-25T23:57:38+00:00"
         },
         {
             "name": "laravel/tinker",

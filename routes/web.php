@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -57,5 +56,26 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
-Route::resource('ventas', 'VentaController');
-Route::resource('devoluciones', 'DevolucionController');
+Route::get('/', 'VentaController@index')->name('home');
+Route::get('/login', 'Auth\AuthController@loginPage')->name('login');
+Route::post('/login', 'Auth\AuthController@login');
+Route::post('/logout', 'Auth\AuthController@logout')->name('logout');
+#Route::get('/venta/compra','VentaController@create');
+
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
+
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->name('dashboard');
+
+Route::namespace('Rentas')->group(function () {
+    Route::resource('renta', 'rentaController');
+    Route::resource('rentaUsuario', 'RentaControllerUsuario');
+});
